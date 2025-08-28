@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from 'three';
-import { initThree, attachResizeHandlers } from "@/features/ThreeInit";
-import { loadModel, disposeModel } from "@/features/ThreeLoad";
-import { handleClick } from "@/features/ThreeClick";
+import { initThree, attachResizeHandlers } from "@/features/ARjs/ThreeInit";
+import { loadModel, disposeModel } from "@/features/ARjs/ThreeLoad";
+import { handleClick } from "@/features/ARjs/ThreeClick";
 import LoadingPanel from "@/components/LoadingPanel";
 
+/** AR.js Main */
 type ThreeContext = ReturnType<typeof initThree>;
 
 // 先に型を用意

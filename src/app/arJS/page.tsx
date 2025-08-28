@@ -10,7 +10,7 @@ type ModelInfo = { modelPath?: string; modelDetail?: string };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
 
 // ThreeMainコンポーネントをdynamic importに書き換えてハイドレーションエラーが起きないようにする。
-const ThreeMain = dynamic(() => import('@/lib/ThreeMain'), {
+const ThreeMain = dynamic(() => import('@/features/ARjs/ThreeMain'), {
     ssr: false, // サーバーサイドレンダリングを無効化
 });
 
