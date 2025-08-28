@@ -1,0 +1,53 @@
+import styled from "styled-components"
+
+export default function LoadingPanel() {
+    return(
+        // <!-- ローディングインジケーター -->
+        <MyLoading>
+            <div id="loading" className="loading-overlay">
+                <div className="loading-spinner"></div>
+                <div className="loading-text">モデルを読み込み中...</div>
+            </div>
+        </MyLoading>
+    )
+}
+
+const MyLoading = styled.div`
+/* ローディングインジケーター */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.loading-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #888;
+    border-radius: 50%;
+    animation: spin 3s linear infinite;
+    margin-bottom: 10px;
+}
+
+.loading-text {
+    color: white;
+    font-size: 16px;
+}
+`

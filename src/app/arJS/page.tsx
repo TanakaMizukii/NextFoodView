@@ -1,9 +1,25 @@
 // app/ios/page.tsx
-export default function IOSPage() {
-return (
-<main style={{ padding: 24, color: '#fff' }}>
-<h1>iPhone 向けページ</h1>
-<p>ここに iOS（Safari）向けの案内やリンク、機能を配置してください。</p>
-</main>
-);
+'use client'
+
+import { useState } from 'react';
+// import './App.css';
+import ThreeMain from '@/lib/ThreeMain';
+import MenuContainer from '@/components/MenuContainer';
+import { ModelChangeContext } from '@/contexts/ModelChangeContext';
+
+export default function ARjsPage() {
+    type ModelInfo = { modelPath?: string; modelDetail?: string };
+    type ChangeModelFn = (info: ModelInfo) => Promise<void>;
+    const [changeModel, setChangeModel] = useState<ChangeModelFn>(() => async (info: ModelInfo) => {
+        console.warn("changeModel is not yet initialized", info);
+    });
+
+    return (
+        <>
+        <ModelChangeContext.Provider value={{ changeModel }}>
+            <ThreeMain setChangeModel={setChangeModel} />
+            <MenuContainer />
+        </ModelChangeContext.Provider>
+        </>
+    );
 }
