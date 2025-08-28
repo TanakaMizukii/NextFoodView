@@ -1,15 +1,20 @@
 // app/ios/page.tsx
 'use client'
-
 import { useState } from 'react';
-// import './App.css';
-import ThreeMain from '@/lib/ThreeMain';
+import '../App.css';
 import MenuContainer from '@/components/MenuContainer';
 import { ModelChangeContext } from '@/contexts/ModelChangeContext';
+import dynamic from 'next/dynamic';
+
+type ModelInfo = { modelPath?: string; modelDetail?: string };
+type ChangeModelFn = (info: ModelInfo) => Promise<void>;
+
+// ThreeMainコンポーネントをdynamic importに書き換えてハイドレーションエラーが起きないようにする。
+const ThreeMain = dynamic(() => import('@/lib/ThreeMain'), {
+    ssr: false, // サーバーサイドレンダリングを無効化
+});
 
 export default function ARjsPage() {
-    type ModelInfo = { modelPath?: string; modelDetail?: string };
-    type ChangeModelFn = (info: ModelInfo) => Promise<void>;
     const [changeModel, setChangeModel] = useState<ChangeModelFn>(() => async (info: ModelInfo) => {
         console.warn("changeModel is not yet initialized", info);
     });

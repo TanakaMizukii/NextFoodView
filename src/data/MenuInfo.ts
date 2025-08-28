@@ -74,7 +74,7 @@ export const productModels : productModelsProps = [
         },
         {
             name: 'テッチャン',
-            image: './images/テッチャン.jpg',
+            image: './images/',
             model: './models/techan†_raw.glb',
             description: 'シマチョウとも呼ばれる牛の大腸\n脂の甘みが特徴',
             category: 'ホルモン',
