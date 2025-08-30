@@ -57,18 +57,21 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
         const clickHandler = handleClick(threeContext);
         threeContext.labelRenderer.domElement.addEventListener('click', clickHandler);
 
-        (async () => {
-            const firstModel = {};
-            // useEffect内で直接呼び出す代わりに、state更新後のeffectを利用
-            if(threeContext){
-                const nowModel = await loadModel(firstModel, threeContext, nowModelRef.current);
-                nowModelRef.current = nowModel;
-            }
-        })();
+        // (async () => {
+        //     const firstModel = {};
+        //     // useEffect内で直接呼び出す代わりに、state更新後のeffectを利用
+        //     if(threeContext){
+        //         const nowModel = await loadModel(firstModel, threeContext, nowModelRef.current);
+        //         nowModelRef.current = nowModel;
+        //     }
+        // })();
 
         const detach = attachResizeHandlers(threeContext, containerRef.current);
 
         function animation() {
+            if (threeContext.arjs) {
+                threeContext.arjs.update();
+            }
             threeContext.renderer.render(threeContext.scene, threeContext.camera);
             threeContext.labelRenderer.render(threeContext.scene, threeContext.camera);
         }
@@ -84,7 +87,7 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
     return (
         <>
             <LoadingPanel />
-            <div className="wrapper" ref={containerRef} >
+            <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />
             </div>
         </>

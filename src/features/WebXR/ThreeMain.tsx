@@ -83,7 +83,7 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
     return (
         <>
             <LoadingPanel />
-            <div className="wrapper" ref={containerRef} >
+            <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />
             </div>
         </>
