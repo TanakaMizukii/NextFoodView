@@ -11,6 +11,19 @@ declare global {
         type ArToolkitContext = Ctx;
         type ArToolkitSource = Src;
         type ArSmoothedControls = Smooth;
+
+        interface ArMarkerControls {
+        addEventListener(
+            type: 'markerFound' | 'markerLost',
+            listener: (ev: Event) => void,
+            options?: boolean | AddEventListenerOptions
+        ): void;
+        removeEventListener(
+            type: 'markerFound' | 'markerLost',
+            listener: (ev: Event) => void,
+            options?: boolean | EventListenerOptions
+        ): void;
+        }
     }
 }
 export {};

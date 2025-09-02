@@ -93,14 +93,27 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         guideMarker.classList.add('visible');
     }
 
+    type MarkerControlsWithEvents = THREEx.ArMarkerControls & {
+    addEventListener(
+        type: 'markerFound' | 'markerLost',
+        listener: (ev: Event) => void,
+        options?: boolean | AddEventListenerOptions
+    ): void;
+    removeEventListener(
+        type: 'markerFound' | 'markerLost',
+        listener: (ev: Event) => void,
+        options?: boolean | EventListenerOptions
+    ): void;
+    };
+    const mc = arMarkerControls as MarkerControlsWithEvents;
+
     // 一度マーカーを検知するとガイドを終了
     const onMarkerFound = () => {
-        if (guideMarker) {
-            guideMarker.classList.remove('visible');
-        }
-        (arMarkerControls as any).removeEventListener('markerFound', onMarkerFound);
+    guideMarker?.classList.remove('visible');
+    mc.removeEventListener('markerFound', onMarkerFound);
     };
-    (arMarkerControls as any).addEventListener('markerFound', onMarkerFound);
+    mc.addEventListener('markerFound', onMarkerFound);
+
 
     const dpr = Math.min(window.devicePixelRatio || 1, pixelRatioCap);
     renderer.setPixelRatio(dpr);

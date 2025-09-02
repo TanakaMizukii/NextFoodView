@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Image from "next/image";
 import { useContext } from 'react';
 import { ModelChangeContext } from "../contexts/ModelChangeContext";
 import { ToggleChangeContext } from "../contexts/ToggleChangeContext";

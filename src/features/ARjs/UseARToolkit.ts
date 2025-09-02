@@ -31,7 +31,7 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
         window.arToolkitSource = arToolkitSource;
             setTimeout(() => {
                 arResize();
-            }, 200);
+            }, 400);
         },
         () => {}
     );
