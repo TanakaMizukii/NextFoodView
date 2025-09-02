@@ -11,7 +11,7 @@ await MeshoptDecoder.ready;
 export type ThreeCtx = {
     renderer: THREE.WebGLRenderer;
     scene: THREE.Scene;
-    camera: THREE.Camera;
+    camera: THREE.PerspectiveCamera;
     labelRenderer: CSS2DRenderer;
     loader: GLTFLoader;
     mouse: THREE.Vector2;
@@ -49,7 +49,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     });
 
     const scene = new THREE.Scene();
-    const camera = new THREE.Camera();
+    const camera = new THREE.PerspectiveCamera();
 
     // 簡易ライト
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -65,7 +65,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     labelRenderer.domElement.id = 'label';
     document.body.appendChild(labelRenderer.domElement);
 
-    const { arToolkitContext, arToolkitSource,
+    const { arToolkitContext, arToolkitSource, arMarkerControls,
         markerRoot, smoothedRoot, smoothedControls } = UseARToolkit({
         domElement: renderer.domElement,
         camera: camera,
@@ -73,13 +73,6 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         markerPatternURL: "/data/marker.patt",
         scene: scene,
     });
-
-    const box = new THREE.Mesh(
-        new THREE.BoxGeometry(1, 1, 1),
-        new THREE.MeshStandardMaterial({ color: 0xe5e5e5 })
-    );
-    box.position.set(0, 0.5, 0);
-    smoothedRoot.add(box);
 
     // モデルデータを読み込むためのローダーを作成
     const ktx2 = new KTX2Loader();
@@ -94,13 +87,27 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     const detailNum = 0;
     const objectList: THREE.Object3D[] = [];
 
+    // マーカー案内用UIの表示
+    const guideMarker = document.getElementById('guideMarker');
+    if (guideMarker) {
+        guideMarker.classList.add('visible');
+    }
+
+    // 一度マーカーを検知するとガイドを終了
+    const onMarkerFound = () => {
+        if (guideMarker) {
+            guideMarker.classList.remove('visible');
+        }
+        (arMarkerControls as any).removeEventListener('markerFound', onMarkerFound);
+    };
+    (arMarkerControls as any).addEventListener('markerFound', onMarkerFound);
+
     const dpr = Math.min(window.devicePixelRatio || 1, pixelRatioCap);
     renderer.setPixelRatio(dpr);
 
     const dispose = () => {
-        // arjs.dispose();
         renderer.dispose();
-        scene.traverse((obj) => {
+        smoothedRoot.traverse((obj) => {
             const mesh = obj as THREE.Mesh;
             mesh.geometry?.dispose?.();
             const mat = mesh.material;

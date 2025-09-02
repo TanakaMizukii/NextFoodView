@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from 'three';
 import { initThree, attachResizeHandlers } from "@/features/ARjs/ThreeInit";
-import { loadModel, disposeModel } from "@/features/ARjs/ThreeLoad";
+import { loadModel } from "@/features/ARjs/ThreeLoad";
 import { handleClick } from "@/features/ARjs/ThreeClick";
 import LoadingPanel from "@/components/LoadingPanel";
+import GuideQRCode from "@/components/GuideQRCode";
 
 /** AR.js Main */
 type ThreeContext = ReturnType<typeof initThree>;
@@ -25,11 +26,6 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
 
     const changeModel = useCallback(async (modelInfo: { modelPath?: string; modelDetail?: string; }) => {
         if (!ctx) return;
-        // 前回モデルがあれば削除
-        if (nowModelRef.current) {
-            disposeModel(nowModelRef.current);
-            ctx.scene.remove(nowModelRef.current);
-        }
         // 新しいモデルをロード
         const nowModel = await loadModel(modelInfo, ctx, nowModelRef.current);
         nowModelRef.current = nowModel;
@@ -56,14 +52,14 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
         const clickHandler = handleClick(threeContext);
         threeContext.labelRenderer.domElement.addEventListener('click', clickHandler);
 
-        // (async () => {
-        //     const firstModel = {};
-        //     // useEffect内で直接呼び出す代わりに、state更新後のeffectを利用
-        //     if(threeContext){
-        //         const nowModel = await loadModel(firstModel, threeContext, nowModelRef.current);
-        //         nowModelRef.current = nowModel;
-        //     }
-        // })();
+        (async () => {
+            const firstModel = {};
+            // useEffect内で直接呼び出す代わりに、state更新後のeffectを利用
+            if(threeContext){
+                const nowModel = await loadModel(firstModel, threeContext, null);
+                nowModelRef.current = nowModel;
+            }
+        })();
 
         const detach = attachResizeHandlers(threeContext, containerRef.current);
 
@@ -89,6 +85,7 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
 
     return (
         <>
+            <GuideQRCode />
             <LoadingPanel />
             <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />

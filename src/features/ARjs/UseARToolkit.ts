@@ -29,9 +29,9 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
         });
         document.getElementById('wrapper')?.appendChild(arToolkitSource.domElement); // DOMを移動する
         window.arToolkitSource = arToolkitSource;
-        setTimeout(() => {
-            arResize();
-        }, 200);
+            setTimeout(() => {
+                arResize();
+            }, 200);
         },
         () => {}
     );
@@ -88,6 +88,6 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
         ? "landscape" : "portrait";
     }
 
-    return { arToolkitSource, arToolkitContext,
+    return { arToolkitSource, arToolkitContext, arMarkerControls,
         markerRoot, smoothedRoot, smoothedControls,};
 };
