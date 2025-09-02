@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { THREEx } from "@ar-js-org/ar.js-threejs";
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 import { CSS2DRenderer } from 'three/examples/jsm/Addons.js';
@@ -14,7 +13,7 @@ await MeshoptDecoder.ready;
 export type ThreeCtx = {
     renderer: THREE.WebGLRenderer;
     scene: THREE.Scene;
-    camera: THREE.PerspectiveCamera;
+    camera: THREE.Camera;
     controls?: OrbitControls;
     labelRenderer: CSS2DRenderer;
     loader: GLTFLoader;
@@ -52,7 +51,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     });
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    const camera = new THREE.Camera();
 
     // 簡易ライト
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -75,7 +74,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         domElement: renderer.domElement,
         camera: camera,
         cameraParaDatURL: '/data/camera_para.dat',
-        markerPatternURL: "/data/patt.hiro",
+        markerPatternURL: "/data/marker.patt",
         scene: scene,
         markerRoot: markerRoot,
     });
@@ -86,7 +85,6 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     );
     box.position.set(0, 0.5, 0);
     markerRoot.add(box);
-    console.log(markerRoot);
 
     window.addEventListener("markerFound", function (e) {
         console.log("marker found!", e);
@@ -163,8 +161,8 @@ export function refreshPixelRatio(renderer: THREE.WebGLRenderer, cap = 2) {
 export function resizeToContainer(ctx: ThreeCtx, container: HTMLElement) {
     const width = container.clientWidth;
     const height = container.clientHeight || 1;
-    ctx.camera.aspect = width / height;
-    ctx.camera.updateProjectionMatrix();
+    // ctx.camera.aspect = width / height;
+    // ctx.camera.updateProjectionMatrix();
     ctx.renderer.setSize(width, height, false);
     ctx.labelRenderer.setSize(width, height);
 }

@@ -19,7 +19,8 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
 
     const arToolkitContext = new THREEx.ArToolkitContext({
         cameraParametersUrl: cameraParaDatURL,
-        detectionMode: "mono",
+        patternRatio: 0.6,
+        detectionMode: "mono_and_matrix",
     });
 
     arToolkitSource.init(
@@ -30,17 +31,17 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
         document.getElementById('wrapper')?.appendChild(arToolkitSource.domElement); // DOMを移動する
         window.arToolkitSource = arToolkitSource;
         setTimeout(() => {
-            onResize();
+            arResize();
         }, 400);
         },
         () => {}
     );
 
     window.addEventListener("resize", function () {
-        onResize();
+        arResize();
     });
 
-    function onResize() {
+    function arResize() {
         arToolkitSource.onResizeElement();
         arToolkitSource.copyElementSizeTo(domElement);
         if (window.arToolkitContext.arController !== null) {
@@ -54,7 +55,7 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
         arToolkitContext.init(() => {
         camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
 
-        arToolkitContext.arController.orientatio = getSourceOrientation();
+        arToolkitContext.arController.orientation = getSourceOrientation();
         arToolkitContext.arController.options.orientation =
             getSourceOrientation();
 
