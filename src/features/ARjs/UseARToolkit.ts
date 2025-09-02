@@ -7,10 +7,9 @@ export type ARToolkitInitOptions = {
     cameraParaDatURL: string;
     markerPatternURL: string;
     scene: Scene;
-    markerRoot: Group;
 };
 
-export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatternURL, markerRoot}: ARToolkitInitOptions) => {
+export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatternURL, scene}: ARToolkitInitOptions) => {
     const arToolkitSource = new THREEx.ArToolkitSource({
         sourceType: "webcam",
         sourceWidth: window.innerWidth > window.innerHeight ? 640 : 480,
@@ -32,7 +31,7 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
         window.arToolkitSource = arToolkitSource;
         setTimeout(() => {
             arResize();
-        }, 400);
+        }, 200);
         },
         () => {}
     );
@@ -58,18 +57,30 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
         arToolkitContext.arController.orientation = getSourceOrientation();
         arToolkitContext.arController.options.orientation =
             getSourceOrientation();
-
-        window.arToolkitContext = arToolkitContext;
-
-        const arMarkerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot,
-            {
-                type: "pattern",
-                patternUrl: markerPatternURL,
-            }
-        );
-        window.arMarkerControls = arMarkerControls;
         });
+        window.arToolkitContext = arToolkitContext;
     }
+
+    const markerRoot = new Group();
+    const smoothedRoot = new Group();
+    scene.add(markerRoot, smoothedRoot);
+
+    const arMarkerControls = new THREEx.ArMarkerControls(arToolkitContext, markerRoot,
+        {
+            type: "pattern",
+            patternUrl: markerPatternURL,
+        }
+    );
+    window.arMarkerControls = arMarkerControls;
+    // SmoothedControlsを追加
+    const smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
+        lerpPosition: .4,  // ポジションの線形補完係数（値が大きいほど動きが急になる）0 〜 1が入る
+        lerpQuaternion: .3,  // 角度の補完係数（値が大きいほど動きが急になる）0 〜 1が入る
+        lerpScale: 1, // 大きさの線形補完係数（値が大きいほど動きが急になる）0 〜 1が入る
+        lerpStepDelay: 1 / 60,  // ステップ間の待機時間（値が大きいほどカクカク動く）
+        minVisibleDelay: 0.0,  // マーカーを認識してからオブジェクトを表示するまでの待機時間
+        minUnvisibleDelay: 0.2, // マーカーの認識が切れてからオブジェクトを非表示にするまでの待機時間
+    });
 
     function getSourceOrientation(): string {
         return arToolkitSource.domElement.videoWidth >
@@ -77,5 +88,6 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
         ? "landscape" : "portrait";
     }
 
-    return { arToolkitSource, arToolkitContext, markerRoot};
+    return { arToolkitSource, arToolkitContext,
+        markerRoot, smoothedRoot, smoothedControls,};
 };

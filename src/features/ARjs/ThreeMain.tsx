@@ -50,7 +50,6 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
             pixelRatioCap: 2,
             alpha: true,
             antialias: true,
-            useControls: true,
         };
         const threeContext = initThree(canvasElement, rendererOptions);
         setCtx(threeContext);
@@ -72,8 +71,9 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
             if (threeContext.arToolkitSource.ready) {
                 threeContext.arToolkitContext.update(threeContext.arToolkitSource.domElement);
                 // デバッグログを追加
-                console.log("markerRoot.visible:", threeContext.markerRoot.visible);
+                // console.log("markerRoot.visible:", threeContext.markerRoot.visible);
             }
+            threeContext.smoothedControls.update(threeContext.markerRoot);
             threeContext.renderer.render(threeContext.scene, threeContext.camera);
             threeContext.labelRenderer.render(threeContext.scene, threeContext.camera);
             requestAnimationFrame(animate)

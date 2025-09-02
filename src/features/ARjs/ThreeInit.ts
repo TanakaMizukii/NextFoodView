@@ -1,12 +1,10 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 import { CSS2DRenderer } from 'three/examples/jsm/Addons.js';
 import { KTX2Loader } from 'three/examples/jsm/Addons.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 
 import { UseARToolkit } from './UseARToolkit';
-
 await MeshoptDecoder.ready;
 
 /** AR.js Init */
@@ -14,16 +12,17 @@ export type ThreeCtx = {
     renderer: THREE.WebGLRenderer;
     scene: THREE.Scene;
     camera: THREE.Camera;
-    controls?: OrbitControls;
     labelRenderer: CSS2DRenderer;
     loader: GLTFLoader;
     mouse: THREE.Vector2;
     raycaster: THREE.Raycaster;
     detailNum: number;
     objectList: THREE.Object3D[];
-    arToolkitContext: any;
-    arToolkitSource: any;
+    arToolkitContext: THREEx.ArToolkitContext;
+    arToolkitSource: THREEx.ArToolkitSource;
+    smoothedControls: THREEx.ArSmoothedControls;
     markerRoot: THREE.Group;
+    smoothedRoot: THREE.Group;
     dispose: () => void;
 };
 
@@ -41,7 +40,6 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         pixelRatioCap = 2,
         alpha = true, // ARでは背景を透過させるためtrue推奨
         antialias = true,
-        useControls = false,
     } = opts;
 
     const renderer = new THREE.WebGLRenderer({
@@ -67,16 +65,13 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     labelRenderer.domElement.id = 'label';
     document.body.appendChild(labelRenderer.domElement);
 
-    const markerRoot = new THREE.Group();
-    scene.add(markerRoot);
-
-    const { arToolkitContext, arToolkitSource } = UseARToolkit({
+    const { arToolkitContext, arToolkitSource,
+        markerRoot, smoothedRoot, smoothedControls } = UseARToolkit({
         domElement: renderer.domElement,
         camera: camera,
         cameraParaDatURL: '/data/camera_para.dat',
         markerPatternURL: "/data/marker.patt",
         scene: scene,
-        markerRoot: markerRoot,
     });
 
     const box = new THREE.Mesh(
@@ -84,17 +79,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         new THREE.MeshStandardMaterial({ color: 0xe5e5e5 })
     );
     box.position.set(0, 0.5, 0);
-    markerRoot.add(box);
-
-    window.addEventListener("markerFound", function (e) {
-        console.log("marker found!", e);
-    });
-
-    let controls: OrbitControls | undefined;
-    if (useControls) {
-        controls = new OrbitControls(camera, labelRenderer.domElement);
-        controls.enableDamping = true;
-    }
+    smoothedRoot.add(box);
 
     // モデルデータを読み込むためのローダーを作成
     const ktx2 = new KTX2Loader();
@@ -115,7 +100,6 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     const dispose = () => {
         // arjs.dispose();
         renderer.dispose();
-        controls?.dispose();
         scene.traverse((obj) => {
             const mesh = obj as THREE.Mesh;
             mesh.geometry?.dispose?.();
@@ -128,15 +112,14 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         document.body.removeChild(labelRenderer.domElement);
     };
 
-    return { renderer, scene, camera, controls, labelRenderer, loader, mouse, raycaster, detailNum, objectList,arToolkitContext, arToolkitSource, markerRoot, dispose };
+    return { renderer, scene, camera, labelRenderer, loader, mouse, raycaster, detailNum, objectList, arToolkitContext, arToolkitSource, smoothedControls, markerRoot, smoothedRoot, dispose };
 }
 
 /** リサイズ処理 */
 export function attachResizeHandlers(ctx: ThreeCtx, container: HTMLElement, opts?: { pixelRatioCap?: number }) {
     const onResize = () => {
         refreshPixelRatio(ctx.renderer, opts?.pixelRatioCap ?? 2);
-        resizeToContainer(ctx, container); // ARではarjs.onResizeに任せる
-        // ctx.arjs.onResize(); // AR.jsのリサイズ処理
+        resizeToContainer(ctx, container);
     };
 
     const ro = new ResizeObserver(onResize);
