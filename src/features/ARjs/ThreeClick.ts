@@ -32,7 +32,6 @@ export function handleClick(ctx: ThreeCtx) {
             clickedObject.userData.isDetail = true;
         }
         clickedObject.userData.isDetail =! clickedObject.userData.isDetail;
-        console.log(clickedObject.userData.isDetail);
 
         if (clickedObject.userData.isDetail) {
             ctx.camera.layers.enable(1);

@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from 'three';
-import { initThree, attachResizeHandlers } from "@/features/ThreeInit";
-import { loadModel, disposeModel } from "@/features/ThreeLoad";
-import { handleClick } from "@/features/ThreeClick";
+import { initThree, attachResizeHandlers } from "@/features/ARjs/ThreeInit";
+import { loadModel } from "@/features/ARjs/ThreeLoad";
+import { handleClick } from "@/features/ARjs/ThreeClick";
 import LoadingPanel from "@/components/LoadingPanel";
+import GuideQRCode from "@/components/GuideQRCode";
 
+/** AR.js Main */
 type ThreeContext = ReturnType<typeof initThree>;
 
 // 先に型を用意
@@ -24,11 +26,6 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
 
     const changeModel = useCallback(async (modelInfo: { modelPath?: string; modelDetail?: string; }) => {
         if (!ctx) return;
-        // 前回モデルがあれば削除
-        if (nowModelRef.current) {
-            disposeModel(nowModelRef.current);
-            ctx.scene.remove(nowModelRef.current);
-        }
         // 新しいモデルをロード
         const nowModel = await loadModel(modelInfo, ctx, nowModelRef.current);
         nowModelRef.current = nowModel;
@@ -49,7 +46,6 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
             pixelRatioCap: 2,
             alpha: true,
             antialias: true,
-            useControls: true,
         };
         const threeContext = initThree(canvasElement, rendererOptions);
         setCtx(threeContext);
@@ -60,18 +56,25 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
             const firstModel = {};
             // useEffect内で直接呼び出す代わりに、state更新後のeffectを利用
             if(threeContext){
-                const nowModel = await loadModel(firstModel, threeContext, nowModelRef.current);
+                const nowModel = await loadModel(firstModel, threeContext, null);
                 nowModelRef.current = nowModel;
             }
         })();
 
         const detach = attachResizeHandlers(threeContext, containerRef.current);
 
-        function animation() {
+        function animate() {
+            if (threeContext.arToolkitSource.ready) {
+                threeContext.arToolkitContext.update(threeContext.arToolkitSource.domElement);
+                // デバッグログを追加
+                // console.log("markerRoot.visible:", threeContext.markerRoot.visible);
+            }
+            threeContext.smoothedControls.update(threeContext.markerRoot);
             threeContext.renderer.render(threeContext.scene, threeContext.camera);
             threeContext.labelRenderer.render(threeContext.scene, threeContext.camera);
+            requestAnimationFrame(animate)
         }
-        threeContext.renderer.setAnimationLoop(animation);
+        animate();
 
         return () => {
             threeContext.labelRenderer.domElement.removeEventListener('click', clickHandler);
@@ -82,8 +85,9 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
 
     return (
         <>
+            <GuideQRCode />
             <LoadingPanel />
-            <div className="wrapper" ref={containerRef} >
+            <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />
             </div>
         </>

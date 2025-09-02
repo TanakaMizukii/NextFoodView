@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import MenuContainer from './Components/MenuContainer';
-import ThreeMain from './ThreeMain';
+import ThreeMain from '../features/WebXR/ThreeMain';
 import { ModelChangeContext } from './contexts/ModelChangeContext';
 
 function App() {
