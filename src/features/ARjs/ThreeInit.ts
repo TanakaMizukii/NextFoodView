@@ -1,10 +1,12 @@
 import * as THREE from 'three';
-import { ARjs } from './ARClass';
+import { THREEx } from "@ar-js-org/ar.js-threejs";
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 import { CSS2DRenderer } from 'three/examples/jsm/Addons.js';
 import { KTX2Loader } from 'three/examples/jsm/Addons.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
+
+import { UseARToolkit } from './UseARToolkit';
 
 await MeshoptDecoder.ready;
 
@@ -13,7 +15,6 @@ export type ThreeCtx = {
     renderer: THREE.WebGLRenderer;
     scene: THREE.Scene;
     camera: THREE.PerspectiveCamera;
-    arjs: ARjs; // ARjsインスタンスを追加
     controls?: OrbitControls;
     labelRenderer: CSS2DRenderer;
     loader: GLTFLoader;
@@ -21,6 +22,9 @@ export type ThreeCtx = {
     raycaster: THREE.Raycaster;
     detailNum: number;
     objectList: THREE.Object3D[];
+    arToolkitContext: any;
+    arToolkitSource: any;
+    markerRoot: THREE.Group;
     dispose: () => void;
 };
 
@@ -45,7 +49,6 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         canvas,
         antialias,
         alpha,
-        powerPreference: "high-performance",
     });
 
     const scene = new THREE.Scene();
@@ -65,11 +68,29 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     labelRenderer.domElement.id = 'label';
     document.body.appendChild(labelRenderer.domElement);
 
-    // AR.jsのセットアップ
-    const onReady = () => {
-        console.log("AR.js is ready");
-    };
-    const arjs = new ARjs(camera, scene, renderer, onReady);
+    const markerRoot = new THREE.Group();
+    scene.add(markerRoot);
+
+    const { arToolkitContext, arToolkitSource } = UseARToolkit({
+        domElement: renderer.domElement,
+        camera: camera,
+        cameraParaDatURL: '/data/camera_para.dat',
+        markerPatternURL: "/data/patt.hiro",
+        scene: scene,
+        markerRoot: markerRoot,
+    });
+
+    const box = new THREE.Mesh(
+        new THREE.BoxGeometry(1, 1, 1),
+        new THREE.MeshStandardMaterial({ color: 0xe5e5e5 })
+    );
+    box.position.set(0, 0.5, 0);
+    markerRoot.add(box);
+    console.log(markerRoot);
+
+    window.addEventListener("markerFound", function (e) {
+        console.log("marker found!", e);
+    });
 
     let controls: OrbitControls | undefined;
     if (useControls) {
@@ -94,7 +115,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     renderer.setPixelRatio(dpr);
 
     const dispose = () => {
-        arjs.dispose();
+        // arjs.dispose();
         renderer.dispose();
         controls?.dispose();
         scene.traverse((obj) => {
@@ -109,7 +130,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         document.body.removeChild(labelRenderer.domElement);
     };
 
-    return { renderer, scene, camera, arjs, controls, labelRenderer, loader, mouse, raycaster, detailNum, objectList, dispose };
+    return { renderer, scene, camera, controls, labelRenderer, loader, mouse, raycaster, detailNum, objectList,arToolkitContext, arToolkitSource, markerRoot, dispose };
 }
 
 /** リサイズ処理 */
@@ -117,7 +138,7 @@ export function attachResizeHandlers(ctx: ThreeCtx, container: HTMLElement, opts
     const onResize = () => {
         refreshPixelRatio(ctx.renderer, opts?.pixelRatioCap ?? 2);
         resizeToContainer(ctx, container); // ARではarjs.onResizeに任せる
-        ctx.arjs.onResize(); // AR.jsのリサイズ処理
+        // ctx.arjs.onResize(); // AR.jsのリサイズ処理
     };
 
     const ro = new ResizeObserver(onResize);

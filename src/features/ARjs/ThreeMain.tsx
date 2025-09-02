@@ -68,14 +68,17 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
 
         const detach = attachResizeHandlers(threeContext, containerRef.current);
 
-        function animation() {
-            if (threeContext.arjs) {
-                threeContext.arjs.update();
+        function animate() {
+            if (threeContext.arToolkitSource.ready) {
+                threeContext.arToolkitContext.update(threeContext.arToolkitSource.domElement);
+                // デバッグログを追加
+                console.log("markerRoot.visible:", threeContext.markerRoot.visible);
             }
             threeContext.renderer.render(threeContext.scene, threeContext.camera);
             threeContext.labelRenderer.render(threeContext.scene, threeContext.camera);
+            requestAnimationFrame(animate)
         }
-        threeContext.renderer.setAnimationLoop(animation);
+        animate();
 
         return () => {
             threeContext.labelRenderer.domElement.removeEventListener('click', clickHandler);
