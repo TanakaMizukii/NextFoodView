@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 import { CSS2DRenderer } from 'three/examples/jsm/Addons.js';
 import { KTX2Loader } from 'three/examples/jsm/Addons.js';
@@ -10,13 +9,14 @@ export type ThreeCtx = {
     renderer: THREE.WebGLRenderer;
     scene: THREE.Scene;
     camera: THREE.PerspectiveCamera;
-    controls?: OrbitControls;
     labelRenderer: CSS2DRenderer;
+    reticle: THREE.Mesh;
     loader: GLTFLoader;
     mouse: THREE.Vector2;
     raycaster: THREE.Raycaster;
     detailNum: number;
     objectList: THREE.Object3D[];
+    currentSession: XRSession;
     dispose: () => void;
 };
 
@@ -24,7 +24,6 @@ export type InitOptions = {
     pixelRatioCap?: number; // モバイル負荷対策
     alpha?: boolean;
     antialias?: boolean;
-    useControls?: boolean;
 };
 
 /** Three.js 初期化（canvas必須） */
@@ -34,7 +33,6 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         pixelRatioCap = 2,
         alpha = false,
         antialias = true,
-        useControls = false,
     } = opts;
 
     const renderer = new THREE.WebGLRenderer({
@@ -43,6 +41,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         alpha, // 透過
         powerPreference: "high-performance",
     });
+    renderer.xr.enabled = true;
 
     const scene = new THREE.Scene();
 
@@ -64,12 +63,6 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     labelRenderer.domElement.id = 'label';
     document.body.appendChild(labelRenderer.domElement);
 
-    let controls: OrbitControls | undefined;
-    if (useControls) {
-        controls = new OrbitControls(camera, labelRenderer.domElement);
-        controls.enableDamping = true;
-    }
-
     // モデルデータを読み込むためのローダーを作成
     // KTX2を準備
     const ktx2 = new KTX2Loader();
@@ -82,6 +75,16 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     loader.setKTX2Loader(ktx2);
     loader.setMeshoptDecoder(MeshoptDecoder);
 
+    // レティクルの作成
+    const reticle = new THREE.Mesh(
+        new THREE.RingGeometry(0.05, 0.065, 32).rotateX( -Math.PI / 2),
+        new THREE.MeshBasicMaterial(),
+    );
+    // レティクルの交差情報の自動更新をオフに
+    reticle.matrixAutoUpdate = false;
+    reticle.visible = false;
+    scene.add(reticle);
+
     // マウスの位置を格納するベクトルを作成
     const mouse = new THREE.Vector2(-100, -100); // 初期値を画面外に設定
     // レイキャストの作成(初期値の設定)
@@ -93,10 +96,41 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     const dpr = Math.min(window.devicePixelRatio || 1, pixelRatioCap);
     renderer.setPixelRatio(dpr);
 
+    startARSession();
+    // ARButtonの代わりをここに作成
+    async function startARSession() {
+        try {
+            const statusText = document.getElementById('status-text');
+            if (statusText) {
+                statusText.textContent = 'ARセッションを開始中...';
+            }
+
+            const sessionInit = {
+                requiredFeatures: ['local'],
+                optionalFeatures: ['dom-overlay', 'hit-test'],
+                domOverlay: {root: document.body}
+            };
+
+            // セッション開始時の処理
+            const session = await navigator.xr?.requestSession('immersive-ar', sessionInit);
+            const currentSession = session;
+            renderer.xr.setReferenceSpaceType('local');
+            renderer.xr.setSession(session);
+
+            // UIの更新
+            const startOverlay = document.getElementById('start-overlay') as HTMLElement | null;
+            if (startOverlay) { startOverlay.style.display = "none" };
+            const scanningOverlay = document.getElementById('scanning-overlay');
+            if (scanningOverlay) { scanningOverlay.style.display = 'flex' };
+            console.log('ARセッション開始成功')
+        } catch (error) {
+            console.error('ARセッション開始エラー:', error);
+        }
+    };
+
     // クリーンナップ関数
     const dispose = () => {
         renderer.dispose();
-        controls?.dispose();
         scene.traverse((obj) => {
             const mesh = obj as THREE.Mesh;
             mesh.geometry?.dispose?.();
@@ -108,7 +142,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         });
     };
 
-    return { renderer, scene, camera, controls, labelRenderer,loader, mouse, raycaster, detailNum, objectList, dispose };
+    return { renderer, scene, camera, labelRenderer, loader, reticle, mouse, raycaster, detailNum, objectList, currentSession, dispose };
 }
 
 /** リサイズ処理 ResizeObserver + window.resize をまとめてセットアップ */
@@ -126,9 +160,6 @@ export function attachResizeHandlers(ctx: ThreeCtx, container: HTMLElement, opts
     // 初回適用
     onResize();
 
-    // これはクリーンナップ関数というもので、1,コンポーネントがDOMから完全に削除されるとき
-    // 2, 依存配列の値が変わるとき（useEffect(..., [依存値]) の依存値が変化して再実行される前）
-    // つまり、useEffectが次に実行される前に必ず呼ばれる処理である。
     return () => {
         // 監視対象を完全に解除するメソッド
         ro.disconnect();

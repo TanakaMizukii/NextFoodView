@@ -37,7 +37,6 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
 
         // 今回表すモデルの表示
         const objects = await ctx.loader.loadAsync(modelPath);
-
         const model = objects.scene;
         model.scale.set(1, 1, 1);
         // 詳細オブジェクトの表示状態をboolean値で設定

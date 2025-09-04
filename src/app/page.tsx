@@ -32,7 +32,7 @@ export default function LandingPage() {
     const xr = await checkImmersiveARSupport();
 
     // 分岐方針： androidの場合このままARスタート。それ以外のスマホはAR.jsに飛ばす。カメラが使えない場合Viewerに飛ばす。
-    if (os === 'android') {
+    if (os === 'android') { // 最後にar可能かどうかの分岐処理を付ける
       console.log('起動完了');
       setStart(true);
 

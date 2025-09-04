@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from 'three';
 import { initThree, attachResizeHandlers } from "@/features/WebXR/ThreeInit";
-import { loadModel, disposeModel } from "@/features/WebXR/ThreeLoad";
+import { loadModel } from "@/features/WebXR/ThreeLoad";
 import { handleClick } from "@/features/WebXR/ThreeClick";
 import LoadingPanel from "@/components/LoadingPanel";
 import GuideScanPlane from "@/components/GuideScanPlane";
@@ -12,7 +12,6 @@ type ThreeContext = ReturnType<typeof initThree>;
 type ModelInfo = { modelPath?: string; modelDetail?: string };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
 
-// これにする：
 type ThreeMainProps = {
     setChangeModel: React.Dispatch<React.SetStateAction<ChangeModelFn>>;
 };
@@ -25,11 +24,6 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
 
     const changeModel = useCallback(async (modelInfo: { modelPath?: string; modelDetail?: string; }) => {
         if (!ctx) return;
-        // 前回モデルがあれば削除
-        if (nowModelRef.current) {
-            disposeModel(nowModelRef.current);
-            ctx.scene.remove(nowModelRef.current);
-        }
         // 新しいモデルをロード
         const nowModel = await loadModel(modelInfo, ctx, nowModelRef.current);
         nowModelRef.current = nowModel;
@@ -37,16 +31,11 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
 
     useEffect(() => {
         setChangeModel(() => changeModel);
-        // アンマウント時に念のため no-op を戻すなら（任意）
         return () => setChangeModel(() => async () => {});
     }, [changeModel, setChangeModel]);
 
 
     useEffect(() => {
-        // UIの削除
-        const startOverlay = document.getElementById('start-overlay') as HTMLElement | null;
-        if (startOverlay) { startOverlay.style.display = "none" };
-
         // 初期化処理
         if (!containerRef.current || !canvasRef.current) return;
 
@@ -55,7 +44,6 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
             pixelRatioCap: 2,
             alpha: true,
             antialias: true,
-            useControls: true,
         };
         const threeContext = initThree(canvasElement, rendererOptions);
         setCtx(threeContext);
