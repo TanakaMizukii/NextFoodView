@@ -1,13 +1,30 @@
-// app/other/page.tsx
-export default function OtherPage() {
-return (
-<main style={{ padding: 24, color: '#fff' }}>
-<h1>その他の端末</h1>
-<p>お使いの端末を自動判定できませんでした。iPhone/Android いずれかを選んでください。</p>
-<ul>
-<li><a href="/ios">iPhone の方はこちら</a></li>
-<li><a href="/android">Android の方はこちら</a></li>
-</ul>
-</main>
-);
+'use client'
+
+import { useState } from 'react';
+import '../App.css';
+import MenuContainer from '@/components/MenuContainer';
+import { ModelChangeContext } from '@/contexts/ModelChangeContext';
+import dynamic from 'next/dynamic';
+
+type ModelInfo = { modelPath?: string; modelDetail?: string };
+type ChangeModelFn = (info: ModelInfo) => Promise<void>;
+
+// ThreeMainコンポーネントをdynamic importに書き換えてハイドレーションエラーが起きないようにする。
+const ThreeMain = dynamic(() => import('@/features/3DViewer/ThreeMain'), {
+    ssr: false, // サーバーサイドレンダリングを無効化
+});
+
+export default function ViewerPage() {
+    const [changeModel, setChangeModel] = useState<ChangeModelFn>(() => async (info: ModelInfo) => {
+        console.warn("changeModel is not yet initialized", info);
+    });
+
+    return (
+        <>
+        <ModelChangeContext.Provider value={{ changeModel }}>
+            <ThreeMain setChangeModel={setChangeModel} />
+            <MenuContainer />
+        </ModelChangeContext.Provider>
+        </>
+    );
 }

@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from 'three';
-import { initThree, attachResizeHandlers } from "@/features/WebXR/ThreeInit";
-import { loadModel, disposeModel } from "@/features/WebXR/ThreeLoad";
-import { handleClick } from "@/features/WebXR/ThreeClick";
+import { initThree, attachResizeHandlers } from "./ThreeInit";
+import { loadModel, disposeModel } from "./ThreeLoad";
+import { handleClick } from "./ThreeClick";
 import LoadingPanel from "@/components/LoadingPanel";
-import GuideScanPlane from "@/components/GuideScanPlane";
 
 type ThreeContext = ReturnType<typeof initThree>;
 
@@ -43,11 +42,6 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
 
 
     useEffect(() => {
-        // UIの削除
-        const startOverlay = document.getElementById('start-overlay') as HTMLElement | null;
-        if (startOverlay) { startOverlay.style.display = "none" };
-
-        // 初期化処理
         if (!containerRef.current || !canvasRef.current) return;
 
         const canvasElement = canvasRef.current;
@@ -88,7 +82,6 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
 
     return (
         <>
-            <GuideScanPlane />
             <LoadingPanel />
             <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />

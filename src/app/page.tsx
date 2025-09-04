@@ -4,33 +4,52 @@ import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getMobileOS } from "../lib/detectOS";
 import { checkImmersiveARSupport } from "../lib/checkWebXR";
-import styles from "./page.module.css";
+import StartPanel from "@/components/StartPanel";
+import MenuContainer from '@/components/MenuContainer';
+import { ModelChangeContext } from '@/contexts/ModelChangeContext';
+import dynamic from 'next/dynamic';
+import './App.css';
+
+type ModelInfo = { modelPath?: string; modelDetail?: string };
+type ChangeModelFn = (info: ModelInfo) => Promise<void>;
+
+// ThreeMainコンポーネントをdynamic importに書き換えてハイドレーションエラーが起きないようにする。
+const ThreeMain = dynamic(() => import('@/features/WebXR/ThreeMain'), {
+    ssr: false, // サーバーサイドレンダリングを無効化
+});
 
 export default function LandingPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [start, setStart] = useState(false);
+  const [changeModel, setChangeModel] = useState<ChangeModelFn>(() => async (info: ModelInfo) => {
+      console.warn("changeModel is not yet initialized", info);
+  });
 
   const handleStart = useCallback(async() => {
     setLoading(true);
     const os = getMobileOS();
     const xr = await checkImmersiveARSupport();
 
-    // 分岐方針：
-    if (os === 'ios') {
+    // 分岐方針： androidの場合このままARスタート。それ以外のスマホはAR.jsに飛ばす。カメラが使えない場合Viewerに飛ばす。
+    if (os === 'android') {
+      console.log('起動完了');
+      setStart(true);
+
+    } else if (os === 'ios') {
       router.push(xr === 'supported' ? '/threeAR': '/arJS');
-    } else if (os === 'android') {
-      router.push(xr === 'supported' ? '/threeAR': '/arJS');
-    }
-    else router.push('/viewer');
+    } else router.push('/viewer');
   }, [router]);
 
   return (
-    <div id="start-overlay" className={styles.startOverlay}>
-      <div id="status-text" className={styles.startText}>ARエクスペリエンスを開始</div>
-      <button id="start-button" className={styles.startButton} onClick={handleStart} disabled={loading}>
-        {loading ? '判定中…' : 'AR体験を始める'}
-      </button>
-      <div id="loading-spinner" className={styles.loadingSpinner} style={{ display: loading ? 'block' : 'none' }} />
-    </div>
+    <>
+      <StartPanel onUpdate={handleStart} loading={loading} />
+      {start &&
+        <ModelChangeContext.Provider value={{ changeModel }}>
+            <ThreeMain setChangeModel={setChangeModel} />
+            <MenuContainer />
+        </ModelChangeContext.Provider>
+      }
+    </>
   );
 }
