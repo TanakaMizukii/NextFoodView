@@ -10,10 +10,9 @@ export type ARToolkitInitOptions = {
 };
 
 export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatternURL, scene}: ARToolkitInitOptions) => {
+    // @ts-expect-error 型定義では必須だが、解像度自動選択のために意図的に省略
     const arToolkitSource = new THREEx.ArToolkitSource({
         sourceType: "webcam",
-        sourceWidth: window.innerWidth > window.innerHeight ? 640 : 480,
-        sourceHeight: window.innerWidth > window.innerHeight ? 480 : 640,
     });
 
     const arToolkitContext = new THREEx.ArToolkitContext({
@@ -36,20 +35,6 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
         () => {}
     );
 
-    window.addEventListener("resize", function () {
-        arResize();
-    });
-
-    function arResize() {
-        arToolkitSource.onResizeElement();
-        arToolkitSource.copyElementSizeTo(domElement);
-        if (window.arToolkitContext.arController !== null) {
-        arToolkitSource.copyElementSizeTo(
-            window.arToolkitContext.arController.canvas
-        );
-        }
-    }
-
     function initARContext() {
         arToolkitContext.init(() => {
         camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
@@ -60,6 +45,19 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
         });
         window.arToolkitContext = arToolkitContext;
     }
+
+    function arResize() {
+        arToolkitSource.onResizeElement();
+        arToolkitSource.copyElementSizeTo(domElement);
+        if (window.arToolkitContext.arController !== null) {
+            arToolkitSource.copyElementSizeTo(
+                window.arToolkitContext.arController.canvas
+            );
+        }
+        // 保険：投影は常にAR由来
+        camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
+    }
+    window.addEventListener("resize", arResize);
 
     const markerRoot = new Group();
     const smoothedRoot = new Group();
