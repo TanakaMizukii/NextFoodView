@@ -73,7 +73,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     // モデルデータを読み込むためのローダーを作成
     // KTX2を準備
     const ktx2 = new KTX2Loader();
-    ktx2.setTranscoderPath('./basis/');
+    ktx2.setTranscoderPath('/basis/');
     // WebGPUは非同期で初期化されるため、KTX2Loaderの設定前にレンダラーの初期化を待つ必要がある。
     // rendererを初期化
     // await renderer.init();

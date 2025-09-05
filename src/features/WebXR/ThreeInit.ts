@@ -16,7 +16,7 @@ export type ThreeCtx = {
     raycaster: THREE.Raycaster;
     detailNum: number;
     objectList: THREE.Object3D[];
-    currentSession: XRSession;
+    // currentSession: XRSession;
     dispose: () => void;
 };
 
@@ -66,7 +66,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     // モデルデータを読み込むためのローダーを作成
     // KTX2を準備
     const ktx2 = new KTX2Loader();
-    ktx2.setTranscoderPath('./basis/');
+    ktx2.setTranscoderPath('/basis/');
     // WebGPUは非同期で初期化されるため、KTX2Loaderの設定前にレンダラーの初期化を待つ必要がある。
     // rendererを初期化
     // await renderer.init();
@@ -115,7 +115,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
             const session = await navigator.xr?.requestSession('immersive-ar', sessionInit);
             const currentSession = session;
             renderer.xr.setReferenceSpaceType('local');
-            renderer.xr.setSession(session);
+            // renderer.xr.setSession(session);
 
             // UIの更新
             const startOverlay = document.getElementById('start-overlay') as HTMLElement | null;
@@ -142,7 +142,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         });
     };
 
-    return { renderer, scene, camera, labelRenderer, loader, reticle, mouse, raycaster, detailNum, objectList, currentSession, dispose };
+    return { renderer, scene, camera, labelRenderer, loader, reticle, mouse, raycaster, detailNum, objectList,  dispose };
 }
 
 /** リサイズ処理 ResizeObserver + window.resize をまとめてセットアップ */

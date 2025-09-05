@@ -15,7 +15,7 @@ export type ModelProps = {
 
 export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THREE.Group<THREE.Object3DEventMap> | null): Promise<THREE.Group<THREE.Object3DEventMap> | null> {
     const {
-        modelPath = 'models/tongue_raw.glb',
+        modelPath = 'models/tongue_clean2.glb',
         modelDetail =  'タンの中の上質な部分を選別 程よい油が口の中に広がります',
     } = Model;
 

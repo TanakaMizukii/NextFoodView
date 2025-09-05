@@ -76,7 +76,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
 
     // モデルデータを読み込むためのローダーを作成
     const ktx2 = new KTX2Loader();
-    ktx2.setTranscoderPath('./basis/');
+    ktx2.setTranscoderPath('/basis/');
     ktx2.detectSupport(renderer);
     const loader = new GLTFLoader();
     loader.setKTX2Loader(ktx2);

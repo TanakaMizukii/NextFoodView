@@ -24,11 +24,6 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
 
     const changeModel = useCallback(async (modelInfo: { modelPath?: string; modelDetail?: string; }) => {
         if (!ctx) return;
-        // 前回モデルがあれば削除
-        if (nowModelRef.current) {
-            disposeModel(nowModelRef.current);
-            ctx.scene.remove(nowModelRef.current);
-        }
         // 新しいモデルをロード
         const nowModel = await loadModel(modelInfo, ctx, nowModelRef.current);
         nowModelRef.current = nowModel;

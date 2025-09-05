@@ -42,7 +42,7 @@ export const productModels : productModelsProps = [
         {
             name: 'ファミリーセット',
             image: './images/ファミリーセット.jpg',
-            model: './models/family_s_set_raw.glb',
+            model: './models/family_s_set_comp2.glb',
             minDetail :'リーズナブルな大判カルビ',
             description : '焼肉の定番！お手頃価格で楽しめる大判カルビ。',
             category : '盛り合わせ',
@@ -99,7 +99,7 @@ export const productModels : productModelsProps = [
         {
             name: '上タン塩',
             image: './images/上タン塩.jpg',
-            model: './models/tongue_raw.glb',
+            model: './models/tongue_comp2.glb',
             description: 'タンの中でも上質な部分。レモンで食べると \n程よい油が口の中に広がります。',
             category: 'タン',
             price: '980 (税込1078)', // 文字列形式に変更
