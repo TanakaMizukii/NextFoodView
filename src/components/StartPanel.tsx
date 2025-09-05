@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
 type StartPanelProps = {
     onUpdate: () => void;
@@ -6,7 +6,6 @@ type StartPanelProps = {
 }
 
 export default function StartPanel({ onUpdate, loading }: StartPanelProps) {
-
     const handleClick = () => {
         onUpdate();
     };
@@ -71,10 +70,6 @@ const MyStart = styled.div`
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 20px auto;
-}
-
-.none {
-    display: none;
 }
 
 @keyframes spin {

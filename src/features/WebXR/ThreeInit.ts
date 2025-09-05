@@ -16,7 +16,7 @@ export type ThreeCtx = {
     raycaster: THREE.Raycaster;
     detailNum: number;
     objectList: THREE.Object3D[];
-    // currentSession: XRSession;
+    currentSession: Promise<XRSession | undefined>;
     dispose: () => void;
 };
 
@@ -96,9 +96,8 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     const dpr = Math.min(window.devicePixelRatio || 1, pixelRatioCap);
     renderer.setPixelRatio(dpr);
 
-    startARSession();
     // ARButtonの代わりをここに作成
-    async function startARSession() {
+    const session = async function startARSession() {
         try {
             const statusText = document.getElementById('status-text');
             if (statusText) {
@@ -113,9 +112,10 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
 
             // セッション開始時の処理
             const session = await navigator.xr?.requestSession('immersive-ar', sessionInit);
-            const currentSession = session;
-            renderer.xr.setReferenceSpaceType('local');
-            // renderer.xr.setSession(session);
+            if (session) {
+                renderer.xr.setReferenceSpaceType('local');
+                await renderer.xr.setSession(session);
+            }
 
             // UIの更新
             const startOverlay = document.getElementById('start-overlay') as HTMLElement | null;
@@ -123,8 +123,10 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
             const scanningOverlay = document.getElementById('scanning-overlay');
             if (scanningOverlay) { scanningOverlay.style.display = 'flex' };
             console.log('ARセッション開始成功')
+            return session;
         } catch (error) {
             console.error('ARセッション開始エラー:', error);
+            return undefined
         }
     };
 
@@ -142,7 +144,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         });
     };
 
-    return { renderer, scene, camera, labelRenderer, loader, reticle, mouse, raycaster, detailNum, objectList,  dispose };
+    return { renderer, scene, camera, labelRenderer, loader, reticle, mouse, raycaster, detailNum, objectList, currentSession:session, dispose };
 }
 
 /** リサイズ処理 ResizeObserver + window.resize をまとめてセットアップ */
