@@ -1,4 +1,6 @@
 import { ThreeCtx } from "./ThreeInit";
+import { loadModel } from "./ThreeLoad";
+import type { RefObject } from 'react';
 
 export async function updateHitTest(ctx: ThreeCtx, frame: XRFrame | undefined) {
     if (!frame) return;
@@ -44,23 +46,40 @@ export async function updateHitTest(ctx: ThreeCtx, frame: XRFrame | undefined) {
     }
 }
 
-export function firstHitChange(timestamp: DOMHighResTimeStamp, isVisible: boolean, reticleShowTime: DOMHighResTimeStamp | null, viewNum: number) {
-    let newReticleShowTime = reticleShowTime;
-    let newViewNum = viewNum;
-    let shouldLoad = false;
-
-    if (isVisible) {
-        if (newReticleShowTime === null) {
-            newReticleShowTime = timestamp;
-        }
-        if (newViewNum === 0 && newReticleShowTime !== null && timestamp - newReticleShowTime > 2000) {
-            shouldLoad = true;
-            newViewNum = 1;
-            newReticleShowTime = null;
-        }
-    } else {
-        newReticleShowTime = null;
+export async function handleFirstHit(
+    ctx: ThreeCtx,
+    timestamp: DOMHighResTimeStamp,
+    reticleShowTimeRef: RefObject<DOMHighResTimeStamp | null>,
+    viewNumRef: RefObject<number>
+) {
+    if (viewNumRef.current !== 0) {
+        return;
     }
 
-    return { newReticleShowTime, newViewNum, shouldLoad };
+    const isVisible = ctx.reticle.visible;
+
+    if (isVisible) {
+        const scanningOverlay = document.getElementById('scanning-overlay');
+        const menuContainer = document.getElementById('menu-container');
+        const arUI = document.getElementById('ar-ui');
+        const exitButton = document.getElementById('exit-button');
+        if (scanningOverlay && menuContainer && arUI && exitButton) {
+            menuContainer.style.display = 'block';
+            arUI.style.display = 'block';
+            exitButton.style.display = 'block';
+            scanningOverlay.style.display = 'none';
+        }
+
+        if (reticleShowTimeRef.current === null) {
+            reticleShowTimeRef.current = timestamp;
+        }
+
+        if (reticleShowTimeRef.current !== null && timestamp - reticleShowTimeRef.current > 2000) {
+            viewNumRef.current = 1;
+            reticleShowTimeRef.current = null;
+            await loadModel({}, ctx, null);
+        }
+    } else {
+        reticleShowTimeRef.current = null;
+    }
 }

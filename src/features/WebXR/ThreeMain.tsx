@@ -6,7 +6,7 @@ import { handleClick } from "@/features/WebXR/ThreeClick";
 import LoadingPanel from "@/components/LoadingPanel";
 import GuideScanPlane from "@/components/GuideScanPlane";
 import ARHelper from "@/components/ARHelper";
-import { updateHitTest, firstHitChange} from "./ThreeHitTest";
+import { updateHitTest, handleFirstHit } from "./ThreeHitTest";
 import { handleSessionEndCleanup } from './ThreeCleanup';
 
 type ThreeContext = ReturnType<typeof initThree>;
@@ -84,34 +84,10 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
 
         threeContext.renderer.setAnimationLoop(animate);
         async function animate(timestamp: DOMHighResTimeStamp, frame: XRFrame) {
-            // ヒットテストロジック呼び出し関数
+            // ヒットテスト実行関数
             updateHitTest(threeContext, frame);
-
-            // 初回モデル表示関数の実行
-            if (!viewNumRef.current) {
-                const status = firstHitChange(timestamp, threeContext.reticle.visible, reticleShowTimeRef.current, viewNumRef.current);
-                // 状態を更新
-                reticleShowTimeRef.current = status.newReticleShowTime;
-                viewNumRef.current = status.newViewNum;
-                // UI更新
-                if (threeContext.reticle.visible) {
-                    const scanningOverlay = document.getElementById('scanning-overlay');
-                    const menuContainer = document.getElementById('menu-container');
-                    const arUI = document.getElementById('ar-ui');
-                    const exitButton = document.getElementById('exit-button');
-                    if (scanningOverlay && menuContainer && arUI && exitButton) {
-                        menuContainer.style.display = 'block';
-                        arUI.style.display = 'block';
-                        exitButton.style.display = 'block';
-                        scanningOverlay.style.display = 'none';
-                    }
-                };
-
-                // モデルをロードすべきか判断
-                if (status.shouldLoad) {
-                    await loadModel({}, threeContext, null);
-                }
-            }
+            // 初回ヒット時の処理関数
+            await handleFirstHit(threeContext, timestamp, reticleShowTimeRef, viewNumRef);
 
             // レンダリング
             threeContext.renderer.render(threeContext.scene, threeContext.camera);
