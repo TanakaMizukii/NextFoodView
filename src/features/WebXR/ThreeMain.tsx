@@ -7,6 +7,7 @@ import LoadingPanel from "@/components/LoadingPanel";
 import GuideScanPlane from "@/components/GuideScanPlane";
 import ARHelper from "@/components/ARHelper";
 import { updateHitTest, firstHitChange} from "./ThreeHitTest";
+import { handleSessionEndCleanup } from './ThreeCleanup';
 
 type ThreeContext = ReturnType<typeof initThree>;
 
@@ -17,13 +18,16 @@ type ChangeModelFn = (info: ModelInfo) => Promise<void>;
 type ThreeMainProps = {
     setChangeModel: React.Dispatch<React.SetStateAction<ChangeModelFn>>;
     startAR: boolean;
+    onSessionEnd: () => void;
 };
 
-export default function ThreeMain({ setChangeModel, startAR }: ThreeMainProps) {
+export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: ThreeMainProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const nowModelRef = useRef<THREE.Group | null>(null);
     const [ctx, setCtx] = useState<ThreeContext | null>(null);
+    const reticleShowTimeRef = useRef<DOMHighResTimeStamp | null>(null);
+    const viewNumRef = useRef<number>(0);
 
     const changeModel = useCallback(async (modelInfo: { modelPath?: string; modelDetail?: string; }) => {
         if (!ctx) return;
@@ -50,14 +54,16 @@ export default function ThreeMain({ setChangeModel, startAR }: ThreeMainProps) {
 
                 // セッション終了時の処理
                 session.addEventListener('end', () => {
+                    handleSessionEndCleanup(ctx, nowModelRef, reticleShowTimeRef, viewNumRef);
                     setCtx(prevCtx => prevCtx? { ...prevCtx, currentSession: undefined } : prevCtx);
+                    onSessionEnd();
                 });
             } catch (error) {
                 console.error("Failed to start AR session:", error);
                 alert(error);
             }
         })();
-    }, [startAR, ctx]);
+    }, [startAR, ctx, onSessionEnd]);
 
     useEffect(() => {
         // 初期化処理
@@ -76,21 +82,17 @@ export default function ThreeMain({ setChangeModel, startAR }: ThreeMainProps) {
 
         const detach = attachResizeHandlers(threeContext, containerRef.current);
 
-        // 初回オブジェクト表示に使用する変数を作成
-        let reticleShowTime: DOMHighResTimeStamp | null = null;
-        let viewNum = 0;
-
         threeContext.renderer.setAnimationLoop(animate);
         async function animate(timestamp: DOMHighResTimeStamp, frame: XRFrame) {
             // ヒットテストロジック呼び出し関数
             updateHitTest(threeContext, frame);
 
             // 初回モデル表示関数の実行
-            if (!viewNum) {
-                const status = firstHitChange(timestamp, threeContext.reticle.visible, reticleShowTime, viewNum);
+            if (!viewNumRef.current) {
+                const status = firstHitChange(timestamp, threeContext.reticle.visible, reticleShowTimeRef.current, viewNumRef.current);
                 // 状態を更新
-                reticleShowTime = status.newReticleShowTime;
-                viewNum = status.newViewNum;
+                reticleShowTimeRef.current = status.newReticleShowTime;
+                viewNumRef.current = status.newViewNum;
                 // UI更新
                 if (threeContext.reticle.visible) {
                     const scanningOverlay = document.getElementById('scanning-overlay');
@@ -128,7 +130,7 @@ export default function ThreeMain({ setChangeModel, startAR }: ThreeMainProps) {
         <>
             <GuideScanPlane />
             <LoadingPanel />
-            <ARHelper />
+            <ARHelper ctx={ctx} />
             <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />
             </div>

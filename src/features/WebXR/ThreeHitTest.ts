@@ -1,7 +1,5 @@
 import { ThreeCtx } from "./ThreeInit";
 
-// --- 以下は funcHitTest 内でのみ使用されるヘルパー関数 ---
-
 export async function updateHitTest(ctx: ThreeCtx, frame: XRFrame | undefined) {
     if (!frame) return;
 
@@ -55,7 +53,7 @@ export function firstHitChange(timestamp: DOMHighResTimeStamp, isVisible: boolea
         if (newReticleShowTime === null) {
             newReticleShowTime = timestamp;
         }
-        if (newViewNum === 0 && newReticleShowTime !== null && timestamp - newReticleShowTime > 1500) {
+        if (newViewNum === 0 && newReticleShowTime !== null && timestamp - newReticleShowTime > 2000) {
             shouldLoad = true;
             newViewNum = 1;
             newReticleShowTime = null;
@@ -65,57 +63,4 @@ export function firstHitChange(timestamp: DOMHighResTimeStamp, isVisible: boolea
     }
 
     return { newReticleShowTime, newViewNum, shouldLoad };
-}
-
-// --- 型定義 ---
-export type HitTestStates = {
-    reticleShowTime: DOMHighResTimeStamp | null;
-    viewNum: number;
-};
-
-export type LoadModelCallback = (modelInfo: { modelPath: string; modelDetail: string; }) => Promise<void>;
-
-// --- エクスポートするメイン関数 ---
-export async function funcHitTest(
-    timestamp: DOMHighResTimeStamp,
-    frame: XRFrame | undefined,
-    ctx: ThreeCtx,
-    states: HitTestStates,
-    changeModel: LoadModelCallback
-): Promise<HitTestStates> {
-    // 1. 平面検出とレティクル更新
-    await updateHitTest(ctx, frame);
-
-    // 2. UI更新
-    if (ctx.reticle.visible) {
-        const scanningOverlay = document.getElementById('scanning-overlay');
-        const menuContainer = document.getElementById('menu-container');
-        const arUI = document.getElementById('ar-ui');
-        const exitButton = document.getElementById('exit-button');
-        if (scanningOverlay && menuContainer && arUI && exitButton) {
-            scanningOverlay.style.display = 'none';
-            menuContainer.style.display = 'block';
-            arUI.style.display = 'block';
-            exitButton.style.display = 'block';
-        }
-    }
-
-    // 3. 初回モデル表示のタイミングを判断
-    const { newReticleShowTime, newViewNum, shouldLoad } = firstHitChange(
-        timestamp,
-        ctx.reticle.visible,
-        states.reticleShowTime,
-        states.viewNum
-    );
-
-    // 4. 必要であればモデルをロード
-    if (shouldLoad) {
-        await changeModel({ modelPath: '/models/tongue_comp2.glb', modelDetail: 'タンの中の上質な部分を選別 程よい油が口の中に広がります' });
-    }
-
-    // 5. 更新された状態を返す
-    return {
-        reticleShowTime: newReticleShowTime,
-        viewNum: newViewNum,
-    };
 }

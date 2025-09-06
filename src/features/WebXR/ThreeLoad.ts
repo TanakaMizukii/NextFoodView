@@ -27,21 +27,6 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
             loadingOverlay.classList.add('visible');
         }
 
-        // 今回表すモデルの表示
-        const objects = await ctx.loader.loadAsync(modelPath);
-        const model = objects.scene;
-        const clone = model.clone(true);
-        // 詳細オブジェクトの表示状態をboolean値で設定
-        clone.userData.isDetail = true;
-        // ctx.reticle.matrix.decompose(clone.position, clone.quaternion, clone.scale);
-        console.log(ctx.reticle.matrix);
-        clone.position.setFromMatrixPosition(ctx.reticle.matrix);
-        ctx.scene.add(clone);
-        console.log(clone.position);
-        // 配列に保存
-        ctx.objectList.push(clone);
-        const nowModel = clone;
-
         // 詳細情報を設定
         const detailElement = document.querySelector('.detail');
         if (detailElement) {
@@ -55,8 +40,21 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
         const detail = new CSS2DObject(detailDiv);
         detail.position.set(0.01, 0.08, -0.03);
         detail.center.set(0, 0.8);
-        model.add(detail);
         detail.layers.set(1);
+
+        // 今回表すモデルの表示
+        const objects = await ctx.loader.loadAsync(modelPath);
+        const model = objects.scene;
+        const clone = model.clone(true);
+        // 詳細オブジェクトの表示状態をboolean値で設定
+        clone.userData.isDetail = true;
+        ctx.reticle.matrix.decompose(clone.position, clone.quaternion, clone.scale);
+        clone.scale.set(0.01, 0.01, 0.01); // 改変されてしまうためdecomposeの後に記述
+        clone.add(detail);
+        ctx.scene.add(clone);
+        // 配列に保存
+        ctx.objectList.push(clone);
+        const nowModel = clone;
 
         // ローディングインジケーターを非表示
         if (loadingOverlay) {

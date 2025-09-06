@@ -1,6 +1,13 @@
 import styled from "styled-components"
+import type { ThreeCtx } from "@/features/WebXR/ThreeInit";
 
-export default function ARHelper() {
+export default function ARHelper({ ctx }: { ctx: ThreeCtx | null }) {
+    const handleClick = () => {
+        if (ctx && ctx.currentSession) {
+            ctx.currentSession.end();
+        }
+    }
+
     return(
         // <!-- AR中のUI -->
         <MyHelper>
@@ -9,7 +16,7 @@ export default function ARHelper() {
                 <div>商品の選択可能</div>
             </div>
 
-            <button id="exit-button" className="exit-button">AR終了</button>
+            <button id="exit-button" className="exit-button" onClick={handleClick}>AR終了</button>
         </MyHelper>
     )
 }

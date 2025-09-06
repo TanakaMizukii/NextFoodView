@@ -11,6 +11,7 @@ export type ThreeCtx = {
     camera: THREE.PerspectiveCamera;
     labelRenderer: CSS2DRenderer;
     reticle: THREE.Mesh;
+    light: THREE.HemisphereLight;
     loader: GLTFLoader;
     mouse: THREE.Vector2;
     raycaster: THREE.Raycaster;
@@ -50,10 +51,9 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     const camera = new THREE.PerspectiveCamera(75, 1, 0.05, 10);
 
     // 簡易ライト
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-    const directionalLight = new THREE.DirectionalLight(0xffffff);
-    directionalLight.position.set(1, 1, 1);
-    scene.add(ambientLight, directionalLight);
+    const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+    light.position.set( 0, 1, 0);
+    scene.add(light);
 
     // 詳細画面表示用のRendererの作成
     const labelRenderer = new CSS2DRenderer();
@@ -113,7 +113,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         });
     };
 
-    return { renderer, scene, camera, labelRenderer, loader, reticle, mouse, raycaster, detailNum, objectList, currentSession, hitTestSource, hitTestSourceRequested, dispose };
+    return { renderer, scene, camera, labelRenderer, loader, reticle, light, mouse, raycaster, detailNum, objectList, currentSession, hitTestSource, hitTestSourceRequested, dispose };
 }
 
 // ARButtonの代わりを作成
@@ -146,10 +146,6 @@ export async function startARSession(renderer: THREE.WebGLRenderer): Promise<XRS
         return session;
     } catch (error) {
         console.error('ARセッション開始エラー:', error);
-        const statusText = document.getElementById('status-text');
-        if (statusText) {
-            statusText.textContent = `ARセッションの開始に失敗しました: ${error}`;
-        }
         return undefined
     }
 }

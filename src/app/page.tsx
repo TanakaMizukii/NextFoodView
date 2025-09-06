@@ -40,12 +40,17 @@ export default function LandingPage() {
     } else router.push('/viewer');
   }, [router]);
 
+  const handleSessionEnd = () => {
+    setStart(false);
+    setLoading(false);
+  };
+
   return (
     <>
       <StartPanel onUpdate={handleStart} loading={loading} />
       {start &&
         <ModelChangeContext.Provider value={{ changeModel }}>
-            <ThreeMain setChangeModel={setChangeModel} startAR={start}/>
+            <ThreeMain setChangeModel={setChangeModel} startAR={start} onSessionEnd={handleSessionEnd}/>
             <MenuContainer />
         </ModelChangeContext.Provider>
       }
