@@ -21,14 +21,6 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
 
     let detailDiv = null;
     try {
-        if (prevModel) {
-            ctx.scene.remove(prevModel);
-            // 変更する前に今まで映していたモデルのメモリの解放
-            disposeModel(prevModel);
-            // オブジェクトのリストをクリア
-            ctx.objectList = [];
-        }
-
         // ローディングインジケーターの表示
         const loadingOverlay = document.getElementById('loading');
         if (loadingOverlay) {
@@ -38,13 +30,17 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
         // 今回表すモデルの表示
         const objects = await ctx.loader.loadAsync(modelPath);
         const model = objects.scene;
-        model.scale.set(1, 1, 1);
+        const clone = model.clone(true);
         // 詳細オブジェクトの表示状態をboolean値で設定
-        model.userData.isDetail = true;
-        ctx.scene.add(model);
+        clone.userData.isDetail = true;
+        // ctx.reticle.matrix.decompose(clone.position, clone.quaternion, clone.scale);
+        console.log(ctx.reticle.matrix);
+        clone.position.setFromMatrixPosition(ctx.reticle.matrix);
+        ctx.scene.add(clone);
+        console.log(clone.position);
         // 配列に保存
-        ctx.objectList.push(model);
-        const nowModel = model;
+        ctx.objectList.push(clone);
+        const nowModel = clone;
 
         // 詳細情報を設定
         const detailElement = document.querySelector('.detail');

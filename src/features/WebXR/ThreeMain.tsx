@@ -5,7 +5,8 @@ import { loadModel } from "@/features/WebXR/ThreeLoad";
 import { handleClick } from "@/features/WebXR/ThreeClick";
 import LoadingPanel from "@/components/LoadingPanel";
 import GuideScanPlane from "@/components/GuideScanPlane";
-import { updateHitTest } from "./ThreeHitTest";
+import ARHelper from "@/components/ARHelper";
+import { updateHitTest, firstHitChange} from "./ThreeHitTest";
 
 type ThreeContext = ReturnType<typeof initThree>;
 
@@ -45,19 +46,11 @@ export default function ThreeMain({ setChangeModel, startAR }: ThreeMainProps) {
                 if (! session) return;
 
                 // セッション情報をコンテキストに保存
-                setCtx(prevCtx => {
-                    // ctxが存在しないなら何も行わない。
-                    if (!prevCtx) return null;
-                    return { ...prevCtx, currentSession: session };
-                });
+                setCtx(prevCtx => prevCtx? { ...prevCtx, currentSession: session } : prevCtx);
 
                 // セッション終了時の処理
                 session.addEventListener('end', () => {
-                    console.log('AR Session ended');
-                    setCtx(prevCtx => {
-                        if (!prevCtx) return null;
-                        return { ...prevCtx, currentSession: undefined };
-                    });
+                    setCtx(prevCtx => prevCtx? { ...prevCtx, currentSession: undefined } : prevCtx);
                 });
             } catch (error) {
                 console.error("Failed to start AR session:", error);
@@ -65,7 +58,6 @@ export default function ThreeMain({ setChangeModel, startAR }: ThreeMainProps) {
             }
         })();
     }, [startAR, ctx]);
-
 
     useEffect(() => {
         // 初期化処理
@@ -88,38 +80,41 @@ export default function ThreeMain({ setChangeModel, startAR }: ThreeMainProps) {
         let reticleShowTime: DOMHighResTimeStamp | null = null;
         let viewNum = 0;
 
-        threeContext.renderer.setAnimationLoop((timestamp, frame) => {
-            if (frame) {
-                // ヒットテストロジックを外部ファイルから呼び出す
-                updateHitTest(threeContext, frame);
+        threeContext.renderer.setAnimationLoop(animate);
+        async function animate(timestamp: DOMHighResTimeStamp, frame: XRFrame) {
+            // ヒットテストロジック呼び出し関数
+            updateHitTest(threeContext, frame);
 
-                // UI更新や初回モデル表示のロジック
+            // 初回モデル表示関数の実行
+            if (!viewNum) {
+                const status = firstHitChange(timestamp, threeContext.reticle.visible, reticleShowTime, viewNum);
+                // 状態を更新
+                reticleShowTime = status.newReticleShowTime;
+                viewNum = status.newViewNum;
+                // UI更新
                 if (threeContext.reticle.visible) {
                     const scanningOverlay = document.getElementById('scanning-overlay');
                     const menuContainer = document.getElementById('menu-container');
-                    if (scanningOverlay) {scanningOverlay.style.display = 'none'}
-                    // showARUI();
-                    if (menuContainer) {menuContainer.style.display = 'block'}
-                    console.log('レティクル表示');
-
-                    if (reticleShowTime === null) {
-                        reticleShowTime = timestamp;
+                    const arUI = document.getElementById('ar-ui');
+                    const exitButton = document.getElementById('exit-button');
+                    if (scanningOverlay && menuContainer && arUI && exitButton) {
+                        menuContainer.style.display = 'block';
+                        arUI.style.display = 'block';
+                        exitButton.style.display = 'block';
+                        scanningOverlay.style.display = 'none';
                     }
-
-                    if (viewNum === 0 && reticleShowTime !== null && timestamp - reticleShowTime > 1500) {
-                        // window.loadModel('./models/Tun_of2.glb', 'タンの中の上質な部分を選別 程よい油が口の中に広がります');
-                        viewNum = 1;
-                        reticleShowTime = null;
-                    }
-                } else {
-                    reticleShowTime = null;
                 };
-            };
+
+                // モデルをロードすべきか判断
+                if (status.shouldLoad) {
+                    await loadModel({}, threeContext, null);
+                }
+            }
 
             // レンダリング
             threeContext.renderer.render(threeContext.scene, threeContext.camera);
             threeContext.labelRenderer.render(threeContext.scene, threeContext.camera);
-        });
+        };
 
         return () => {
             threeContext.renderer.setAnimationLoop(null);
@@ -133,6 +128,7 @@ export default function ThreeMain({ setChangeModel, startAR }: ThreeMainProps) {
         <>
             <GuideScanPlane />
             <LoadingPanel />
+            <ARHelper />
             <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />
             </div>
