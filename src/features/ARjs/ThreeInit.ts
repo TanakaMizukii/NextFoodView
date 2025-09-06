@@ -2,9 +2,10 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 import { CSS2DRenderer } from 'three/examples/jsm/Addons.js';
 import { KTX2Loader } from 'three/examples/jsm/Addons.js';
-import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
-
 import { UseARToolkit } from './UseARToolkit';
+import { PMREMGenerator } from 'three';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 await MeshoptDecoder.ready;
 
 /** AR.js Init */
@@ -52,10 +53,9 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     const camera = new THREE.PerspectiveCamera();
 
     // 簡易ライト
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(1, 1, 1);
-    scene.add(ambientLight, directionalLight);
+    const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+    light.position.set( 1, 1, 1);
+    scene.add(light);
 
     // 詳細画面表示用のRendererの作成
     const labelRenderer = new CSS2DRenderer();
@@ -131,6 +131,15 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         });
         document.body.removeChild(labelRenderer.domElement);
     };
+
+    const pmrem = new PMREMGenerator(renderer);
+    new RGBELoader()
+    .setPath('/hdr/')
+    .load('spot1Lux.hdr', (hdr) => {
+        const envTex = pmrem.fromEquirectangular(hdr).texture;
+        scene.environment = envTex;
+        hdr.dispose();
+    });
 
     return { renderer, scene, camera, labelRenderer, loader, mouse, raycaster, detailNum, objectList, arToolkitContext, arToolkitSource, smoothedControls, markerRoot, smoothedRoot, dispose };
 }
