@@ -33,11 +33,10 @@ export default function LandingPage() {
 
     // 分岐方針： androidの場合このままARスタート。それ以外のスマホはAR.jsに飛ばす。カメラが使えない場合Viewerに飛ばす。
     if (os === 'android') { // 最後にar可能かどうかの分岐処理を付ける
-      console.log('起動完了');
+      router.push(xr === 'not_supported' ? '/arJS' : '/')
       setStart(true);
-
     } else if (os === 'ios') {
-      router.push(xr === 'supported' ? '/threeAR': '/arJS');
+      router.push(xr === 'supported' ? '/': '/arJS');
     } else router.push('/viewer');
   }, [router]);
 
@@ -46,7 +45,7 @@ export default function LandingPage() {
       <StartPanel onUpdate={handleStart} loading={loading} />
       {start &&
         <ModelChangeContext.Provider value={{ changeModel }}>
-            <ThreeMain setChangeModel={setChangeModel} />
+            <ThreeMain setChangeModel={setChangeModel} startAR={start}/>
             <MenuContainer />
         </ModelChangeContext.Provider>
       }

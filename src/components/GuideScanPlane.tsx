@@ -68,4 +68,56 @@ const MyGuidePlane = styled.div`
     max-width: 300px;
     line-height: 1.5;
 }
+.phone-animation {
+    width: 60px;
+    height: 100px;
+    border: 2px solid white;
+    border-radius: 10px;
+    position: relative;
+    margin: 20px auto;
+    animation: phoneMove 3s ease-in-out infinite;
+}
+.phone-animation::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 4px;
+    background: white;
+    border-radius: 2px;
+}
+.phone-animation::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+}
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.7;
+    }
+}
+@keyframes phoneMove {
+    0%, 100% {
+        transform: translateX(0) rotateY(0deg);
+    }
+    25% {
+        transform: translateX(-10px) rotateY(-15deg);
+    }
+    75% {
+        transform: translateX(10px) rotateY(15deg);
+    }
+}
 `

@@ -55,7 +55,7 @@ export default function MenuContainer({ className } : MenuContainerProps) {
     const c_update = (elem:string) => setCategory(elem);
 
     return(
-        <MyContainer className={className} $expanded={toggle}>
+        <MyContainer id='menu-container' className={className} $expanded={toggle}>
             <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                 <MenuToggle onUpdate={t_update} toggle={toggle}/>
             </div>

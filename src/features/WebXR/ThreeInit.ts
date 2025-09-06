@@ -16,7 +16,9 @@ export type ThreeCtx = {
     raycaster: THREE.Raycaster;
     detailNum: number;
     objectList: THREE.Object3D[];
-    currentSession: Promise<XRSession | undefined>;
+    hitTestSource: XRHitTestSource | null;
+    hitTestSourceRequested: boolean;
+    currentSession: XRSession | undefined;
     dispose: () => void;
 };
 
@@ -45,9 +47,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
 
     const scene = new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera(45, 1, 1, 1000);
-    camera.position.set(0, 50, 40);
-    camera.lookAt(0, 0, 0);
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.05, 10);
 
     // 簡易ライト
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
@@ -90,45 +90,14 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     // レイキャストの作成(初期値の設定)
     const raycaster = new THREE.Raycaster();
     const detailNum = 0;
-    const objectList: never[] = [];
+    const objectList: THREE.Object3D[] = [];
+    const currentSession = undefined;
+    const hitTestSource = null;
+    const hitTestSourceRequested = false;
 
     // DevicePixelRatio制限(初期値１)
     const dpr = Math.min(window.devicePixelRatio || 1, pixelRatioCap);
     renderer.setPixelRatio(dpr);
-
-    // ARButtonの代わりをここに作成
-    const session = async function startARSession() {
-        try {
-            const statusText = document.getElementById('status-text');
-            if (statusText) {
-                statusText.textContent = 'ARセッションを開始中...';
-            }
-
-            const sessionInit = {
-                requiredFeatures: ['local'],
-                optionalFeatures: ['dom-overlay', 'hit-test'],
-                domOverlay: {root: document.body}
-            };
-
-            // セッション開始時の処理
-            const session = await navigator.xr?.requestSession('immersive-ar', sessionInit);
-            if (session) {
-                renderer.xr.setReferenceSpaceType('local');
-                await renderer.xr.setSession(session);
-            }
-
-            // UIの更新
-            const startOverlay = document.getElementById('start-overlay') as HTMLElement | null;
-            if (startOverlay) { startOverlay.style.display = "none" };
-            const scanningOverlay = document.getElementById('scanning-overlay');
-            if (scanningOverlay) { scanningOverlay.style.display = 'flex' };
-            console.log('ARセッション開始成功')
-            return session;
-        } catch (error) {
-            console.error('ARセッション開始エラー:', error);
-            return undefined
-        }
-    };
 
     // クリーンナップ関数
     const dispose = () => {
@@ -144,7 +113,45 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         });
     };
 
-    return { renderer, scene, camera, labelRenderer, loader, reticle, mouse, raycaster, detailNum, objectList, currentSession:session, dispose };
+    return { renderer, scene, camera, labelRenderer, loader, reticle, mouse, raycaster, detailNum, objectList, currentSession, hitTestSource, hitTestSourceRequested, dispose };
+}
+
+// ARButtonの代わりを作成
+export async function startARSession(renderer: THREE.WebGLRenderer): Promise<XRSession | undefined> {
+    try {
+        const statusText = document.getElementById('status-text');
+        if (statusText) {
+            statusText.textContent = 'ARセッションを開始中...';
+        }
+
+        const sessionInit = {
+            requiredFeatures: ['local'],
+            optionalFeatures: ['dom-overlay', 'hit-test'],
+            domOverlay: {root: document.body}
+        };
+
+        // セッション開始時の処理
+        const session = await navigator.xr?.requestSession('immersive-ar', sessionInit);
+        if (session) {
+            renderer.xr.setReferenceSpaceType('local');
+            await renderer.xr.setSession(session);
+        }
+
+        // UIの更新
+        const startOverlay = document.getElementById('start-overlay') as HTMLElement | null;
+        if (startOverlay) { startOverlay.style.display = "none" };
+        const scanningOverlay = document.getElementById('scanning-overlay');
+        if (scanningOverlay) { scanningOverlay.style.display = 'flex' };
+        console.log('ARセッション開始成功')
+        return session;
+    } catch (error) {
+        console.error('ARセッション開始エラー:', error);
+        const statusText = document.getElementById('status-text');
+        if (statusText) {
+            statusText.textContent = `ARセッションの開始に失敗しました: ${error}`;
+        }
+        return undefined
+    }
 }
 
 /** リサイズ処理 ResizeObserver + window.resize をまとめてセットアップ */
