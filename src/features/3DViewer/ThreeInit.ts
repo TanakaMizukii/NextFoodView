@@ -3,6 +3,8 @@ import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 import { CSS2DRenderer } from 'three/examples/jsm/Addons.js';
 import { KTX2Loader } from 'three/examples/jsm/Addons.js';
+import { PMREMGenerator } from 'three';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 await MeshoptDecoder.ready;
 
@@ -51,10 +53,9 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     camera.lookAt(0, 0, 0);
 
     // 簡易ライト
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-    const directionalLight = new THREE.DirectionalLight(0xffffff);
-    directionalLight.position.set(1, 1, 1);
-    scene.add(ambientLight, directionalLight);
+    const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
+    light.position.set( 1, 1, 1);
+    scene.add(light);
 
     // 詳細画面表示用のRendererの作成
     const labelRenderer = new CSS2DRenderer();
@@ -107,6 +108,15 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
             }
         });
     };
+
+    const pmrem = new PMREMGenerator(renderer);
+    new RGBELoader()
+    .setPath('/hdr/')
+    .load('spot1Lux.hdr', (hdr) => {
+        const envTex = pmrem.fromEquirectangular(hdr).texture;
+        scene.environment = envTex;
+        hdr.dispose();
+    });
 
     return { renderer, scene, camera, controls, labelRenderer,loader, mouse, raycaster, detailNum, objectList, dispose };
 }

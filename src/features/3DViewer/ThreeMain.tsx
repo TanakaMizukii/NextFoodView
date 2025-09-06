@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from 'three';
 import { initThree, attachResizeHandlers } from "./ThreeInit";
-import { loadModel, disposeModel } from "./ThreeLoad";
+import { loadModel } from "./ThreeLoad";
 import { handleClick } from "./ThreeClick";
 import LoadingPanel from "@/components/LoadingPanel";
 
@@ -48,6 +48,8 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
         };
         const threeContext = initThree(canvasElement, rendererOptions);
         setCtx(threeContext);
+        const menuContainer = document.getElementById('menu-container');
+        if (menuContainer) {menuContainer.style.display = 'block'}
         const clickHandler = handleClick(threeContext);
         threeContext.labelRenderer.domElement.addEventListener('click', clickHandler);
 

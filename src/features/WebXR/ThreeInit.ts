@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 import { CSS2DRenderer } from 'three/examples/jsm/Addons.js';
 import { KTX2Loader } from 'three/examples/jsm/Addons.js';
+import { PMREMGenerator } from 'three';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js';
 await MeshoptDecoder.ready;
 
@@ -52,7 +54,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
 
     // 簡易ライト
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
-    light.position.set( 0, 1, 0);
+    light.position.set( 1, 1, 1);
     scene.add(light);
 
     // 詳細画面表示用のRendererの作成
@@ -112,6 +114,15 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
             }
         });
     };
+
+    const pmrem = new PMREMGenerator(renderer);
+    new RGBELoader()
+    .setPath('/hdr/')
+    .load('spot1Lux.hdr', (hdr) => {
+        const envTex = pmrem.fromEquirectangular(hdr).texture;
+        scene.environment = envTex;
+        hdr.dispose();
+    });
 
     return { renderer, scene, camera, labelRenderer, loader, reticle, light, mouse, raycaster, detailNum, objectList, currentSession, hitTestSource, hitTestSourceRequested, dispose };
 }
