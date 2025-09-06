@@ -69,10 +69,6 @@ export default function ThreeMain({ setChangeModel, startAR }: ThreeMainProps) {
 
     useEffect(() => {
         // 初期化処理
-        const scanningOverlay = document.getElementById('scanning-overlay');
-        const menuContainer = document.getElementById('menu-container');
-        if (menuContainer) {menuContainer.style.display = 'none'}
-
         if (!containerRef.current || !canvasRef.current) return;
 
         const canvasElement = canvasRef.current;
@@ -99,6 +95,8 @@ export default function ThreeMain({ setChangeModel, startAR }: ThreeMainProps) {
 
                 // UI更新や初回モデル表示のロジック
                 if (threeContext.reticle.visible) {
+                    const scanningOverlay = document.getElementById('scanning-overlay');
+                    const menuContainer = document.getElementById('menu-container');
                     if (scanningOverlay) {scanningOverlay.style.display = 'none'}
                     // showARUI();
                     if (menuContainer) {menuContainer.style.display = 'block'}

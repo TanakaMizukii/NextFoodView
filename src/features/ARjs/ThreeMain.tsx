@@ -49,6 +49,8 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
         };
         const threeContext = initThree(canvasElement, rendererOptions);
         setCtx(threeContext);
+        const menuContainer = document.getElementById('menu-container');
+        if (menuContainer) {menuContainer.style.display = 'block'}
         const clickHandler = handleClick(threeContext);
         threeContext.labelRenderer.domElement.addEventListener('click', clickHandler);
 

@@ -32,6 +32,7 @@ const MyPanel = styled.div`
     z-index: 10;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+    color: #666;
 }
 
 .menu-toggle:after {

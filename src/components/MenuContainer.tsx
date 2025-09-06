@@ -69,6 +69,7 @@ export default function MenuContainer({ className } : MenuContainerProps) {
 
 // 今回はStyled Componentsを使用
 export const MyContainer = styled.div<MyContainerProps>`
+    display: none;
     position: fixed;
     bottom: 0;
     left: 0;

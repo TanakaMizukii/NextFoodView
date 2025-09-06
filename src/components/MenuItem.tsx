@@ -54,6 +54,7 @@ const MyItem = styled.div`
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    color: #666;
 }
 
 .menu-item-image {
@@ -77,19 +78,14 @@ const MyItem = styled.div`
     margin-bottom: 3px;
 }
 
-.menu-item-description {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 5px;
-}
-
 .menu-item-price {
     font-size: 14px;
     font-weight: bold;
+    color: #666;
 }
 
 .view-item-btn {
-    background-color: #f5f5f5;
+    background-color: #333;
     border: none;
     width: 100%;
     padding: 8px;
@@ -98,6 +94,7 @@ const MyItem = styled.div`
     font-size: 12px;
     cursor: pointer;
     transition: background-color 0.2s;
+    color: #e0e0e0;
 }
 
 .view-item-btn:hover {
