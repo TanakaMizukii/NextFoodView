@@ -4,7 +4,6 @@ import MenuItem from "./MenuItem";
 import type { productModelsProps } from "../data/MenuInfo";
 import React from "react";
 
-
 type MenuContentProps = {
     className?: string;
     nowCategory: string;
@@ -17,7 +16,7 @@ export default function MenuContent({className, nowCategory, models}: MenuConten
         '盛り合わせ': ['盛り合わせ'],
         'タン・カルビ': ['タン', 'カルビ'],
         'ホルモン': ['ホルモン'],
-        'サイドメニュー': ['汁物'],
+        'サイドメニュー': ['サイドメニュー'],
         'その他': ['その他'],
     }    // まず配列を取り出しておく
     const categories = selectCategory[nowCategory] ?? [];

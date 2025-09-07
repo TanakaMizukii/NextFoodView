@@ -6,7 +6,9 @@ export default function GuideQRCode() {
         <MyGuideQR>
             <div id="guideMarker" className="guide-overlay">
                 <div className="guide-spinner" />
-                <div className="guide-text">QRコードにかざしてください…<br/>商品を表示します</div>
+                <div className="guide-text">QRコードの周りの黒い縁を<br/>枠に収めてください</div>
+                <div className="guide-text">商品が表示できます
+                </div>
             </div>
         </MyGuideQR>
     )
@@ -28,6 +30,7 @@ const MyGuideQR = styled.div`
     z-index: 1000;
     opacity: 0;
     pointer-events: none;
+
     transition: opacity 0.3s ease;
 }
 
@@ -48,8 +51,10 @@ const MyGuideQR = styled.div`
 
 .guide-text {
     color: white;
-    font-size: 25px;
+    font-size: 22px;
+    margin-bottom: 15px;
     text-align: center;
+    font-weight: bold;
 }
 @keyframes spin {
     0% { transform: rotate(0deg); }
