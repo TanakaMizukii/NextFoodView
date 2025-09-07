@@ -4,21 +4,21 @@ import { initThree, attachResizeHandlers } from "@/features/ARjs/ThreeInit";
 import { loadModel } from "@/features/ARjs/ThreeLoad";
 import { handleClick } from "@/features/ARjs/ThreeClick";
 import LoadingPanel from "@/components/LoadingPanel";
-import GuideQRCode from "@/components/GuideQRCode";
+
 
 /** AR.js Main */
 type ThreeContext = ReturnType<typeof initThree>;
 
-// 先に型を用意
 type ModelInfo = { modelPath?: string; modelDetail?: string };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
 
-// これにする：
 type ThreeMainProps = {
     setChangeModel: React.Dispatch<React.SetStateAction<ChangeModelFn>>;
+    onCameraReady: () => void;
+    onGuideDismiss: () => void;
 };
 
-export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
+export default function ThreeMain({ setChangeModel, onCameraReady, onGuideDismiss }: ThreeMainProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const nowModelRef = useRef<THREE.Group | null>(null);
@@ -47,11 +47,11 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
             alpha: true,
             antialias: true,
         };
-        const threeContext = initThree(canvasElement, rendererOptions);
+        const threeContext = initThree(canvasElement, rendererOptions, onCameraReady, onGuideDismiss);
         setCtx(threeContext);
-        const menuContainer = document.getElementById('menu-container');
-        if (menuContainer) {menuContainer.style.display = 'block'}
         const clickHandler = handleClick(threeContext);
+        const menuContainer = document.getElementById('menu-container');
+        if (menuContainer) {menuContainer.style.display = 'block'};
         threeContext.labelRenderer.domElement.addEventListener('click', clickHandler);
 
         (async () => {
@@ -68,8 +68,6 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
         function animate() {
             if (threeContext.arToolkitSource.ready) {
                 threeContext.arToolkitContext.update(threeContext.arToolkitSource.domElement);
-                // デバッグログを追加
-                // console.log("markerRoot.visible:", threeContext.markerRoot.visible);
             }
             threeContext.smoothedControls.update(threeContext.markerRoot);
             threeContext.renderer.render(threeContext.scene, threeContext.camera);
@@ -87,7 +85,6 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
 
     return (
         <>
-            <GuideQRCode />
             <LoadingPanel />
             <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />

@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import '../App.css';
 import MenuContainer from '@/components/MenuContainer';
 import { ModelChangeContext } from '@/contexts/ModelChangeContext';
 import dynamic from 'next/dynamic';
+import LoadingPanel from '@/components/LoadingPanel';
+import GuideQRCode from '@/components/GuideQRCode';
 
 type ModelInfo = { modelPath?: string; modelDetail?: string };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
@@ -18,13 +20,30 @@ export default function ARjsPage() {
     const [changeModel, setChangeModel] = useState<ChangeModelFn>(() => async (info: ModelInfo) => {
         console.warn("changeModel is not yet initialized", info);
     });
+    const [isCameraReady, setIsCameraReady] = useState(false);
+    const [isGuideVisible, setIsGuideVisible] = useState(false);
+
+    const handleCameraReady = useCallback(() => {
+        setIsCameraReady(true);
+        setIsGuideVisible(true);
+    }, []);
+
+    const handleGuideDismiss = useCallback(() => {
+        setIsGuideVisible(false);
+    }, []);
 
     return (
         <>
-        <ModelChangeContext.Provider value={{ changeModel }}>
-            <ThreeMain setChangeModel={setChangeModel} />
-            <MenuContainer />
-        </ModelChangeContext.Provider>
+            <LoadingPanel isVisible={!isCameraReady} text="カメラを準備しています..." />
+            <GuideQRCode isVisible={isGuideVisible} />
+            <ModelChangeContext.Provider value={{ changeModel }}>
+                <ThreeMain
+                    setChangeModel={setChangeModel}
+                    onCameraReady={handleCameraReady}
+                    onGuideDismiss={handleGuideDismiss}
+                />
+                <MenuContainer />
+            </ModelChangeContext.Provider>
         </>
     );
 }
