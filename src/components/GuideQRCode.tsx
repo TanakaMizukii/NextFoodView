@@ -1,12 +1,22 @@
 import styled from "styled-components"
 
-export default function GuideQRCode() {
+type Props = {
+    isVisible: boolean;
+}
+
+export default function GuideQRCode({ isVisible }: Props) {
     return(
         // <!-- ガイド用インジケーター -->
         <MyGuideQR>
-            <div id="guideMarker" className="guide-overlay">
-                <div className="guide-spinner" />
-                <div className="guide-text">QRコードにかざしてください…<br/>商品を表示します</div>
+            <div id="guideMarker" className={`guide-overlay ${isVisible ? 'visible' : ''}`}>
+                <div className="guide-hole"></div>
+                <div className="guide-text">
+                    QRコードの周りにある黒い縁を<br />
+                    上の四角に合わせてください
+                </div>
+                <div className="guide-text">
+                    商品の表示を開始します！
+                </div>
             </div>
         </MyGuideQR>
     )
@@ -16,11 +26,7 @@ const MyGuideQR = styled.div`
 /* ガイド用インジケーター */
 .guide-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+    inset: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -32,27 +38,31 @@ const MyGuideQR = styled.div`
 }
 
 .guide-overlay.visible {
-    opacity: 0.8;
+    opacity: 1;
     pointer-events: all;
 }
 
-.guide-spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-bottom: 10px;
+/* 中央の穴を作る要素 */
+.guide-hole {
+    width: 220px;   /* 切り抜きサイズ */
+    height: 220px;
+    border-radius: 8px;
+    top: 40%;
+    /* 大きなシャドウで周りを暗くする */
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);
+    margin-bottom: 70px;
+    /* 上にずらす */
+    margin-top: -80px;
 }
 
+/* テキストは穴の下に */
 .guide-text {
-    color: white;
-    font-size: 25px;
+    color: #fff;
+    font-size: 22px;
+    margin-bottom: 10px;
     text-align: center;
+    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+
 `

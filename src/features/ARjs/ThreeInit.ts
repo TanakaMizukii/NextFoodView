@@ -35,7 +35,7 @@ export type InitOptions = {
 };
 
 /** Three.js 初期化（canvas必須） */
-export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): ThreeCtx {
+export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}, onCameraReady?: () => void, onGuideDismiss?: () => void): ThreeCtx {
     // デフォルト値を分割代入にて設定(もし値がなかった時自動的に入る)
     const {
         pixelRatioCap = 2,
@@ -72,6 +72,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         cameraParaDatURL: '/data/camera_para.dat',
         markerPatternURL: "/data/marker.patt",
         scene: scene,
+        onCameraReady,
     });
 
     // モデルデータを読み込むためのローダーを作成
@@ -86,12 +87,6 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     const raycaster = new THREE.Raycaster();
     const detailNum = 0;
     const objectList: THREE.Object3D[] = [];
-
-    // マーカー案内用UIの表示
-    const guideMarker = document.getElementById('guideMarker');
-    if (guideMarker) {
-        guideMarker.classList.add('visible');
-    }
 
     type MarkerControlsWithEvents = THREEx.ArMarkerControls & {
     addEventListener(
@@ -109,8 +104,8 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
 
     // 一度マーカーを検知するとガイドを終了
     const onMarkerFound = () => {
-    guideMarker?.classList.remove('visible');
-    mc.removeEventListener('markerFound', onMarkerFound);
+        onGuideDismiss?.();
+        mc.removeEventListener('markerFound', onMarkerFound);
     };
     mc.addEventListener('markerFound', onMarkerFound);
 

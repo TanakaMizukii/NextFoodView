@@ -1,12 +1,17 @@
 import styled from "styled-components"
 
-export default function LoadingPanel() {
+type Props = {
+    isVisible?: boolean;
+    text?: string;
+}
+
+export default function LoadingPanel({ isVisible, text = 'モデルを読み込み中...' }: Props) {
     return(
         // <!-- ローディングインジケーター -->
         <MyLoading>
-            <div id="loading" className="loading-overlay">
+            <div id="loading" className={`loading-overlay ${isVisible ? 'visible' : ''}`}>
                 <div className="loading-spinner"></div>
-                <div className="loading-text">モデルを読み込み中...</div>
+                <div className="loading-text">{text}</div>
             </div>
         </MyLoading>
     )
@@ -43,11 +48,13 @@ const MyLoading = styled.div`
     border-top: 5px solid #3498db;
     border-radius: 50%;
     animation: spin 3s linear infinite;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
 .loading-text {
     color: white;
-    font-size: 16px;
+    font-size:22px;
+    text-align: center;
+    white-space: pre-line;
 }
 `

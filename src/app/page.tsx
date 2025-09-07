@@ -33,11 +33,11 @@ export default function LandingPage() {
 
     // 分岐方針： androidの場合このままARスタート。それ以外のスマホはAR.jsに飛ばす。カメラが使えない場合Viewerに飛ばす。
     if (os === 'android') { // 最後にar可能かどうかの分岐処理を付ける
-      router.push(xr === 'supported' ? '/' : '/arJS')
+      router.push(xr === 'supported' ? '/' : '/arJS');
       setStart(true);
     } else if (os === 'ios') {
       router.push(xr === 'supported' ? '/': '/arJS');
-      setStart(true);
+      if (xr === 'supported') {setStart(true)}
     } else router.push('/viewer');
   }, [router]);
 

@@ -7,9 +7,10 @@ export type ARToolkitInitOptions = {
     cameraParaDatURL: string;
     markerPatternURL: string;
     scene: Scene;
+    onCameraReady?: () => void;
 };
 
-export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatternURL, scene}: ARToolkitInitOptions) => {
+export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatternURL, scene, onCameraReady}: ARToolkitInitOptions) => {
     // @ts-expect-error 型定義では必須だが、解像度自動選択のために意図的に省略
     const arToolkitSource = new THREEx.ArToolkitSource({
         sourceType: "webcam",
@@ -28,9 +29,6 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
         });
         document.getElementById('wrapper')?.appendChild(arToolkitSource.domElement); // DOMを移動する
         window.arToolkitSource = arToolkitSource;
-            setTimeout(() => {
-                arResize();
-            }, 400);
         },
         () => {}
     );
@@ -43,6 +41,8 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
         arToolkitContext.arController.options.orientation =
             getSourceOrientation();
         });
+        onCameraReady?.();
+        arResize();
         window.arToolkitContext = arToolkitContext;
     }
 
