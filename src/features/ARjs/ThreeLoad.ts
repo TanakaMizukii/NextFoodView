@@ -41,7 +41,7 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
             ctx.objectList = [];
         }
         const model = objects.scene;
-        model.scale.set(0.1, 0.1, 0.1);
+        model.scale.set(0.09, 0.09, 0.09);
         // 詳細オブジェクトの表示状態をboolean値で設定
         model.userData.isDetail = true;
         ctx.smoothedRoot.add(model);

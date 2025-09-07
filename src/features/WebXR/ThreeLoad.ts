@@ -49,7 +49,7 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
         // 詳細オブジェクトの表示状態をboolean値で設定
         clone.userData.isDetail = true;
         ctx.reticle.matrix.decompose(clone.position, clone.quaternion, clone.scale);
-        clone.scale.set(0.01, 0.01, 0.01); // 改変されてしまうためdecomposeの後に記述
+        clone.scale.set(0.0085, 0.0085, 0.0085); // 改変されてしまうためdecomposeの後に記述
         clone.add(detail);
         ctx.scene.add(clone);
         // 配列に保存
