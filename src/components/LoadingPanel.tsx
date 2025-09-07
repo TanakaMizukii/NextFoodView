@@ -48,11 +48,13 @@ const MyLoading = styled.div`
     border-top: 5px solid #3498db;
     border-radius: 50%;
     animation: spin 3s linear infinite;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
 .loading-text {
     color: white;
     font-size:22px;
+    text-align: center;
+    white-space: pre-line;
 }
 `

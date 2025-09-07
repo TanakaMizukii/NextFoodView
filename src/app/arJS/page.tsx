@@ -34,7 +34,7 @@ export default function ARjsPage() {
 
     return (
         <>
-            <LoadingPanel isVisible={!isCameraReady} text="カメラを準備しています..." />
+            <LoadingPanel isVisible={!isCameraReady} text={"カメラを準備しています...\n少々お待ちください。\n\n案内が出たら「許可」を押してください"} />
             <GuideQRCode isVisible={isGuideVisible} />
             <ModelChangeContext.Provider value={{ changeModel }}>
                 <ThreeMain

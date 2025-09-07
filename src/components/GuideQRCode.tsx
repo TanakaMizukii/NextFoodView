@@ -61,7 +61,7 @@ const MyGuideQR = styled.div`
     font-size: 22px;
     margin-bottom: 10px;
     text-align: center;
-    font-weight: bold;
+    font-weight: 500;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 

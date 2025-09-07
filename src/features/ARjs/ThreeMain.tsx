@@ -81,7 +81,7 @@ export default function ThreeMain({ setChangeModel, onCameraReady, onGuideDismis
             detach();
             threeContext.dispose();
         };
-    }, []);
+    }, [onCameraReady, onGuideDismiss]);
 
     return (
         <>
