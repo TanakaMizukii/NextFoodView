@@ -40,6 +40,7 @@ export default function MenuItem({model}: modelItemProps) {
                 <img src={model.image} alt={model.name} className="menu-item-image" />
                 <div className="menu-item-info">
                     <div className="menu-item-title">{model.name}</div>
+                    <div className="menu-item-description">{model.minDetail}</div>
                     <div className="menu-item-price">{model.price}円</div>
                     <button className="view-item-btn">商品を表示</button>
                 </div>
@@ -73,11 +74,16 @@ const MyItem = styled.div`
 }
 
 .menu-item-title {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     margin-bottom: 3px;
+    color: #333;
 }
-
+.menu-item-description {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
 .menu-item-price {
     font-size: 14px;
     font-weight: bold;
