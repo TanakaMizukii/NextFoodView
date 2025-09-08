@@ -9,14 +9,18 @@ export type LoadCtx = {
 }
 
 export type ModelProps = {
+    modelName?: string;
     modelPath?: string;
     modelDetail?: string;
+    modelPrice?: string;
 }
 
 export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THREE.Group<THREE.Object3DEventMap> | null): Promise<THREE.Group<THREE.Object3DEventMap> | null> {
     const {
+        modelName = '上タン塩（１人前）',
         modelPath = 'models/tongue_comp2.glb',
-        modelDetail =  'タンの中の上質な部分を選別 程よい油が口の中に広がります',
+        modelDetail = 'タンの中の上質な部分を選別\n程よい油が口の中に広がります',
+        modelPrice = '980 (税込1078)'
     } = Model;
 
     let detailDiv = null;
@@ -34,11 +38,18 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
         }
         detailDiv = document.createElement('div');
         detailDiv.className = 'detail';
-        detailDiv.textContent = modelDetail;
+        detailDiv.innerHTML = `
+            <h3 class="panel__name">${modelName}</h3><hr>
+            <p class="panel__desc">${modelDetail}</p>
+            <div class="panel__price" aria-label="価格">
+                <span class="food-panel__price-currency">￥</span>
+                <span class="panel__price-value">${modelPrice} 円</span>
+            </div>
+        `;
 
         // 作成したdiv情報をオブジェクトとして作成
         const detail = new CSS2DObject(detailDiv);
-        detail.position.set(0.01, 0.08, -0.03);
+        detail.position.set(4, 6, -7);
         detail.center.set(0, 0.8);
         detail.layers.set(1);
 

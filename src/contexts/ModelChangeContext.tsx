@@ -1,8 +1,10 @@
 import { createContext } from 'react';
 
 type ModelInfo = {
+    modelName?: string;
     modelPath?: string | undefined;
     modelDetail?: string | undefined;
+    modelPrice?: string
 };
 
 type ModelChangeContextType = {

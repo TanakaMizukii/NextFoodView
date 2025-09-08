@@ -8,7 +8,7 @@ import LoadingPanel from "@/components/LoadingPanel";
 type ThreeContext = ReturnType<typeof initThree>;
 
 // 先に型を用意
-type ModelInfo = { modelPath?: string; modelDetail?: string };
+type ModelInfo = { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
 
 // これにする：
@@ -22,7 +22,7 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
     const nowModelRef = useRef<THREE.Group | null>(null);
     const [ctx, setCtx] = useState<ThreeContext | null>(null);
 
-    const changeModel = useCallback(async (modelInfo: { modelPath?: string; modelDetail?: string; }) => {
+    const changeModel = useCallback(async (modelInfo: { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; }) => {
         if (!ctx) return;
         // 新しいモデルをロード
         const nowModel = await loadModel(modelInfo, ctx, nowModelRef.current);

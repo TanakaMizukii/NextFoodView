@@ -10,7 +10,7 @@ import { ModelChangeContext } from '@/contexts/ModelChangeContext';
 import dynamic from 'next/dynamic';
 import './App.css';
 
-type ModelInfo = { modelPath?: string; modelDetail?: string };
+type ModelInfo = { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
 
 // ThreeMainコンポーネントをdynamic importに書き換えてハイドレーションエラーが起きないようにする。
