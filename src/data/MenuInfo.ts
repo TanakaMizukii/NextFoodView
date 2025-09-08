@@ -54,7 +54,7 @@ export const productModels : productModelsProps = [
             minDetail :'様々なお肉がセットになったお得な一皿！',
             description : '人気なタン・ハラミを始め、並みカルビ・コプチャン・地鶏・ウインナーが特性の味噌ダレ味にて存分にお楽しみ頂けます',
             category : '盛り合わせ',
-            price : '880 (税込 968)',
+            price : '5,800 (税込 6,380)',
         },
         {
             name: '九種盛り',
