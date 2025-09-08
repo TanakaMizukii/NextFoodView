@@ -12,7 +12,7 @@ import { handleSessionEndCleanup } from './ThreeCleanup';
 type ThreeContext = ReturnType<typeof initThree>;
 
 // 先に型を用意
-type ModelInfo = { modelPath?: string; modelDetail?: string };
+type ModelInfo = { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
 
 type ThreeMainProps = {
@@ -29,7 +29,7 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
     const reticleShowTimeRef = useRef<DOMHighResTimeStamp | null>(null);
     const viewNumRef = useRef<number>(0);
 
-    const changeModel = useCallback(async (modelInfo: { modelPath?: string; modelDetail?: string; }) => {
+    const changeModel = useCallback(async (modelInfo: { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; }) => {
         if (!ctx) return;
         // 新しいモデルをロード
         const nowModel = await loadModel(modelInfo, ctx, nowModelRef.current);

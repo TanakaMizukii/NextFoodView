@@ -25,7 +25,7 @@ export default function MenuItem({model}: modelItemProps) {
 
     const handleItemClick = () => {
         if (typeof changeModel === 'function') {
-            changeModel({ modelPath: model.model, modelDetail: model.description });
+            changeModel({ modelName: model.name, modelPath: model.model, modelDetail: model.description, modelPrice: model.price });
         } else {
             console.error('changeModel is not a function!', changeModel);
         }
