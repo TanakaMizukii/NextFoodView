@@ -22,13 +22,21 @@ export const productCategory : string[] =[
 // 商品とモデルの関連付け
 export const productModels : productModelsProps = [
         {
+            name: '上タン塩',
+            image: './images/上タン塩.jpg',
+            model: './models/tongue_comp2.glb',
+            description: 'タンの中でも上質な部分。レモンで食べると \n程よい油が口の中に広がります。',
+            category: 'タン',
+            price: '980 (税込 1,078)',
+        },
+        {
             name: '特上カルビ',
             image: './images/特上カルビ.jpg',
             model: './models/',
             minDetail: 'カルビの中の最高級部位',
-            description: 'カルビの最高級部位。\n口の中でとろけだす上質な油をご堪能ください。',
+            description: 'カルビの最高級部位。\n口の中でとろけだす上質な油をご堪能ください',
             category: 'カルビ',
-            price: '1500 (税込1650)', // 文字列形式に変更
+            price: '1,500 (税込 1,650)',
         },
         {
             name: '上カルビ',
@@ -37,98 +45,84 @@ export const productModels : productModelsProps = [
             minDetail:'カルビの中の上級部位',
             description: '上質な脂の旨味が楽しめる人気のカルビ。',
             category: 'カルビ',
-            price: '1080 (税込1188)', // 文字列形式に変更
+            price: '1,080 (税込 1,188)',
         },
         {
             name: 'ファミリーセット',
             image: './images/ファミリーセット.jpg',
             model: './models/family_s_set_comp2.glb',
-            minDetail :'リーズナブルな大判カルビ',
-            description : '焼肉の定番！お手頃価格で楽しめる大判カルビ。',
+            minDetail :'様々なお肉がセットになったお得な一皿！',
+            description : '人気なタン・ハラミを始め、並みカルビ・コプチャン・地鶏・ウインナーが特性の味噌ダレ味にて存分にお楽しみ頂けます',
             category : '盛り合わせ',
-            price : '880 (税込968)', // 文字列形式に変更
+            price : '5,800 (税込 6,380)',
         },
         {
             name: '九種盛り',
             image: './images/九種盛り.jpg',
             model: './models/9hormone__set_raw.glb',
-            description: '様々な部位を少しずつ楽しめるお得な盛り合わせ。',
+            minDetail: '様々な部位をお楽しみいただけます。',
+            description: '厳選した９種類のホルモンをお楽しみにしていただけます。\nセットの特製塩だれにつけて存分にお楽しみください。',
             category: '盛り合わせ',
-            price: '3500', // 文字列形式に変更 (税込不明)
+            price: '3,500 (税込 1,892)',
         },
         {
             name: 'カルビ盛り',
             image: './images/カルビ盛り.jpg',
             model: './models/calbee_set_raw.glb',
-            description: 'カルビ好きにはたまらない！\n4種類のカルビ盛り合わせ!',
+            minDetail: 'カルビ好きにはたまらない！\n4種類のカルビ盛り合わせ!',
+            description: '特上カルビ・上カルビ・並みカルビ・切り落としカルビがワンプレートでまとめて食べられます！！',
             category: '盛り合わせ',
-            price: '2300 (税込2530)', // 文字列形式に変更
-        },
-        {
-            name: 'コプチャン',
-            image: './images/コプチャン.jpg',
-            model: './models/copchan_raw2.glb',
-            description: 'ぷりぷり食感の牛の小腸。味噌ダレがよく合います。',
-            category: 'ホルモン',
-            price: '490 (税込539)', // 文字列形式に変更
-        },
-        {
-            name: 'テッチャン',
-            image: './images/',
-            model: './models/techan†_raw.glb',
-            description: 'シマチョウとも呼ばれる牛の大腸\n脂の甘みが特徴',
-            category: 'ホルモン',
-            price: '580 (税込638)', // 文字列形式に変更
+            price: '2,300 (税込 2,530)',
         },
         {
             name: 'ギアラ',
             image: './images/ギアラ.jpg',
             model: './models/giara3_raw.glb',
-            description: '牛の横隔膜の部位\n柔らかくてヘルシーなため人気メニュー！',
+            description: '赤センマイとも呼ばれる牛の第４胃です。\n塩味で召し上がると旨味を強く感じられます',
             category: 'ホルモン',
-            price: '1030 (税込1133)', // 文字列形式に変更
+            price: '1,030 (税込 1,133)',
         },
         {
-            name: 'ご飯大',
-            image: './images/ご飯大.jpg',
-            model: './models/ご飯大.glb',
-            description: '焼肉のお供に！大盛りご飯。',
-            category: 'サイドメニュー',
-            price: '300 (税込330)', // 文字列形式に変更
+            name: 'コプチャン',
+            image: './images/コプチャン.jpg',
+            model: './models/copchan_raw2.glb',
+            description: 'ぷりぷり食感の牛の小腸。味噌味のコプチャンとお酒がよく合います',
+            category: 'ホルモン',
+            price: '490 (税込539)',
         },
         {
-            name: '上タン塩',
-            image: './images/上タン塩.jpg',
-            model: './models/tongue_comp2.glb',
-            description: 'タンの中でも上質な部分。レモンで食べると \n程よい油が口の中に広がります。',
-            category: 'タン',
-            price: '980 (税込1078)', // 文字列形式に変更
+            name: 'テッチャン',
+            image: './images/',
+            model: './models/techan†_raw.glb',
+            description: 'シマチョウとも呼ばれる牛の大腸\n口の中で脂の甘みと旨味が広がります',
+            category: 'ホルモン',
+            price: '580 (税込 638)',
         },
         {
             name: '盛岡冷麺',
             image: './images/盛岡冷麺.jpg',
             model: './models/cold_noodle_clean.glb',
+            minDetail: '商品の大きさにご注意ください！！',
             description: 'シメにぴったり！つるつる食感の本格冷麺。\nさっぱりとおいしく頂けます！',
             category: 'サイドメニュー',
-            price: '900 (税込990)', // 文字列形式に変更
+            price: '900 (税込 990)',
         },
         {
             name: 'クッパ',
             image: './images/クッパ.jpg',
             model: './models/koopa_with_bowl_clean.glb',
-            description: '新鮮でヘルシーな馬刺し。生姜醤油でどうぞ。',
+            minDetail: '商品の大きさにご注意ください！！',
+            description: 'タマゴスープにご飯が入った心温まる一品\nお食事の締めに最適です。',
             category: 'サイドメニュー',
-            price: '1300', // 文字列形式に変更 (税込不明)
+            price: '530 (税込 583)',
+        },
+        {
+            name: 'ご飯大',
+            image: './images/ご飯大.jpg',
+            model: './models/ご飯大.glb',
+            description: '焼肉のお供に大盛りご飯！\n毎日想いを込めて丁寧に炊き上げております！',
+            category: 'サイドメニュー',
+            price: '300 (税込 330)',
         },
 ];
 export default productModels;
-
-    // 商品のカテゴリごとの情報を格納した連想配列
-export const recMenuItems: Array<string> = [
-        '盛岡冷麺',
-        'サンチュ',
-        '特上カルビ',
-        '上カルビ',
-        '並カルビ',
-        '豚トロ',
-    ]

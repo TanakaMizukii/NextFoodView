@@ -20,7 +20,7 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
         modelName = '上タン塩（１人前）',
         modelPath = 'models/tongue_comp2.glb',
         modelDetail = 'タンの中の上質な部分を選別\n程よい油が口の中に広がります',
-        modelPrice = '980 (税込1078)'
+        modelPrice = '980 (税込1,078)'
     } = Model;
 
     let detailDiv = null;
@@ -94,20 +94,25 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
 }
 
 // GLB・GLTFモデルの各要素事分解してメモリの解放を行う関数。
-export function disposeModel(targetModel: THREE.Group<THREE.Object3DEventMap>) {
+export function disposeModel(targetModel: THREE.Object3D) {
     targetModel.traverse(function (obj) {
         // objにはtargetModelが入る
         if (obj instanceof THREE.Mesh) {
             obj.geometry.dispose(); // ジオメトリの解放
-            if (obj.material.isMaterial) {
-                obj.material.dispose(); // 単一マテリアルの解放
-            } else {
+            if (Array.isArray(obj.material)) {
+                // マテリアルが配列の場合
                 for (const material of obj.material) {
-                    material.dispose(); // マルチマテリアルの解放
+                    material.dispose();
+                    if (material.map) {
+                        material.map.dispose();
+                    }
                 }
-            }
-            if (obj.material.map) {
-                obj.material.map.dispose(); // テクスチャの解放
+            } else {
+                // マテリアルが単一の場合
+                obj.material.dispose();
+                if (obj.material.map) {
+                    obj.material.map.dispose();
+                }
             }
         }
     });

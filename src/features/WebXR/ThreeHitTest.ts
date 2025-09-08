@@ -63,11 +63,15 @@ export async function handleFirstHit(
         const menuContainer = document.getElementById('menu-container');
         const arUI = document.getElementById('ar-ui');
         const exitButton = document.getElementById('exit-button');
-        if (scanningOverlay && menuContainer && arUI && exitButton) {
+        const clearObjects = document.getElementById('clear-objects');
+        if (scanningOverlay && menuContainer && arUI && exitButton && clearObjects) {
+    console.log('発動')
+
+            scanningOverlay.style.display = 'none';
             menuContainer.style.display = 'block';
             arUI.style.display = 'block';
             exitButton.style.display = 'block';
-            scanningOverlay.style.display = 'none';
+            clearObjects.style.display = 'flex';
         }
 
         if (reticleShowTimeRef.current === null) {

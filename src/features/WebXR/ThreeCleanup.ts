@@ -27,6 +27,7 @@ export function handleSessionEndCleanup(
     const label = document.getElementById('label');
     const arUI = document.getElementById('ar-ui');
     const exitButton = document.getElementById('exit-button');
+    const clearObjects = document.getElementById('clear-objects');
     const menuContainer = document.getElementById('menu-container');
     const startOverlay = document.getElementById('start-overlay');
 
@@ -36,6 +37,7 @@ export function handleSessionEndCleanup(
     }
     if (arUI) arUI.style.display = 'none';
     if (exitButton) exitButton.style.display = 'none';
+    if (clearObjects) clearObjects.style.display = 'none';
     if (menuContainer) menuContainer.style.display = 'none';
     if (startOverlay) startOverlay.style.display = 'flex'; // StartPanelを再表示
 
