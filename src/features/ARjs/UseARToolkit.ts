@@ -72,12 +72,12 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
     window.arMarkerControls = arMarkerControls;
     // SmoothedControlsを追加
     const smoothedControls = new THREEx.ArSmoothedControls(smoothedRoot, {
-        lerpPosition: .4,  // ポジションの線形補完係数（値が大きいほど動きが急になる）0 〜 1が入る
-        lerpQuaternion: .3,  // 角度の補完係数（値が大きいほど動きが急になる）0 〜 1が入る
-        lerpScale: 1, // 大きさの線形補完係数（値が大きいほど動きが急になる）0 〜 1が入る
+        lerpPosition: 0.4,  // ポジションの線形補完係数（値が大きいほど動きが急になる）0 〜 1が入る
+        lerpQuaternion: 0.4,  // 角度の補完係数（値が大きいほど動きが急になる）0 〜 1が入る
+        lerpScale: 0.4, // 大きさの線形補完係数（値が大きいほど動きが急になる）0 〜 1が入る
         lerpStepDelay: 1 / 60,  // ステップ間の待機時間（値が大きいほどカクカク動く）
-        minVisibleDelay: 0.0,  // マーカーを認識してからオブジェクトを表示するまでの待機時間
-        minUnvisibleDelay: 0.2, // マーカーの認識が切れてからオブジェクトを非表示にするまでの待機時間
+        minVisibleDelay: 0.1,  // マーカーを認識してからオブジェクトを表示するまでの待機時間
+        minUnvisibleDelay: 0.3, // マーカーの認識が切れてからオブジェクトを非表示にするまでの待機時間
     });
 
     function getSourceOrientation(): string {

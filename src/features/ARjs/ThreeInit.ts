@@ -48,9 +48,11 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}, onC
         antialias,
         alpha,
     });
+    renderer.outputColorSpace = THREE.SRGBColorSpace
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera();
+    camera.far = 5;
 
     // 簡易ライト
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
@@ -70,7 +72,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}, onC
         domElement: renderer.domElement,
         camera: camera,
         cameraParaDatURL: '/data/camera_para.dat',
-        markerPatternURL: "/data/marker.patt",
+        markerPatternURL: "/data/kaishu3d.patt",
         scene: scene,
         onCameraReady,
     });
