@@ -59,7 +59,7 @@ export const productModels : productModelsProps = [
         {
             name: '九種盛り',
             image: './images/九種盛り.jpg',
-            model: './models/9hormone__set_raw.glb',
+            model: './models/9hormone_set_clean†.glb',
             minDetail: '様々な部位をお楽しみいただけます。',
             description: '厳選した９種類のホルモンをお楽しみにしていただけます。\nセットの特製塩だれにつけて存分にお楽しみください。',
             category: '盛り合わせ',
@@ -68,7 +68,7 @@ export const productModels : productModelsProps = [
         {
             name: 'カルビ盛り',
             image: './images/カルビ盛り.jpg',
-            model: './models/calbee_set_raw.glb',
+            model: './models/calbee_set_comp.glb',
             minDetail: 'カルビ好きにはたまらない！\n4種類のカルビ盛り合わせ!',
             description: '特上カルビ・上カルビ・並みカルビ・切り落としカルビがワンプレートでまとめて食べられます！！',
             category: '盛り合わせ',
@@ -77,7 +77,7 @@ export const productModels : productModelsProps = [
         {
             name: 'ギアラ',
             image: './images/ギアラ.jpg',
-            model: './models/giara3_raw.glb',
+            model: './models/giara3_comp.glb',
             description: '赤センマイとも呼ばれる牛の第４胃です。\n塩味で召し上がると旨味を強く感じられます',
             category: 'ホルモン',
             price: '1,030 (税込 1,133)',
@@ -85,15 +85,15 @@ export const productModels : productModelsProps = [
         {
             name: 'コプチャン',
             image: './images/コプチャン.jpg',
-            model: './models/copchan_raw2.glb',
+            model: './models/copchan_comp.glb',
             description: 'ぷりぷり食感の牛の小腸。味噌味のコプチャンとお酒がよく合います',
             category: 'ホルモン',
             price: '490 (税込539)',
         },
         {
             name: 'テッチャン',
-            image: './images/',
-            model: './models/techan†_raw.glb',
+            image: './images/テッチャン.jpg',
+            model: './models/techan†_comp.glb',
             description: 'シマチョウとも呼ばれる牛の大腸\n口の中で脂の甘みと旨味が広がります',
             category: 'ホルモン',
             price: '580 (税込 638)',
@@ -101,7 +101,7 @@ export const productModels : productModelsProps = [
         {
             name: '盛岡冷麺',
             image: './images/盛岡冷麺.jpg',
-            model: './models/cold_noodle_clean.glb',
+            model: './models/cold_noodle_comp.glb',
             minDetail: '商品の大きさにご注意ください！！',
             description: 'シメにぴったり！つるつる食感の本格冷麺。\nさっぱりとおいしく頂けます！',
             category: 'サイドメニュー',
@@ -110,9 +110,9 @@ export const productModels : productModelsProps = [
         {
             name: 'クッパ',
             image: './images/クッパ.jpg',
-            model: './models/koopa_with_bowl_clean.glb',
+            model: './models/koopa_comp.glb',
             minDetail: '商品の大きさにご注意ください！！',
-            description: 'タマゴスープにご飯が入った心温まる一品\nお食事の締めに最適です。',
+            description: 'タマゴスープにご飯が入った\n心温まる一品\nお食事の締めに最適です。',
             category: 'サイドメニュー',
             price: '530 (税込 583)',
         },
