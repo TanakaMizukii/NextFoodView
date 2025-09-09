@@ -132,7 +132,7 @@ export async function startARSession(renderer: THREE.WebGLRenderer): Promise<XRS
     try {
         const statusText = document.getElementById('status-text');
         if (statusText) {
-            statusText.textContent = 'ARセッションを開始中...';
+            statusText.textContent = 'ARセッションを再開...';
         }
 
         const sessionInit = {

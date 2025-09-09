@@ -77,7 +77,7 @@ export const productModels : productModelsProps = [
         {
             name: 'ギアラ',
             image: './images/ギアラ.jpg',
-            model: './models/giara3_comp.glb',
+            model: './models/giara3_comp2.glb',
             description: '赤センマイとも呼ばれる牛の第４胃です。\n塩味で召し上がると旨味を強く感じられます',
             category: 'ホルモン',
             price: '1,030 (税込 1,133)',
@@ -85,7 +85,7 @@ export const productModels : productModelsProps = [
         {
             name: 'コプチャン',
             image: './images/コプチャン.jpg',
-            model: './models/copchan_comp.glb',
+            model: './models/copchan_comp2.glb',
             description: 'ぷりぷり食感の牛の小腸。味噌味のコプチャンとお酒がよく合います',
             category: 'ホルモン',
             price: '490 (税込539)',
@@ -93,7 +93,7 @@ export const productModels : productModelsProps = [
         {
             name: 'テッチャン',
             image: './images/テッチャン.jpg',
-            model: './models/techan†_comp.glb',
+            model: './models/techan_comp3.glb',
             description: 'シマチョウとも呼ばれる牛の大腸\n口の中で脂の甘みと旨味が広がります',
             category: 'ホルモン',
             price: '580 (税込 638)',

@@ -9,6 +9,7 @@ import MenuContainer from '@/components/MenuContainer';
 import { ModelChangeContext } from '@/contexts/ModelChangeContext';
 import dynamic from 'next/dynamic';
 import './App.css';
+import KaishuStartPanel from "@/components/KaishuStartPanel";
 
 type ModelInfo = { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
@@ -48,7 +49,7 @@ export default function LandingPage() {
 
   return (
     <>
-      <StartPanel onUpdate={handleStart} loading={loading} />
+      <KaishuStartPanel onUpdate={handleStart} loading={loading} />
       {start &&
         <ModelChangeContext.Provider value={{ changeModel }}>
             <ThreeMain setChangeModel={setChangeModel} startAR={start} onSessionEnd={handleSessionEnd}/>

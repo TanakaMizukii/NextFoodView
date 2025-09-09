@@ -65,7 +65,6 @@ export async function handleFirstHit(
         const exitButton = document.getElementById('exit-button');
         const clearObjects = document.getElementById('clear-objects');
         if (scanningOverlay && menuContainer && arUI && exitButton && clearObjects) {
-    console.log('発動')
 
             scanningOverlay.style.display = 'none';
             menuContainer.style.display = 'block';
