@@ -12,7 +12,7 @@ type MenuContentProps = {
 
 export default function MenuContent({className, nowCategory, models}: MenuContentProps) {
     const selectCategory: {[index: string] : string[]}  = {
-        'メインメニュー': ['盛り合わせ', 'タン', 'カルビ', 'ホルモン', 'ご飯もの',],
+        'メインメニュー': ['盛り合わせ', 'タン', 'ホルモン', 'ご飯もの',],
         '盛り合わせ': ['盛り合わせ'],
         '焼肉': ['タン', 'ホルモン'],
         // 'タン・カルビ': ['タン', 'カルビ'],
