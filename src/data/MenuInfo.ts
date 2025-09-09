@@ -12,9 +12,10 @@ export type productModelsProps = Array<{
 export const productCategory : string[] =[
     'メインメニュー',
     '盛り合わせ',
-    'タン・カルビ',
-    'ホルモン',
-    'サイドメニュー',
+    '焼肉',
+    // 'タン・カルビ',
+    // 'ホルモン',
+    'ご飯もの',
     'その他',
 ]
 
@@ -22,7 +23,7 @@ export const productCategory : string[] =[
 // 商品とモデルの関連付け
 export const productModels : productModelsProps = [
         {
-            name: '上タン塩',
+            name: '上タン塩（1人前）',
             image: './images/上タン塩.jpg',
             model: './models/tongue_comp2.glb',
             description: 'タンの中でも上質な部分。レモンで食べると \n程よい油が口の中に広がります。',
@@ -30,7 +31,7 @@ export const productModels : productModelsProps = [
             price: '980 (税込 1,078)',
         },
         {
-            name: '特上カルビ',
+            name: '特上カルビ（1人前）',
             image: './images/特上カルビ.jpg',
             model: './models/',
             minDetail: 'カルビの中の最高級部位',
@@ -39,7 +40,7 @@ export const productModels : productModelsProps = [
             price: '1,500 (税込 1,650)',
         },
         {
-            name: '上カルビ',
+            name: '上カルビ（1人前）',
             image: './images/上カルビ.jpg',
             model: './models/上カルビ1人前3編集済.glb',
             minDetail:'カルビの中の上級部位',
@@ -75,23 +76,23 @@ export const productModels : productModelsProps = [
             price: '2,300 (税込 2,530)',
         },
         {
-            name: 'ギアラ',
+            name: 'ギアラ（1人前）',
             image: './images/ギアラ.jpg',
-            model: './models/giara3_comp2.glb',
+            model: './models/giara3_comp3.glb',
             description: '赤センマイとも呼ばれる牛の第４胃です。\n塩味で召し上がると旨味を強く感じられます',
             category: 'ホルモン',
-            price: '1,030 (税込 1,133)',
+            price: '490 (税込 539)',
         },
         {
-            name: 'コプチャン',
+            name: 'コプチャン（1人前）',
             image: './images/コプチャン.jpg',
             model: './models/copchan_comp2.glb',
             description: 'ぷりぷり食感の牛の小腸。味噌味のコプチャンとお酒がよく合います',
             category: 'ホルモン',
-            price: '490 (税込539)',
+            price: '490 (税込 539)',
         },
         {
-            name: 'テッチャン',
+            name: 'テッチャン（1人前）',
             image: './images/テッチャン.jpg',
             model: './models/techan_comp3.glb',
             description: 'シマチョウとも呼ばれる牛の大腸\n口の中で脂の甘みと旨味が広がります',
@@ -104,7 +105,7 @@ export const productModels : productModelsProps = [
             model: './models/cold_noodle_comp.glb',
             minDetail: '商品の大きさにご注意ください！！',
             description: 'シメにぴったり！つるつる食感の本格冷麺。\nさっぱりとおいしく頂けます！',
-            category: 'サイドメニュー',
+            category: 'ご飯もの',
             price: '900 (税込 990)',
         },
         {
@@ -113,7 +114,7 @@ export const productModels : productModelsProps = [
             model: './models/koopa_comp.glb',
             minDetail: '商品の大きさにご注意ください！！',
             description: 'タマゴスープにご飯が入った\n心温まる一品\nお食事の締めに最適です。',
-            category: 'サイドメニュー',
+            category: 'ご飯もの',
             price: '530 (税込 583)',
         },
         {
@@ -121,7 +122,7 @@ export const productModels : productModelsProps = [
             image: './images/ご飯大.jpg',
             model: './models/ご飯大.glb',
             description: '焼肉のお供に大盛りご飯！\n毎日想いを込めて丁寧に炊き上げております！',
-            category: 'サイドメニュー',
+            category: '',
             price: '300 (税込 330)',
         },
 ];
