@@ -63,8 +63,8 @@ export const productModels : productModelsProps = [
             model: './models/9hormone_set_clean†.glb',
             minDetail: '様々な部位をお楽しみいただけます。',
             description: '厳選した９種類のホルモンをお楽しみにしていただけます。\nセットの特製塩だれにつけて存分にお楽しみください。',
-            category: '盛り合わせ',
-            price: '3,500 (税込 1,892)',
+            category: '',
+            price: '1720 (税込 1,892)',
         },
         {
             name: 'カルビ盛り',
