@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
+import { TransformControls } from 'three/examples/jsm/Addons.js';
 import { CSS2DRenderer } from 'three/examples/jsm/Addons.js';
 import { KTX2Loader } from 'three/examples/jsm/Addons.js';
 import { PMREMGenerator } from 'three';
@@ -13,6 +14,7 @@ export type ThreeCtx = {
     camera: THREE.PerspectiveCamera;
     labelRenderer: CSS2DRenderer;
     reticle: THREE.Mesh;
+    transControls: TransformControls;
     light: THREE.HemisphereLight;
     loader: GLTFLoader;
     mouse: THREE.Vector2;
@@ -87,6 +89,11 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     reticle.visible = false;
     scene.add(reticle);
 
+    // オブジェクト移動用Transform追加
+    const transControls = new TransformControls(camera, canvas);
+    const gizmo = transControls.getHelper();
+    scene.add(gizmo);
+
     // マウスの位置を格納するベクトルを作成
     const mouse = new THREE.Vector2(-100, -100); // 初期値を画面外に設定
     // レイキャストの作成(初期値の設定)
@@ -124,7 +131,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         hdr.dispose();
     });
 
-    return { renderer, scene, camera, labelRenderer, loader, reticle, light, mouse, raycaster, detailNum, objectList, currentSession, hitTestSource, hitTestSourceRequested, dispose };
+    return { renderer, scene, camera, labelRenderer, loader, reticle, transControls, light, mouse, raycaster, detailNum, objectList, currentSession, hitTestSource, hitTestSourceRequested, dispose };
 }
 
 // ARButtonの代わりを作成
