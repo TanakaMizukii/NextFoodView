@@ -93,7 +93,6 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
             threeContext.renderer.render(threeContext.scene, threeContext.camera);
             threeContext.labelRenderer.render(threeContext.scene, threeContext.camera);
         };
-        threeContext.transControls.addEventListener('change', );
 
         return () => {
             threeContext.renderer.setAnimationLoop(null);

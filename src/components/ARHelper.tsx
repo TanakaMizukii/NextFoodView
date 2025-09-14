@@ -17,12 +17,14 @@ export default function ARHelper({ ctx }: { ctx: ThreeCtx | null }) {
             });
             // objectListを空にする
             ctx.objectList.length = 0;
-        const details = document.querySelectorAll('.detail');
-        details.forEach((detail) => {
+            const details = document.querySelectorAll('.detail');
+            details.forEach((detail) => {
             if (detail) {
                 const parent = detail.parentNode;
                 parent?.removeChild(detail);
             };
+            // TransformControlsも削除
+            ctx.transControls.detach();
         })
         };
     };
