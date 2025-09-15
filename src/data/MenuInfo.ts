@@ -60,10 +60,10 @@ export const productModels : productModelsProps = [
         {
             name: '九種盛り',
             image: './images/九種盛り.jpg',
-            model: './models/9hormone_set_clean†.glb',
+            model: './models/9hormone_set_comp2.glb',
             minDetail: '様々な部位をお楽しみいただけます。',
             description: '厳選した９種類のホルモンをお楽しみにしていただけます。\nセットの特製塩だれにつけて存分にお楽しみください。',
-            category: '',
+            category: '盛り合わせ',
             price: '1720 (税込 1,892)',
         },
         {
