@@ -12,12 +12,11 @@ type MenuContentProps = {
 
 export default function MenuContent({className, nowCategory, models}: MenuContentProps) {
     const selectCategory: {[index: string] : string[]}  = {
-        'メインメニュー': ['盛り合わせ', 'タン', 'ホルモン', 'ご飯もの',],
+        'メインメニュー': ['盛り合わせ', 'カルビ', 'タン', 'ホルモン', 'ご飯もの',],
         '盛り合わせ': ['盛り合わせ'],
-        '焼肉': ['タン', 'ホルモン'],
-        // 'タン・カルビ': ['タン', 'カルビ'],
+        '焼肉': ['カルビ', 'タン', 'ホルモン'],
         // 'ホルモン': ['ホルモン'],
-        'ご飯もの': ['ご飯もの'],
+        '締めの一品': ['ご飯もの'],
         // 'その他': ['その他'],
     }    // まず配列を取り出しておく
     const categories = selectCategory[nowCategory] ?? [];

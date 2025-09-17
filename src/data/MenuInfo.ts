@@ -15,7 +15,7 @@ export const productCategory : string[] =[
     '焼肉',
     // 'タン・カルビ',
     // 'ホルモン',
-    'ご飯もの',
+    '締めの一品',
     'その他',
 ]
 
@@ -33,7 +33,7 @@ export const productModels : productModelsProps = [
         {
             name: '特上カルビ（1人前）',
             image: './images/特上カルビ.jpg',
-            model: './models/',
+            model: './models/calbee_toku_comp.glb',
             minDetail: 'カルビの中の最高級部位',
             description: 'カルビの最高級部位。\n口の中でとろけだす上質な油をご堪能ください',
             category: 'カルビ',
@@ -42,7 +42,7 @@ export const productModels : productModelsProps = [
         {
             name: '上カルビ（1人前）',
             image: './images/上カルビ.jpg',
-            model: './models/上カルビ1人前3編集済.glb',
+            model: './models/calbee_jyou_comp.glb',
             minDetail:'カルビの中の上級部位',
             description: '上質な脂の旨味が楽しめる人気のカルビ。',
             category: 'カルビ',
