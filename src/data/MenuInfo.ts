@@ -25,7 +25,7 @@ export const productModels : productModelsProps = [
         {
             name: '上タン塩（1人前）',
             image: './images/上タン塩.jpg',
-            model: './models/tongue_comp2.glb',
+            model: './models/ton_tongue_comp2.glb',
             description: 'タンの中でも上質な部分。レモンで食べると \n程よい油が口の中に広がります。',
             category: 'タン',
             price: '980 (税込 1,078)',
@@ -94,7 +94,7 @@ export const productModels : productModelsProps = [
         {
             name: 'テッチャン（1人前）',
             image: './images/テッチャン.jpg',
-            model: './models/techan_comp3.glb',
+            model: './models/hor_techan_comp.glb',
             description: 'シマチョウとも呼ばれる牛の大腸\n口の中で脂の甘みと旨味が広がります',
             category: 'ホルモン',
             price: '580 (税込 638)',
