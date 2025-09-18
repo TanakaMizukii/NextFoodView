@@ -22,6 +22,7 @@ export default function ARjsPage() {
     });
     const [isCameraReady, setIsCameraReady] = useState(false);
     const [isGuideVisible, setIsGuideVisible] = useState(false);
+    const [guideText, setGuideText] = useState("カメラを準備しています...\n少々お待ちください。\n\n案内が出たら「許可」を押してください");
 
     const handleCameraReady = useCallback(() => {
         setIsCameraReady(true);
@@ -30,11 +31,12 @@ export default function ARjsPage() {
 
     const handleGuideDismiss = useCallback(() => {
         setIsGuideVisible(false);
+        setGuideText("モデルを読み込み中です...\n少々お待ちください");
     }, []);
 
     return (
         <>
-            <LoadingPanel isVisible={!isCameraReady} text={"カメラを準備しています...\n少々お待ちください。\n\n案内が出たら「許可」を押してください"} />
+            <LoadingPanel isVisible={!isCameraReady} text={guideText} />
             <GuideQRCode isVisible={isGuideVisible} />
             <ModelChangeContext.Provider value={{ changeModel }}>
                 <ThreeMain

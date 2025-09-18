@@ -53,7 +53,7 @@ export const productModels : productModelsProps = [
             image: './images/ファミリーセット.jpg',
             model: './models/family_s_set_comp2.glb',
             minDetail :'様々なお肉がセットになったお得な一皿！',
-            description : '人気なタン・ハラミを始め、並みカルビ・コプチャン・地鶏・ウインナーが特性の味噌ダレ味にて存分にお楽しみ頂けます',
+            description : '人気なタン・ハラミを始め、並みカルビ・コプチャン・地鶏・ウインナーが特性の味噌ダレ味とセットで存分にお楽しみ頂けます',
             category : '盛り合わせ',
             price : '5,800 (税込 6,380)',
         },

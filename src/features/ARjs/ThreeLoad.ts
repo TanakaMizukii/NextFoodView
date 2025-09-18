@@ -71,7 +71,7 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
 
         // 作成したdiv情報をオブジェクトとして作成
         const detail = new CSS2DObject(detailDiv);
-        detail.position.set(4, 6, -7);
+        detail.position.set(-4, 6, -7);
         detail.center.set(0, 0.8);
         model.add(detail);
         detail.layers.set(1);
