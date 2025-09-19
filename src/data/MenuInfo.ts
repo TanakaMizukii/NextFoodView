@@ -25,7 +25,7 @@ export const productModels : productModelsProps = [
         {
             name: '上タン塩（1人前）',
             image: './images/上タン塩.jpg',
-            model: './models/ton_tongue_comp2.glb',
+            model: './models/ton_tongue_comp3.glb',
             description: 'タンの中でも上質な部分。レモンで食べると \n程よい油が口の中に広がります。',
             category: 'タン',
             price: '980 (税込 1,078)',
@@ -78,7 +78,7 @@ export const productModels : productModelsProps = [
         {
             name: 'ギアラ（1人前）',
             image: './images/ギアラ.jpg',
-            model: './models/giara3_comp3.glb',
+            model: './models/hor_giara_comp.glb',
             description: '赤センマイとも呼ばれる牛の第４胃です。\n塩味で召し上がると旨味を強く感じられます',
             category: 'ホルモン',
             price: '490 (税込 539)',
@@ -86,7 +86,7 @@ export const productModels : productModelsProps = [
         {
             name: 'コプチャン（1人前）',
             image: './images/コプチャン.jpg',
-            model: './models/copchan_comp2.glb',
+            model: './models/hor_copchan_comp.glb',
             description: 'ぷりぷり食感の牛の小腸。味噌味のコプチャンとお酒がよく合います',
             category: 'ホルモン',
             price: '490 (税込 539)',
