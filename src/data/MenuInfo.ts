@@ -58,10 +58,10 @@ export const productModels : productModelsProps = [
             price: '880 (税込 968)',
         },
         {
-            name: '切り落としカルビ（1人前）',
+            name: '切り落としカルビ',
             image: './images/切り落としカルビ.jpg',
             model: './models/calbee_kiri_raw_comp.glb',
-            minDetail:'カルビの旨味を感じられる一品',
+            minDetail:'カルビの旨味を贅沢に',
             description: 'リーズナブルにカルビのおいしさを味わえます。\n切り込みが入っているため軟らかくおいしく頂けます。',
             category: 'カルビ',
             price: '690（税込 759)',

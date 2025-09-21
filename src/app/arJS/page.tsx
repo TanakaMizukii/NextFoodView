@@ -32,6 +32,8 @@ export default function ARjsPage() {
     const handleGuideDismiss = useCallback(() => {
         setIsGuideVisible(false);
         setGuideText("モデルを読み込み中です...\n少々お待ちください");
+        const openPanel = document.getElementById('menu-openGuide')
+        if (openPanel) {openPanel.style.display = 'flex'};
     }, []);
 
     return (
