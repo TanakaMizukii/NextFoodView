@@ -12,6 +12,7 @@ export function handleSessionEndCleanup(
     if (ctx) {
         // 1. Reticleをシーンから削除
         ctx.scene.remove(ctx.reticle);
+        ctx.transControls.detach();
 
         // 2. 表示されているモデルを削除・メモリ解放
         if (nowModelRef.current) {
@@ -21,6 +22,8 @@ export function handleSessionEndCleanup(
         }
         // objectListもクリア
         ctx.objectList.length = 0;
+        // TransformControlsも削除
+        ctx.transControls.detach();
     }
 
     // 3. UIを復元

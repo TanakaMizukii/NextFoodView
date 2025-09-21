@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/Addons.js';
+import { TransformControls } from 'three/examples/jsm/Addons.js';
 import { CSS2DRenderer } from 'three/examples/jsm/Addons.js';
 import { KTX2Loader } from 'three/examples/jsm/Addons.js';
 import { PMREMGenerator } from 'three';
@@ -13,6 +14,9 @@ export type ThreeCtx = {
     camera: THREE.PerspectiveCamera;
     labelRenderer: CSS2DRenderer;
     reticle: THREE.Mesh;
+    transControls: TransformControls;
+    gizmo: THREE.Object3D;
+    controller: THREE.XRTargetRaySpace;
     light: THREE.HemisphereLight;
     loader: GLTFLoader;
     mouse: THREE.Vector2;
@@ -87,6 +91,14 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     reticle.visible = false;
     scene.add(reticle);
 
+    // オブジェクト移動用Transform追加
+    const transControls = new TransformControls(camera, labelRenderer.domElement);
+    transControls.showY = false;
+    const gizmo = transControls.getHelper();
+    scene.add(gizmo); // gizmoをシーンに追加
+    transControls.setMode('translate'); // モードを「移動」に固定
+    gizmo.visible = false; // gizmoを初期状態で非表示に
+
     // マウスの位置を格納するベクトルを作成
     const mouse = new THREE.Vector2(-100, -100); // 初期値を画面外に設定
     // レイキャストの作成(初期値の設定)
@@ -100,6 +112,9 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     // DevicePixelRatio制限(初期値１)
     const dpr = Math.min(window.devicePixelRatio || 1, pixelRatioCap);
     renderer.setPixelRatio(dpr);
+
+    const controller = renderer.xr.getController(0);
+    scene.add(controller);
 
     // クリーンナップ関数
     const dispose = () => {
@@ -124,7 +139,10 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
         hdr.dispose();
     });
 
-    return { renderer, scene, camera, labelRenderer, loader, reticle, light, mouse, raycaster, detailNum, objectList, currentSession, hitTestSource, hitTestSourceRequested, dispose };
+    return { renderer, scene, camera, labelRenderer, loader, reticle, transControls, gizmo,
+        light, mouse, raycaster, detailNum, objectList, currentSession, hitTestSource, hitTestSourceRequested,
+        controller, dispose,
+    };
 }
 
 // ARButtonの代わりを作成

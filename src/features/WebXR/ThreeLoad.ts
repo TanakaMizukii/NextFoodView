@@ -18,7 +18,7 @@ export type ModelProps = {
 export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THREE.Group<THREE.Object3DEventMap> | null): Promise<THREE.Group<THREE.Object3DEventMap> | null> {
     const {
         modelName = '上タン塩（１人前）',
-        modelPath = 'models/tongue_comp2.glb',
+        modelPath = 'models/ton_tongue_comp3.glb',
         modelDetail = 'タンの中の上質な部分を選別\n程よい油が口の中に広がります',
         modelPrice = '980 (税込1,078)'
     } = Model;

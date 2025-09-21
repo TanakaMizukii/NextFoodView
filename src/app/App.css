@@ -29,7 +29,7 @@ body {
     align-items: center;
     z-index: 1000;
     transition: opacity 0.3s ease;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #000;
 }
 
 .statusText {
