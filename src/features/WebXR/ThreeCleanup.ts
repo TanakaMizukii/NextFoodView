@@ -32,6 +32,7 @@ export function handleSessionEndCleanup(
     const exitButton = document.getElementById('exit-button');
     const clearObjects = document.getElementById('clear-objects');
     const menuContainer = document.getElementById('menu-container');
+    const openPanel = document.getElementById('menu-openGuide')
     const startOverlay = document.getElementById('start-overlay');
 
     if (label) {
@@ -42,6 +43,7 @@ export function handleSessionEndCleanup(
     if (exitButton) exitButton.style.display = 'none';
     if (clearObjects) clearObjects.style.display = 'none';
     if (menuContainer) menuContainer.style.display = 'none';
+    if (openPanel) {openPanel.style.display = 'flex'};
     if (startOverlay) startOverlay.style.display = 'flex'; // StartPanelを再表示
 
     // 4. 初回表示ロジックの変数をリセット

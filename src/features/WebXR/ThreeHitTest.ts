@@ -61,13 +61,15 @@ export async function handleFirstHit(
     if (isVisible) {
         const scanningOverlay = document.getElementById('scanning-overlay');
         const menuContainer = document.getElementById('menu-container');
+        const openPanel = document.getElementById('menu-openGuide')
         const arUI = document.getElementById('ar-ui');
         const exitButton = document.getElementById('exit-button');
         const clearObjects = document.getElementById('clear-objects');
-        if (scanningOverlay && menuContainer && arUI && exitButton && clearObjects) {
-
+        if (scanningOverlay && menuContainer && openPanel && arUI && exitButton && clearObjects) {
+            
             scanningOverlay.style.display = 'none';
             menuContainer.style.display = 'block';
+            openPanel.style.display = 'flex';
             arUI.style.display = 'block';
             exitButton.style.display = 'block';
             clearObjects.style.display = 'flex';
