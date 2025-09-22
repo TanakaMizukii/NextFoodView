@@ -133,7 +133,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     const pmrem = new PMREMGenerator(renderer);
     new RGBELoader()
     .setPath('/hdr/')
-    .load('spot1Lux.hdr', (hdr) => {
+    .load('11zon_forest.hdr', (hdr) => {
         const envTex = pmrem.fromEquirectangular(hdr).texture;
         scene.environment = envTex;
         hdr.dispose();
