@@ -128,7 +128,7 @@ export const productModels : productModelsProps = [
         {
             name: '盛岡冷麺',
             image: './images/盛岡冷麺.jpg',
-            model: './models/bowl_coldnoodle_125_comp.glb',
+            model: './models/bowl_cpldnoodle_comp.glb',
             minDetail: '商品の大きさにご注意ください！！',
             description: 'シメにぴったり！つるつる食感の本格冷麺。\nさっぱりとおいしく頂けます！',
             category: 'ご飯もの',
@@ -137,7 +137,7 @@ export const productModels : productModelsProps = [
         {
             name: 'クッパ',
             image: './images/クッパ.jpg',
-            model: './models/koopa_comp.glb',
+            model: './models/bowl_koopa_comp.glb',
             minDetail: '商品の大きさにご注意ください！！',
             description: 'タマゴスープにご飯が入った\n心温まる一品\nお食事の締めに最適です。',
             category: 'ご飯もの',
