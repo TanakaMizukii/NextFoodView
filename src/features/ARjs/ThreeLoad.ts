@@ -19,7 +19,6 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
     const {
         modelName = '上タン塩（１人前）',
         modelPath = 'models/ton_tongue_comp3.glb',
-        // modelPath = 'models/stenless_plate3.glb',
         modelDetail = 'タンの中の上質な部分を選別\n程よい油が口の中に広がります',
         modelPrice = '980 (税込1078)'
     } = Model;
