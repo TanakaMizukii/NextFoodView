@@ -128,7 +128,7 @@ export const productModels : productModelsProps = [
         {
             name: '盛岡冷麺',
             image: './images/盛岡冷麺.jpg',
-            model: './models/bowl_cpldnoodle_comp.glb',
+            model: './models/bowl_coldnoodle_comp.glb',
             minDetail: '商品の大きさにご注意ください！！',
             description: 'シメにぴったり！つるつる食感の本格冷麺。\nさっぱりとおいしく頂けます！',
             category: 'ご飯もの',
