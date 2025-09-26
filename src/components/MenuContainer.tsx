@@ -51,6 +51,7 @@ export default function MenuContainer({ className } : MenuContainerProps) {
             if (diff > 50 && !toggle) {
                 // 上スワイプで展開
                 setToggle(true);
+                dismissGuide();
             } else if (diff < -50 && toggle) {
                 // 下スワイプで閉じる
                 setToggle(false);
@@ -124,7 +125,7 @@ const GuideHint = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #ffffff;
     font-size:20px;
     font-weight: bold;
     text-align: center;
