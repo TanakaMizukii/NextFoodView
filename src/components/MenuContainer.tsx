@@ -65,7 +65,10 @@ export default function MenuContainer({ className } : MenuContainerProps) {
     const [category, setCategory] = useState<string>('メインメニュー');
     const c_update = (elem:string) => setCategory(elem);
     const toggleCheck = () => {
-        if (!toggle) {setToggle(true)};
+        if (!toggle) {
+            setToggle(true);
+            dismissGuide();
+        };
     }
 
     return(
