@@ -64,6 +64,9 @@ export default function MenuContainer({ className } : MenuContainerProps) {
     // タブ情報伝達用State
     const [category, setCategory] = useState<string>('メインメニュー');
     const c_update = (elem:string) => setCategory(elem);
+    const toggleCheck = () => {
+        if (!toggle) {setToggle(true)};
+    }
 
     return(
         <div >
@@ -74,7 +77,7 @@ export default function MenuContainer({ className } : MenuContainerProps) {
                 <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
                     <MenuToggle onUpdate={t_update} toggle={toggle}/>
                 </div>
-                <TabNavigation pdtLists={productCategory} onUpdate={c_update}/>
+                <TabNavigation pdtLists={productCategory} onUpdate={c_update} toggleCheck={toggleCheck}/>
                 <ToggleChangeContext.Provider value={toggleConfig}>
                     <MyContent nowCategory={category} models={productModels} />
                 </ToggleChangeContext.Provider>

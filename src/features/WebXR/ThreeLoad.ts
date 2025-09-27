@@ -17,10 +17,10 @@ export type ModelProps = {
 
 export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THREE.Group<THREE.Object3DEventMap> | null): Promise<THREE.Group<THREE.Object3DEventMap> | null> {
     const {
-        modelName = '上タン塩（１人前）',
-        modelPath = 'models/ton_tongue_comp3.glb',
-        modelDetail = 'タンの中の上質な部分を選別\n程よい油が口の中に広がります',
-        modelPrice = '980 (税込1,078)'
+        modelName = '盛岡冷麺',
+        modelPath = 'models/bowl_coldnoodle_comp.glb',
+        modelDetail = 'シメにぴったり！つるつる食感の本格冷麺。\nさっぱりとおいしく頂けます！',
+        modelPrice = '900 (税込 990)',
     } = Model;
 
     let detailDiv = null;

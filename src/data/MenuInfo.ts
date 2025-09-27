@@ -12,11 +12,9 @@ export type productModelsProps = Array<{
 export const productCategory : string[] =[
     'メインメニュー',
     '盛り合わせ',
-    '焼肉',
-    // 'タン・カルビ',
-    // 'ホルモン',
+    'カルビ',
+    'ホルモン',
     '締めの一品',
-    'その他',
 ]
 
 
@@ -131,7 +129,7 @@ export const productModels : productModelsProps = [
             model: './models/bowl_coldnoodle_comp.glb',
             minDetail: '商品の大きさにご注意ください！！',
             description: 'シメにぴったり！つるつる食感の本格冷麺。\nさっぱりとおいしく頂けます！',
-            category: 'ご飯もの',
+            category: '締めの一品',
             price: '900 (税込 990)',
         },
         {
@@ -140,7 +138,7 @@ export const productModels : productModelsProps = [
             model: './models/bowl_koopa_comp.glb',
             minDetail: '商品の大きさにご注意ください！！',
             description: 'タマゴスープにご飯が入った\n心温まる一品\nお食事の締めに最適です。',
-            category: 'ご飯もの',
+            category: '締めの一品',
             price: '530 (税込 583)',
         },
         {
