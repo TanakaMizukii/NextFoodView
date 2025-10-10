@@ -4,11 +4,15 @@ import { useState } from "react";
 type categoryProps = {
     pdtLists: string[];
     onUpdate: (elem: string) => void;
+    toggleCheck: () => void;
 };
 
-export default function TabNavigation({pdtLists, onUpdate} : categoryProps) {
+export default function TabNavigation({pdtLists, onUpdate, toggleCheck} : categoryProps) {
     const [tab, setTab] = useState(0);
-    const handleClick = (elem:string) => onUpdate(elem)
+    const handleClick = (elem:string) => {
+        onUpdate(elem);
+        toggleCheck();
+    }
     return(
         <MyTab>
             <div className="tab-navigation">

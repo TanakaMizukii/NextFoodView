@@ -17,10 +17,10 @@ export type ModelProps = {
 
 export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THREE.Group<THREE.Object3DEventMap> | null): Promise<THREE.Group<THREE.Object3DEventMap> | null> {
     const {
-        modelName = '上タン塩（１人前）',
-        modelPath = 'models/ton_tongue_comp3.glb',
-        modelDetail = 'タンの中の上質な部分を選別\n程よい油が口の中に広がります',
-        modelPrice = '980 (税込1,078)'
+        modelName = 'カルビ盛り',
+        modelPath = 'models/calbee_set_comp.glb',
+        modelDetail = '特上カルビ・上カルビ・並みカルビ・切り落としカルビがワンプレートでまとめて食べられます！！',
+        modelPrice = '2,300 (税込 2,530)',
     } = Model;
 
     let detailDiv = null;
