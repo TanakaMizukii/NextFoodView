@@ -47,10 +47,10 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     });
 
     const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xaaaaaa);
 
     const camera = new THREE.PerspectiveCamera(45, 1, 1, 1000);
-    camera.position.set(0, 50, 40);
-    camera.lookAt(0, 0, 0);
+    camera.position.set(16, 22, 20);
 
     // 簡易ライト
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
@@ -69,6 +69,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     if (useControls) {
         controls = new OrbitControls(camera, labelRenderer.domElement);
         controls.enableDamping = true;
+        controls.target.set(0, 0, 0);
     }
 
     // モデルデータを読み込むためのローダーを作成
@@ -115,6 +116,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     .load('11zon_forest.hdr', (hdr) => {
         const envTex = pmrem.fromEquirectangular(hdr).texture;
         scene.environment = envTex;
+        scene.background = envTex;
         hdr.dispose();
     });
 

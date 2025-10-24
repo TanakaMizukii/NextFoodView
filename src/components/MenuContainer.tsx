@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { keyframes } from "styled-components";
 import MenuToggle from "./MenuToggle";
 import TabNavigation from "./TabNavigation";
@@ -6,7 +6,7 @@ import { MyContent } from "./MenuContent";
 import { productCategory, productModels } from "../data/MenuInfo";
 
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ToggleChangeContext } from "../contexts/ToggleChangeContext";
 
 // 型エイリアスの作成
@@ -19,6 +19,8 @@ type MyContainerProps = {
 
 export default function MenuContainer({ className } : MenuContainerProps) {
     const [toggle, setToggle] = useState(false);
+    const [isDesktop, setIsDesktop] = useState(false);
+    const [isLandscape, setIsLandscape] = useState(false);
 
     const toggleConfig = {
         toggleChange: () => setToggle(t => !t)
@@ -71,8 +73,39 @@ export default function MenuContainer({ className } : MenuContainerProps) {
         };
     }
 
+    // Detect desktop and landscape to control initial open and GuideHint visibility
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const desktopQuery = window.matchMedia('(min-width: 1024px)');
+        const landscapeQuery = window.matchMedia('(orientation: landscape)');
+
+        const applyMatches = () => {
+            setIsDesktop(desktopQuery.matches);
+            setIsLandscape(landscapeQuery.matches);
+        };
+        applyMatches();
+
+        const handleDesktop = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+        const handleLandscape = (e: MediaQueryListEvent) => setIsLandscape(e.matches);
+        desktopQuery.addEventListener('change', handleDesktop);
+        landscapeQuery.addEventListener('change', handleLandscape);
+        return () => {
+            desktopQuery.removeEventListener('change', handleDesktop);
+            landscapeQuery.removeEventListener('change', handleLandscape);
+        };
+    }, []);
+
+    // Open by default on desktop size
+    useEffect(() => {
+        if (isDesktop) {
+            setToggle(true);
+            dismissGuide();
+        }
+    }, [isDesktop]);
+
     return(
         <div >
+            <GuideHintOverride />
             <GuideHint id="menu-openGuide" >
                 タップまたは上スワイプ<br/>でメニューを開けます
             </GuideHint>
@@ -85,12 +118,20 @@ export default function MenuContainer({ className } : MenuContainerProps) {
                     <MyContent nowCategory={category} models={productModels} />
                 </ToggleChangeContext.Provider>
             </MyContainer>
+            <OpenMenuButton
+                aria-label="Open menu"
+                onClick={() => { setToggle(true); dismissGuide(); }}
+                $show={!toggle}
+            >
+                メニューを開く
+            </OpenMenuButton>
         </div>
     );
 }
 
 // 今回はStyled Componentsを使用
 export const MyContainer = styled.div<MyContainerProps>`
+    /* Default: mobile portrait bottom sheet */
     display: none;
     position: fixed;
     bottom: 0;
@@ -103,8 +144,60 @@ export const MyContainer = styled.div<MyContainerProps>`
     z-index: 100;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 
-    height: ${({ $expanded }) => ($expanded ? '75vh' : '120px')};
+    height: ${({ $expanded }) => ($expanded ? '75vh' : '110px')};
     overflow-y: ${({ $expanded }) => ($expanded ? 'auto' : '')};
+
+    /* Desktop size or phone landscape: right side panel */
+    @media (min-width: 1024px), (orientation: landscape) {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: auto;
+        width: 420px;
+        height: 100vh;
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+        transform: translateX(${({ $expanded }) => ($expanded ? '0' : '100%')});
+        transition: transform 0.3s ease-out;
+    }
+`;
+
+// Hide GuideHint on desktop and landscape regardless of inline styles
+const GuideHintOverride = createGlobalStyle`
+    @media (min-width: 1024px), (orientation: landscape) {
+        #menu-openGuide { display: none !important; }
+    }
+`;
+
+// Right-dock open button (desktop/landscape only)
+const OpenMenuButton = styled.button<{ $show: boolean }>`
+    display: none;
+    position: fixed;
+    right: 40px;
+    top: 40px;
+    z-index: 105;
+    padding: 12px 16px;
+    border-radius: 9999px;
+    background: rgba(245, 245, 245, 0.95);
+    color: #333;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+    font-weight: 600;
+
+    @media (min-width: 1024px), (orientation: landscape) {
+        display: ${({ $show }) => ($show ? 'flex' : 'none')};
+        align-items: center;
+        justify-content: center;
+    }
+
+    &:hover {
+        filter: brightness(0.98);
+    }
 `;
 
 // --- ガイド: アニメーション ---

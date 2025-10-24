@@ -67,6 +67,8 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
         const detach = attachResizeHandlers(threeContext, containerRef.current);
 
         function animation() {
+            console.log(threeContext.camera.position);
+            threeContext.controls?.update();
             threeContext.renderer.render(threeContext.scene, threeContext.camera);
             threeContext.labelRenderer.render(threeContext.scene, threeContext.camera);
         }
