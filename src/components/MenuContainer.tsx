@@ -20,7 +20,6 @@ type MyContainerProps = {
 export default function MenuContainer({ className } : MenuContainerProps) {
     const [toggle, setToggle] = useState(false);
     const [isDesktop, setIsDesktop] = useState(false);
-    const [isLandscape, setIsLandscape] = useState(false);
 
     const toggleConfig = {
         toggleChange: () => setToggle(t => !t)
@@ -74,27 +73,22 @@ export default function MenuContainer({ className } : MenuContainerProps) {
     }
 
     // Detect desktop and landscape to control initial open and GuideHint visibility
+    // Detect desktop to control initial open and GuideHint visibility
     useEffect(() => {
         if (typeof window === 'undefined') return;
-        const desktopQuery = window.matchMedia('(min-width: 1024px)');
-        const landscapeQuery = window.matchMedia('(orientation: landscape)');
+            const desktopQuery = window.matchMedia('(min-width: 1024px)');
 
-        const applyMatches = () => {
-            setIsDesktop(desktopQuery.matches);
-            setIsLandscape(landscapeQuery.matches);
+            const applyMatches = () => {
+                setIsDesktop(desktopQuery.matches);
         };
         applyMatches();
 
         const handleDesktop = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
-        const handleLandscape = (e: MediaQueryListEvent) => setIsLandscape(e.matches);
         desktopQuery.addEventListener('change', handleDesktop);
-        landscapeQuery.addEventListener('change', handleLandscape);
         return () => {
             desktopQuery.removeEventListener('change', handleDesktop);
-            landscapeQuery.removeEventListener('change', handleLandscape);
         };
     }, []);
-
     // Open by default on desktop size
     useEffect(() => {
         if (isDesktop) {
