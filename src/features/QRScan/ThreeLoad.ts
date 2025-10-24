@@ -25,28 +25,30 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
 
     let detailDiv = null;
     try {
-        if (prevModel) {
-            ctx.scene.remove(prevModel);
-            // 変更する前に今まで映していたモデルのメモリの解放
-            disposeModel(prevModel);
-            // オブジェクトのリストをクリア
-            ctx.objectList = [];
-        }
-
         // ローディングインジケーターの表示
         const loadingOverlay = document.getElementById('loading');
-        if (loadingOverlay) {
-            loadingOverlay.classList.add('visible');
+        const guideMarker = document.getElementById('guideMarker');
+        const guideVisible = guideMarker?.classList.contains('visible');
+
+        if (!guideVisible) {
+            if (loadingOverlay) {
+                loadingOverlay?.classList.add('visible');
+            }
         }
 
         // 今回表すモデルの表示
         const objects = await ctx.loader.loadAsync(modelPath);
-
+        // 前モデルの削除
+        if (prevModel) {
+            ctx.smoothedRoot.remove(prevModel);
+            disposeModel(prevModel);
+            ctx.objectList = [];
+        }
         const model = objects.scene;
-        model.scale.set(1, 1, 1);
+        model.scale.set(0.09, 0.09, 0.09);
         // 詳細オブジェクトの表示状態をboolean値で設定
         model.userData.isDetail = true;
-        ctx.scene.add(model);
+        ctx.smoothedRoot.add(model);
         // 配列に保存
         ctx.objectList.push(model);
         const nowModel = model;
@@ -69,7 +71,7 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
 
         // 作成したdiv情報をオブジェクトとして作成
         const detail = new CSS2DObject(detailDiv);
-        detail.position.set(4, 6, -7);
+        detail.position.set(-4, 6, -7);
         detail.center.set(0, 0.8);
         model.add(detail);
         detail.layers.set(1);

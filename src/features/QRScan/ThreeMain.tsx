@@ -1,28 +1,30 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from 'three';
-import { initThree, attachResizeHandlers } from "./ThreeInit";
-import { loadModel } from "./ThreeLoad";
-import { handleClick } from "./ThreeClick";
+import { initThree, attachResizeHandlers } from "@/features/QRScan/ThreeInit";
+import { loadModel } from "@/features/QRScan/ThreeLoad";
+import { handleClick } from "@/features/QRScan/ThreeClick";
 import LoadingPanel from "@/components/LoadingPanel";
 
+
+/** AR.js Main */
 type ThreeContext = ReturnType<typeof initThree>;
 
-// 先に型を用意
 type ModelInfo = { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
 
-// これにする：
 type ThreeMainProps = {
     setChangeModel: React.Dispatch<React.SetStateAction<ChangeModelFn>>;
+    onCameraReady: () => void;
+    onGuideDismiss: () => void;
 };
 
-export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
+export default function ThreeMain({ setChangeModel, onCameraReady, onGuideDismiss }: ThreeMainProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const nowModelRef = useRef<THREE.Group | null>(null);
     const [ctx, setCtx] = useState<ThreeContext | null>(null);
 
-    const changeModel = useCallback(async (modelInfo: { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; }) => {
+    const changeModel = useCallback(async (modelInfo: { modelName?: string, modelPath?: string; modelDetail?: string; modelPrice?: string; }) => {
         if (!ctx) return;
         // 新しいモデルをロード
         const nowModel = await loadModel(modelInfo, ctx, nowModelRef.current);
@@ -44,41 +46,42 @@ export default function ThreeMain({ setChangeModel }: ThreeMainProps) {
             pixelRatioCap: 2,
             alpha: true,
             antialias: true,
-            useControls: true,
         };
-        const threeContext = initThree(canvasElement, rendererOptions);
+        const threeContext = initThree(canvasElement, rendererOptions, onCameraReady, onGuideDismiss);
         setCtx(threeContext);
-        const menuContainer = document.getElementById('menu-container');
-        if (menuContainer) {menuContainer.style.display = 'block'}
-        const openPanel = document.getElementById('menu-openGuide')
-        if (openPanel) {openPanel.style.display = 'flex'};
         const clickHandler = handleClick(threeContext);
+        const menuContainer = document.getElementById('menu-container');
+        if (menuContainer) {menuContainer.style.display = 'block'};
         threeContext.labelRenderer.domElement.addEventListener('click', clickHandler);
 
         (async () => {
             const firstModel = {};
             // useEffect内で直接呼び出す代わりに、state更新後のeffectを利用
             if(threeContext){
-                const nowModel = await loadModel(firstModel, threeContext, nowModelRef.current);
+                const nowModel = await loadModel(firstModel, threeContext, null);
                 nowModelRef.current = nowModel;
             }
         })();
 
         const detach = attachResizeHandlers(threeContext, containerRef.current);
 
-        function animation() {
-            threeContext.controls?.update();
+        function animate() {
+            if (threeContext.arToolkitSource.ready) {
+                threeContext.arToolkitContext.update(threeContext.arToolkitSource.domElement);
+            }
+            threeContext.smoothedControls.update(threeContext.markerRoot);
             threeContext.renderer.render(threeContext.scene, threeContext.camera);
             threeContext.labelRenderer.render(threeContext.scene, threeContext.camera);
+            requestAnimationFrame(animate)
         }
-        threeContext.renderer.setAnimationLoop(animation);
+        animate();
 
         return () => {
             threeContext.labelRenderer.domElement.removeEventListener('click', clickHandler);
             detach();
             threeContext.dispose();
         };
-    }, []);
+    }, [onCameraReady, onGuideDismiss]);
 
     return (
         <>
