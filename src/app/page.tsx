@@ -4,12 +4,12 @@ import { useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getMobileOS } from "../lib/detectOS";
 import { checkImmersiveARSupport } from "../lib/checkWebXR";
-import StartPanel from "@/components/StartPanel";
 import MenuContainer from '@/components/MenuContainer';
 import { ModelChangeContext } from '@/contexts/ModelChangeContext';
 import dynamic from 'next/dynamic';
 import './App.css';
 import KaishuStartPanel from "@/components/KaishuStartPanel";
+// import StartPanel from "@/components/StartPanel";
 
 type ModelInfo = { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;

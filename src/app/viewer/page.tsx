@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import '../App.css';
-import MenuContainer from '@/components/MenuContainer';
+import ViewerContainer from '@/components/ViewerContainer';
 import { ModelChangeContext } from '@/contexts/ModelChangeContext';
 import dynamic from 'next/dynamic';
 
@@ -23,7 +23,7 @@ export default function ViewerPage() {
         <>
         <ModelChangeContext.Provider value={{ changeModel }}>
             <ThreeMain setChangeModel={setChangeModel} />
-            <MenuContainer />
+            <ViewerContainer />
         </ModelChangeContext.Provider>
         </>
     );
