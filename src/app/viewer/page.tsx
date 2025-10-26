@@ -1,10 +1,16 @@
 'use client'
 
 import { useState } from 'react';
+import styled from 'styled-components';
 import '../App.css';
-import ViewerContainer from '@/components/ViewerContainer';
 import { ModelChangeContext } from '@/contexts/ModelChangeContext';
 import dynamic from 'next/dynamic';
+import TopAppBar from '@/components/Viewer/TopAppBar';
+import CategoryCarousel from '@/components/Viewer/CategoryCarousel';
+import NavArrows from '@/components/Viewer/NavArrows';
+import SpecificPanels from '@/components/Viewer/SpecificPanels';
+import BottomSheet from '@/components/Viewer/BottomSheet';
+import PrimaryFab from '@/components/Viewer/PrimaryFab';
 
 type ModelInfo = { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
@@ -22,9 +28,59 @@ export default function ViewerPage() {
     return (
         <>
         <ModelChangeContext.Provider value={{ changeModel }}>
-            <ThreeMain setChangeModel={setChangeModel} />
-            <ViewerContainer />
+            <Root>
+                <SceneLayer>
+                    <ThreeMain setChangeModel={setChangeModel} />
+                </SceneLayer>
+
+                <TopLayer>
+                    <TopAppBar />
+                    <CategoryCarousel />
+                    <PrimaryFab />
+                </TopLayer>
+
+                <BottomLayer>
+                    <NavArrows />
+                    <SpecificPanels />
+                    <BottomSheet />
+                </BottomLayer>
+            </Root>
         </ModelChangeContext.Provider>
         </>
     );
 }
+
+const Root = styled.div`
+    position: relative;
+    width: 100%;
+    height: 100dvh;      /* 動的ビューポート高 */
+    overflow: hidden;
+`;
+
+const SceneLayer = styled.div`
+    position: absolute;
+    inset: 0;            /* = top:0; right:0; bottom:0; left:0 */
+    z-index: 0;
+`;
+
+const TopLayer = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    /* 下の3Dを操作可能に保ちたい時は必要に応じて */
+    pointer-events: auto;
+    & > * { pointer-events: auto; } /* ボタン等は操作可能 */
+`;
+
+const BottomLayer = styled.div`
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    /* 下の3Dを操作可能に保ちたい時は必要に応じて */
+    pointer-events: auto;
+    & > * { pointer-events: auto; } /* ボタン等は操作可能 */
+`;

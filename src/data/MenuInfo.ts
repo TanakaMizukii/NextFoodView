@@ -1,3 +1,11 @@
+export const productCategory : string[] =[
+    'メインメニュー',
+    '盛り合わせ',
+    'カルビ',
+    'ホルモン',
+    '締めの一品',
+]
+
 // 配列に対して型エイリアスを作成
 export type productModelsProps = Array<{
     name: string,
@@ -8,15 +16,6 @@ export type productModelsProps = Array<{
     category: string,
     price: string,
 }>;
-
-export const productCategory : string[] =[
-    'メインメニュー',
-    '盛り合わせ',
-    'カルビ',
-    'ホルモン',
-    '締めの一品',
-]
-
 
 // 商品とモデルの関連付け
 export const productModels : productModelsProps = [
@@ -151,3 +150,146 @@ export const productModels : productModelsProps = [
         },
 ];
 export default productModels;
+
+
+
+
+// Viewer用デモ要素
+
+export interface Category {
+    id: number;
+    name: string;
+    icon: string;
+    count: number;
+    description: string;
+}
+
+export type CategoryState = 'center' | 'adjacent' | 'far';
+
+export interface CategoryStates {
+    [index: number]: CategoryState;
+}
+
+export const categories = [
+            {
+                id: 1,
+                name: '盛り合わせ',
+                icon: '🍱',
+                count: 5,
+                description: '様々な部位を楽しめるお得なセット'
+            },
+            {
+                id: 2,
+                name: 'カルビ',
+                icon: '🥩',
+                count: 8,
+                description: '定番の人気メニュー'
+            },
+            {
+                id: 3,
+                name: 'ロース',
+                icon: '🥓',
+                count: 6,
+                description: '柔らかく上品な味わい'
+            },
+            {
+                id: 4,
+                name: 'ホルモン',
+                icon: '🍖',
+                count: 7,
+                description: '新鮮で旨味たっぷり'
+            },
+            {
+                id: 5,
+                name: 'タン',
+                icon: '👅',
+                count: 4,
+                description: 'コリコリとした食感'
+            },
+            {
+                id: 6,
+                name: 'サイド',
+                icon: '🥗',
+                count: 10,
+                description: 'サラダやキムチなど'
+            }
+];
+
+export interface Product {
+    id: number;
+    name: string;
+    shortName: string;
+    category: string;
+    price: number;
+    description: string;
+    image: string;
+    weight: string;
+    calories: string;
+    origin: string;
+    recommended: string;
+    tags: string[];
+}
+
+export interface ProductSpec {
+    label: string;
+    value: string;
+}
+
+export const products = [
+            {
+                id: 1,
+                name: '特上カルビ',
+                shortName: '特上',
+                category: 'カルビ',
+                price: 1650,
+                description: 'カルビの中の最高級部位。霜降りが美しく、口の中でとろける柔らかさが特徴です。',
+                image: '🥩',
+                weight: '150g',
+                calories: '450kcal',
+                origin: '国産黒毛和牛',
+                recommended: 'タレ・塩両方',
+                tags: ['高級', '霜降り', 'おすすめ']
+            },
+            {
+                id: 2,
+                name: '上カルビ',
+                shortName: '上',
+                category: 'カルビ',
+                price: 1188,
+                description: 'カルビの旨味を存分に楽しめる一品。適度な霜降りとジューシーさが魅力。',
+                image: '🥩',
+                weight: '140g',
+                calories: '400kcal',
+                origin: '国産和牛',
+                recommended: 'タレ推奨',
+                tags: ['人気', 'ジューシー']
+            },
+            {
+                id: 3,
+                name: '並カルビ',
+                shortName: '並',
+                category: 'カルビ',
+                price: 968,
+                description: '大判による満足感が魅力の一品。お手頃価格で楽しめる定番メニュー。',
+                image: '🥩',
+                weight: '150g',
+                calories: '380kcal',
+                origin: '国産牛',
+                recommended: 'タレ・塩両方',
+                tags: ['定番', 'お手頃']
+            },
+            {
+                id: 4,
+                name: '切り落とし',
+                shortName: '切落',
+                category: 'カルビ',
+                price: 759,
+                description: 'カルビの旨味を贅沢に。様々な部位を楽しめるお得な一品。',
+                image: '🥩',
+                weight: '130g',
+                calories: '350kcal',
+                origin: '国産牛',
+                recommended: 'タレ推奨',
+                tags: ['お得', 'たっぷり']
+            }
+        ];
