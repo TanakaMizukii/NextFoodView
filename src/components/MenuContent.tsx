@@ -1,13 +1,13 @@
 import styled from "styled-components";
 import MenuCategory from "./MenuCategory";
 import MenuItem from "./MenuItem";
-import type { productModelsProps } from "../data/MenuInfo";
+import type { ProductModelsProps } from "../data/MenuInfo";
 import React from "react";
 
 type MenuContentProps = {
     className?: string;
     nowCategory: string;
-    models: productModelsProps;
+    models: ProductModelsProps;
 }
 
 export default function MenuContent({className, nowCategory, models}: MenuContentProps) {

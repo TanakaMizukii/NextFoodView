@@ -11,7 +11,9 @@ import NavArrows from '@/components/Viewer/NavArrows';
 import SpecificPanels from '@/components/Viewer/SpecificPanels';
 import BottomSheet from '@/components/Viewer/BottomSheet';
 import PrimaryFab from '@/components/Viewer/PrimaryFab';
-import { Product, products } from '@/data/MenuInfo';
+
+import productModels from '@/data/MenuInfo';
+import type { ProductModel } from '@/data/MenuInfo';
 
 type ModelInfo = { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
@@ -25,7 +27,7 @@ export default function ViewerPage() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentCategory, setCurrentCategory] = useState(1); // カルビが初期選択
 
-    const currentProduct: Product = products[currentIndex]
+    const currentProduct: ProductModel = productModels[currentIndex]
 
     const [changeModel, setChangeModel] = useState<ChangeModelFn>(() => async (info: ModelInfo) => {
         console.warn("changeModel is not yet initialized", info);

@@ -62,7 +62,7 @@ export default function CategoryCarousel({setCurrentCategory}: CategoryProps) {
 
         const container = categoryScrollRef.current;
         if (container) {
-            const timeoutId = setTimeout(() => handleScroll(), 200);
+            const timeoutId = setTimeout(() => handleScroll(), 400);
             container.addEventListener('scroll', handleScroll);
             return () => {
                 clearTimeout(timeoutId);
@@ -100,7 +100,7 @@ export default function CategoryCarousel({setCurrentCategory}: CategoryProps) {
                         >
                             <div className="category-card">
                                 <div className="category-name">{category.name}</div>
-                                {/* <div className="category-count">{category.count}品</div> */}
+                                <div className="category-count">{category.count}品</div>
                             </div>
                         </div>
                     ))}
@@ -116,6 +116,7 @@ const MyCategory = styled.div`
         position: relative;
         padding: 0;
         overflow: hidden;
+        margin-top: 40px;
     }
 
     .category-carousel::before,
@@ -148,7 +149,7 @@ const MyCategory = styled.div`
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         gap: 16px;
-        padding: 0 calc(50vw - 120px);
+        padding: 0 calc(50vw - 100px);
     }
 
     .category-scroll::-webkit-scrollbar {
@@ -157,7 +158,7 @@ const MyCategory = styled.div`
 
     .category-item {
         flex-shrink: 0;
-        width: 240px;
+        width: 200px;
         scroll-snap-align: center;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
@@ -165,8 +166,8 @@ const MyCategory = styled.div`
     .category-card {
         background: rgba(255,255,255,0.08);
         border: 1px solid rgba(255,255,255,0.15);
-        border-radius: 16px;
-        padding: 20px;
+        border-radius: 25px;
+        padding: 10px;
         text-align: center;
         cursor: pointer;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);

@@ -1,10 +1,5 @@
 import styled from "styled-components";
-import { products } from "@/data/MenuInfo";
-
-export interface ProductSpec {
-    label: string;
-    value: string;
-}
+import { productModels } from "@/data/MenuInfo";
 
 type SpecificProps = {
     currentIndex: number;
@@ -22,13 +17,13 @@ export default function SpecificPanels({currentIndex, setCurrentIndex }: Specifi
             {/* Specific Panels */}
             <div className="variant-chips">
                 <div className="variant-chips-inner">
-                    {products.map((product, index) => (
+                    {productModels.map((product, index) => (
                         <button
                             key={product.id}
                             className={`variant-chip ${index === currentIndex ? 'active' : ''}`}
                             onClick={() => handleVariantChange(index)}
                         >
-                            {product.shortName}カルビ ¥{product.price.toLocaleString()}
+                            {product.shortName}
                         </button>
                     ))}
                 </div>

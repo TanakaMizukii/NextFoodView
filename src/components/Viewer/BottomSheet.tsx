@@ -1,26 +1,55 @@
 import styled from "styled-components";
 
+import React from "react";
 import { useState } from "react";
-import type { Product } from "@/data/MenuInfo";
+import type { ProductModel } from "@/data/MenuInfo";
 
 type BottomProps = {
-    currentProduct: Product;
+    currentProduct: ProductModel;
 }
 
 export default function BottomSheet({currentProduct}: BottomProps) {
     const [sheetExpanded, setSheetExpanded] = useState(false);
 
+    // スワイプ用state
+    // numberまたはnullのみを格納できるref
+    const touchStartY = React.useRef<number | null>(null);
+    const touchEndY = React.useRef<number | null>(null);
+
+    // スワイプ開始
+    const handleTouchStart = (e: React.TouchEvent) => {
+        touchStartY.current = e.touches[0].clientY;
+    };
+    // スワイプ終了
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        touchEndY.current = e.changedTouches[0].clientY;
+        if (touchStartY.current !== null && touchEndY.current !== null) {
+            const diff = touchStartY.current - touchEndY.current;
+            if (diff > 50 && !sheetExpanded) {
+                // 上スワイプで展開
+                setSheetExpanded(true);
+            } else if (diff < -50 && sheetExpanded) {
+                // 下スワイプで閉じる
+                setSheetExpanded(false);
+            }
+        }
+        touchStartY.current = null;
+        touchEndY.current = null;
+    };
+
     return(
         <MyTopBar>
             {/* Bottom Sheet */}
             <div className={`bottom-sheet ${sheetExpanded ? 'expanded' : 'peek'}`}>
-                <div className="sheet-handle-area" onClick={() => setSheetExpanded(!sheetExpanded)}>
-                    <div className="sheet-handle" />
+                <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+                    <div className="sheet-handle-area" onClick={() => setSheetExpanded(!sheetExpanded)}>
+                        <div className="sheet-handle" />
+                    </div>
+                    <div className="sheet-content">
+                        <h2 className="sheet-title">{currentProduct.name}</h2>
+                        <div className="sheet-price">¥{currentProduct.price.toLocaleString()}
+                    </div>
                 </div>
-                <div className="sheet-content">
-                    <h2 className="sheet-title">{currentProduct.name}（1人前）</h2>
-                    <div className="sheet-price">¥{currentProduct.price.toLocaleString()}</div>
-
                     {sheetExpanded && (
                         <>
                             <p className="sheet-description">{currentProduct.description}</p>
@@ -117,6 +146,7 @@ const MyTopBar = styled.div`
         font-weight: 700;
         color: #1a1a1a;
         margin-bottom: 8px;
+        text-align: center;
     }
 
     .sheet-price {

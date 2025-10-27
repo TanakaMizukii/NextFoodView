@@ -18,7 +18,7 @@ const MyTopBar = styled.div`
     /* Primary FAB */
     .primary-fab {
         position: absolute;
-        top: 170px;
+        top: 180px;
         right: 20px;
         width: 64px;
         height: 64px;
