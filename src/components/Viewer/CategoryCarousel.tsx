@@ -53,7 +53,7 @@ const MyCategory = styled.div`
     /* Category Carousel */
     .category-carousel {
         position: relative;
-        padding: 16px 0;
+        padding: 0;
         overflow: hidden;
     }
 
@@ -70,12 +70,12 @@ const MyCategory = styled.div`
 
     .category-carousel::before {
         left: 0;
-        background: linear-gradient(90deg, #1a1a1a 0%, transparent 100%);
+        // background: linear-gradient(90deg, #1a1a1a 0%, transparent 100%);
     }
 
     .category-carousel::after {
         right: 0;
-        background: linear-gradient(270deg, #1a1a1a 0%, transparent 100%);
+        // background: linear-gradient(270deg, #1a1a1a 0%, transparent 100%);
     }
 
     .category-scroll {

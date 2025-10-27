@@ -22,7 +22,7 @@ const MyTopBar = styled.div`
         right: 20px;
         width: 64px;
         height: 64px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #667eea;
         border: none;
         border-radius: 50%;
         color: white;

@@ -11,6 +11,7 @@ import NavArrows from '@/components/Viewer/NavArrows';
 import SpecificPanels from '@/components/Viewer/SpecificPanels';
 import BottomSheet from '@/components/Viewer/BottomSheet';
 import PrimaryFab from '@/components/Viewer/PrimaryFab';
+import { Product, products } from '@/data/MenuInfo';
 
 type ModelInfo = { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
@@ -21,6 +22,11 @@ const ThreeMain = dynamic(() => import('@/features/3DViewer/ThreeMain'), {
 });
 
 export default function ViewerPage() {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentCategory, setCurrentCategory] = useState(1); // カルビが初期選択
+
+    const currentProduct: Product = products[currentIndex]
+
     const [changeModel, setChangeModel] = useState<ChangeModelFn>(() => async (info: ModelInfo) => {
         console.warn("changeModel is not yet initialized", info);
     });
@@ -34,7 +40,7 @@ export default function ViewerPage() {
                 </SceneLayer>
 
                 <TopLayer>
-                    <TopAppBar />
+                    <TopAppBar currentProduct={currentProduct}/>
                     <CategoryCarousel />
                     <PrimaryFab />
                 </TopLayer>

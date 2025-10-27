@@ -90,7 +90,7 @@ const MySpecific = styled.div`
     }
 
     .variant-chip.active {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #667eea;
         border-color: transparent;
         color: white;
         font-weight: 600;
