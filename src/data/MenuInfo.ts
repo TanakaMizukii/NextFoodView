@@ -174,42 +174,36 @@ export const categories = [
             {
                 id: 1,
                 name: '盛り合わせ',
-                icon: '🍱',
                 count: 5,
                 description: '様々な部位を楽しめるお得なセット'
             },
             {
                 id: 2,
                 name: 'カルビ',
-                icon: '🥩',
                 count: 8,
                 description: '定番の人気メニュー'
             },
             {
                 id: 3,
                 name: 'ロース',
-                icon: '🥓',
                 count: 6,
                 description: '柔らかく上品な味わい'
             },
             {
                 id: 4,
                 name: 'ホルモン',
-                icon: '🍖',
                 count: 7,
                 description: '新鮮で旨味たっぷり'
             },
             {
                 id: 5,
                 name: 'タン',
-                icon: '👅',
                 count: 4,
                 description: 'コリコリとした食感'
             },
             {
                 id: 6,
                 name: 'サイド',
-                icon: '🥗',
                 count: 10,
                 description: 'サラダやキムチなど'
             }

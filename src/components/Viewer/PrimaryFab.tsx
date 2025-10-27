@@ -7,7 +7,7 @@ export default function PrimaryFab() {
             <button className="primary-fab"
             // onClick={handleARStart}
             >
-                <span className="fab-label">ARへ遷移</span>
+                <span className="fab-label">ARを開始</span>
                 AR
             </button>
         </MyTopBar>

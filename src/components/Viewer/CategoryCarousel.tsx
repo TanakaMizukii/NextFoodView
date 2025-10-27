@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { categories } from "@/data/MenuInfo";
 
 export interface Category {
@@ -17,10 +17,73 @@ export interface CategoryStates {
     [index: number]: CategoryState;
 }
 
-export default function CategoryCarousel() {
-    const [categoryStates, setCategoryStates] = useState<CategoryStates>({ 0: 'center' });
-    const categoryScrollRef = useRef(null);
-    // 駆動部分は後で記述の必要あり
+type CategoryProps = {
+    currentCategory: number;
+    setCurrentCategory: React.Dispatch<React.SetStateAction<number>>;
+}
+export default function CategoryCarousel({setCurrentCategory}: CategoryProps) {
+    const [categoryStates, setCategoryStates] = useState<CategoryStates>({});
+    const categoryScrollRef = useRef<HTMLDivElement>(null);
+
+    // カテゴリースクロール時の中央要素を検出
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!categoryScrollRef.current) return;
+
+            const container = categoryScrollRef.current;
+            const containerWidth = container.offsetWidth;
+            const scrollLeft = container.scrollLeft;
+            const centerPosition = scrollLeft + containerWidth / 2;
+
+            const newStates: CategoryStates = {};
+            let centerIndex = -1;
+
+            Array.from(container.children).forEach((child, index) => {
+                const itemLeft = (child as HTMLElement).offsetLeft;
+                const itemWidth = (child as HTMLElement).offsetWidth;
+                const itemCenter = itemLeft + itemWidth / 2;
+                const distance = Math.abs(centerPosition - itemCenter);
+
+                if (distance < itemWidth / 2) {
+                    newStates[index] = 'center';
+                    centerIndex = index;
+                } else if (distance < itemWidth * 1.5) {
+                    newStates[index] = 'adjacent';
+                } else {
+                    newStates[index] = 'far';
+                }
+            });
+
+            setCategoryStates(newStates);
+            if (centerIndex !== -1 && categories[centerIndex]) {
+                setCurrentCategory(centerIndex);
+            }
+        };
+
+        const container = categoryScrollRef.current;
+        if (container) {
+            const timeoutId = setTimeout(() => handleScroll(), 200);
+            container.addEventListener('scroll', handleScroll);
+            return () => {
+                clearTimeout(timeoutId);
+                container.removeEventListener('scroll', handleScroll);
+            };
+        }
+    }, [setCurrentCategory]);
+
+    const scrollToCategory = (index: number) => {
+        if (!categoryScrollRef.current) return;
+        const container = categoryScrollRef.current;
+        const target = container.children[index];
+        if (target) {
+            const containerWidth = container.offsetWidth;
+            const targetLeft = (target as HTMLElement).offsetLeft;
+            const targetWidth = (target as HTMLElement).offsetWidth;
+            const scrollTo = targetLeft - containerWidth / 2 + targetWidth / 2;
+            container.scrollTo({ left: scrollTo, behavior: 'smooth' });
+        }
+    };
+
 
     return(
         <MyCategory>
@@ -32,12 +95,10 @@ export default function CategoryCarousel() {
                             key={category.id}
                             className={`category-item ${categoryStates[index] || 'far'}`}
                             onClick={() => {
-                                // scrollToCategory(index);
-                                // showSnackbar(`${category.name}カテゴリーを選択`, category.icon);
+                                scrollToCategory(index);
                             }}
                         >
                             <div className="category-card">
-                                {/* <div className="category-icon">{category.icon}</div> */}
                                 <div className="category-name">{category.name}</div>
                                 {/* <div className="category-count">{category.count}品</div> */}
                             </div>

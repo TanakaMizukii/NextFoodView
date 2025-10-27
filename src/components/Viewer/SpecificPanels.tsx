@@ -1,30 +1,21 @@
 import styled from "styled-components";
 import { products } from "@/data/MenuInfo";
-import { useState } from "react";
-
-export interface Product {
-    id: number;
-    name: string;
-    shortName: string;
-    category: string;
-    price: number;
-    description: string;
-    image: string;
-    weight: string;
-    calories: string;
-    origin: string;
-    recommended: string;
-    tags: string[];
-}
 
 export interface ProductSpec {
     label: string;
     value: string;
 }
 
-export default function SpecificPanels() {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const currentProduct = products[currentIndex];
+type SpecificProps = {
+    currentIndex: number;
+    setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function SpecificPanels({currentIndex, setCurrentIndex }: SpecificProps) {
+    const handleVariantChange = (index: number) => {
+        setCurrentIndex(index);
+    };
+
     return(
         // 名前の変更は未完了
         <MySpecific>
@@ -35,7 +26,7 @@ export default function SpecificPanels() {
                         <button
                             key={product.id}
                             className={`variant-chip ${index === currentIndex ? 'active' : ''}`}
-                            // onClick={() => handleVariantChange(index)}
+                            onClick={() => handleVariantChange(index)}
                         >
                             {product.shortName}カルビ ¥{product.price.toLocaleString()}
                         </button>
@@ -77,9 +68,9 @@ const MySpecific = styled.div`
     .variant-chip {
         padding: 10px 20px;
         background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.3);
         border-radius: 20px;
-        color: rgba(255,255,255,0.7);
+        color: rgba(255,255,255,1);
         font-size: 14px;
         cursor: pointer;
         transition: all 0.2s;

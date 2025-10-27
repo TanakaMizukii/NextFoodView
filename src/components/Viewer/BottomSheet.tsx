@@ -1,12 +1,14 @@
 import styled from "styled-components";
-import { products } from "@/data/MenuInfo";
 
 import { useState } from "react";
+import type { Product } from "@/data/MenuInfo";
 
-export default function BottomSheet() {
+type BottomProps = {
+    currentProduct: Product;
+}
+
+export default function BottomSheet({currentProduct}: BottomProps) {
     const [sheetExpanded, setSheetExpanded] = useState(false);
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const currentProduct = products[currentIndex];
 
     return(
         <MyTopBar>
@@ -186,7 +188,7 @@ const MyTopBar = styled.div`
     .add-to-cart-button {
         width: 100%;
         padding: 16px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #667eea;
         border: none;
         border-radius: 16px;
         color: white;

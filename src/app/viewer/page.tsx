@@ -41,14 +41,14 @@ export default function ViewerPage() {
 
                 <TopLayer>
                     <TopAppBar currentProduct={currentProduct}/>
-                    <CategoryCarousel />
+                    <CategoryCarousel currentCategory={currentCategory} setCurrentCategory={setCurrentCategory}/>
                     <PrimaryFab />
                 </TopLayer>
 
                 <BottomLayer>
                     <NavArrows />
-                    <SpecificPanels />
-                    <BottomSheet />
+                    <SpecificPanels currentIndex={currentIndex} setCurrentIndex={setCurrentIndex}/>
+                    <BottomSheet currentProduct={currentProduct}/>
                 </BottomLayer>
             </Root>
         </ModelChangeContext.Provider>
