@@ -15,9 +15,9 @@ export default function KaishuStartPanel({ onUpdate, loading }: StartPanelProps)
         <MyStart>
             <div id="start-overlay" className={'startOverlay'}>
                 <img src="/thumb/海州ロゴ.png" alt="メインイメージ" id="start-image" className={"startImage"} />
-                <div id="status-text" className={'startText'}>ARエクスペリエンスを開始</div>
+                <div id="status-text" className={'startText'}>商品を立体的に表示し<br></br>ミスマッチの解消を目指します</div>
                     <button id="start-button" className={'startButton'} onClick={handleClick} disabled={loading}>
-                        {loading ? '判定中…' : 'AR体験を始める'}
+                        {loading ? '判定中…' : '商品の立体表示を開始'}
                     </button>
                 <div id="loading-spinner" className={'loadingSpinner'} style={{ display: loading ? 'block' : 'none' }} />
             </div>
