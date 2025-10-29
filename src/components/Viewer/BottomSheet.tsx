@@ -46,8 +46,8 @@ export default function BottomSheet({currentProduct}: BottomProps) {
                         <div className="sheet-handle" />
                     </div>
                     <div className="sheet-content">
-                        <h2 className="sheet-title">{currentProduct.name}</h2>
-                        <div className="sheet-price">¥{currentProduct.price.toLocaleString()}
+                        <h2 className="sheet-title">{currentProduct.name} ¥{currentProduct.minPrice.toLocaleString()}</h2>
+                        <div className="sheet-price">¥{currentProduct.price.toLocaleString()}</div>
                     </div>
                 </div>
                     {sheetExpanded && (
@@ -80,7 +80,6 @@ export default function BottomSheet({currentProduct}: BottomProps) {
                             </div>
                         </>
                     )}
-                </div>
 
                 {sheetExpanded && (
                     <div className="sheet-footer">

@@ -1,14 +1,35 @@
 import styled from "styled-components";
-import { productModels } from "@/data/MenuInfo";
+
+import React from "react";
+import { useContext } from 'react';
+import { ModelChangeContext } from "../../contexts/ModelChangeContext";
+import { categories, productModels } from "@/data/MenuInfo";
 
 type SpecificProps = {
     currentIndex: number;
+    currentCategory: number;
     setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function SpecificPanels({currentIndex, setCurrentIndex }: SpecificProps) {
+export default function SpecificPanels({currentIndex, currentCategory, setCurrentIndex }: SpecificProps) {
+    const selectCategory: {[index: string] : string[]}  = {
+        'メインメニュー': ['盛り合わせ', 'カルビ', 'タン', 'ホルモン', '締めの一品',],
+        '盛り合わせ': ['盛り合わせ'],
+        'カルビ': ['カルビ'],
+        'ホルモン': ['ホルモン'],
+        '締めの一品': ['締めの一品'],
+        // 'その他': ['その他'],
+    }
+    // まず今回配置する配列を取り出しておく
+    const nowCategory = categories[currentCategory].name;
+    const viewCategories = selectCategory[nowCategory] ?? [];
+
+    const { changeModel } = useContext(ModelChangeContext);
     const handleVariantChange = (index: number) => {
         setCurrentIndex(index);
+        const model = productModels[index];
+        changeModel({modelName: model.name, modelPath: model.model, modelDetail: model.description, modelPrice: model.price});
+        console.log(index);
     };
 
     return(
@@ -17,14 +38,22 @@ export default function SpecificPanels({currentIndex, setCurrentIndex }: Specifi
             {/* Specific Panels */}
             <div className="variant-chips">
                 <div className="variant-chips-inner">
-                    {productModels.map((product, index) => (
-                        <button
-                            key={product.id}
-                            className={`variant-chip ${index === currentIndex ? 'active' : ''}`}
-                            onClick={() => handleVariantChange(index)}
-                        >
-                            {product.shortName}
-                        </button>
+                    {viewCategories.map((cat) => (
+                        // それぞれのmapにキーを付けて配置
+                        <React.Fragment key={cat}>
+                            {productModels
+                                .filter(model => model.category === cat)
+                                .map((model, index) => (
+                                    <button
+                                        key={model.id}
+                                        className={`variant-chip ${index === currentIndex ? 'active' : ''}`}
+                                        onClick={() => handleVariantChange(index)}
+                                    >
+                                        {model.shortName}
+                                    </button>
+                                ))
+                            }
+                        </React.Fragment>
                     ))}
                 </div>
             </div>
