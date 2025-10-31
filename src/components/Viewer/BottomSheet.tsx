@@ -46,47 +46,47 @@ export default function BottomSheet({currentProduct}: BottomProps) {
                         <div className="sheet-handle" />
                     </div>
                     <div className="sheet-content">
-                        <h2 className="sheet-title">{currentProduct.name} ¥{currentProduct.minPrice.toLocaleString()}</h2>
+                        <h2 className="sheet-title">{currentProduct.name}</h2>
                         <div className="sheet-price">¥{currentProduct.price.toLocaleString()}</div>
                     </div>
                 </div>
-                    {sheetExpanded && (
-                        <>
-                            <p className="sheet-description">{currentProduct.description}</p>
+                {sheetExpanded && (
+                    <div className="sheet-content">
+                        <p className="sheet-description">{currentProduct.description}</p>
 
-                            <div className="sheet-specs">
-                                <div className="spec-card">
-                                    <div className="spec-label">重量</div>
-                                    <div className="spec-value">{currentProduct.weight}</div>
-                                </div>
-                                <div className="spec-card">
-                                    <div className="spec-label">カロリー</div>
-                                    <div className="spec-value">{currentProduct.calories}</div>
-                                </div>
-                                <div className="spec-card">
-                                    <div className="spec-label">産地</div>
-                                    <div className="spec-value">{currentProduct.origin}</div>
-                                </div>
-                                <div className="spec-card">
-                                    <div className="spec-label">おすすめ</div>
-                                    <div className="spec-value">{currentProduct.recommended}</div>
-                                </div>
+                        <div className="sheet-specs">
+                            <div className="spec-card">
+                                <div className="spec-label">重量</div>
+                                <div className="spec-value">{currentProduct.weight}</div>
                             </div>
+                            <div className="spec-card">
+                                <div className="spec-label">カロリー</div>
+                                <div className="spec-value">{currentProduct.calories}</div>
+                            </div>
+                            <div className="spec-card">
+                                <div className="spec-label">産地</div>
+                                <div className="spec-value">{currentProduct.origin}</div>
+                            </div>
+                            <div className="spec-card">
+                                <div className="spec-label">おすすめ</div>
+                                <div className="spec-value">{currentProduct.recommended}</div>
+                            </div>
+                        </div>
 
-                            <div className="sheet-tags">
-                                {currentProduct.tags.map(tag => (
-                                    <span key={tag} className="tag">{tag}</span>
-                                ))}
-                            </div>
-                        </>
-                    )}
+                        <div className="sheet-tags">
+                            {currentProduct.tags.map(tag => (
+                                <span key={tag} className="tag">{tag}</span>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
                 {sheetExpanded && (
                     <div className="sheet-footer">
                         <button className="add-to-cart-button"
                         // onClick={handleAddToCart}
                         >
-                            カートに追加 - ¥{currentProduct.price.toLocaleString()}
+                            カートに追加   ¥{currentProduct.price.toLocaleString()}
                         </button>
                     </div>
                 )}
@@ -121,7 +121,7 @@ const MyTopBar = styled.div`
     }
 
     .sheet-handle-area {
-        padding: 12px 0;
+        padding: 12px 0 4px;
         cursor: pointer;
         display: flex;
         justify-content: center;
@@ -144,7 +144,7 @@ const MyTopBar = styled.div`
         font-size: 20px;
         font-weight: 700;
         color: #1a1a1a;
-        margin-bottom: 8px;
+        margin-bottom: 16px;
         text-align: center;
     }
 
@@ -209,7 +209,7 @@ const MyTopBar = styled.div`
         position: sticky;
         bottom: 0;
         background: rgba(255,255,255,0.98);
-        padding: 16px 24px;
+        padding: 16px 44px;
         border-top: 1px solid #eee;
         margin: 0 -24px -24px;
     }

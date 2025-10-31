@@ -14,15 +14,15 @@ export const categories: Category[] = [
     },
     {
         id: 2,
-        name: '盛り合わせ',
-        count: 3,
-        description: '様々な部位を一度に楽しめるお得なセット'
-    },
-    {
-        id: 3,
         name: 'カルビ',
         count: 4,
         description: '特上から切り落としまで多彩な品揃え'
+    },
+    {
+        id: 3,
+        name: '盛り合わせ',
+        count: 3,
+        description: '様々な部位を一度に楽しめるお得なセット'
     },
     {
         id: 4,

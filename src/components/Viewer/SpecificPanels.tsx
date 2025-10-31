@@ -4,6 +4,7 @@ import React from "react";
 import { useContext } from 'react';
 import { ModelChangeContext } from "../../contexts/ModelChangeContext";
 import { categories, productModels } from "@/data/MenuInfo";
+import type { ProductModel } from "@/data/MenuInfo";
 
 type SpecificProps = {
     currentIndex: number;
@@ -13,7 +14,7 @@ type SpecificProps = {
 
 export default function SpecificPanels({currentIndex, currentCategory, setCurrentIndex }: SpecificProps) {
     const selectCategory: {[index: string] : string[]}  = {
-        'メインメニュー': ['盛り合わせ', 'カルビ', 'タン', 'ホルモン', '締めの一品',],
+        'メインメニュー': ['盛り合わせ', 'カルビ', 'タン', 'ホルモン', '締めの一品'],
         '盛り合わせ': ['盛り合わせ'],
         'カルビ': ['カルビ'],
         'ホルモン': ['ホルモン'],
@@ -24,13 +25,17 @@ export default function SpecificPanels({currentIndex, currentCategory, setCurren
     const nowCategory = categories[currentCategory].name;
     const viewCategories = selectCategory[nowCategory] ?? [];
 
+    const currentProduct: ProductModel = productModels[currentIndex]
+
     const { changeModel } = useContext(ModelChangeContext);
-    const handleVariantChange = (index: number) => {
+    const handleVariantChange = (index: number, model: ProductModel) => {
         setCurrentIndex(index);
-        const model = productModels[index];
         changeModel({modelName: model.name, modelPath: model.model, modelDetail: model.description, modelPrice: model.price});
-        console.log(index);
+        console.log(viewCategories);
     };
+
+    const variants = productModels.map((m, i) => ({model: m, i}))
+        .filter(({ model }) => viewCategories.includes(model.category));
 
     return(
         // 名前の変更は未完了
@@ -38,22 +43,15 @@ export default function SpecificPanels({currentIndex, currentCategory, setCurren
             {/* Specific Panels */}
             <div className="variant-chips">
                 <div className="variant-chips-inner">
-                    {viewCategories.map((cat) => (
+                    {variants.map(({ model, i }) => (
                         // それぞれのmapにキーを付けて配置
-                        <React.Fragment key={cat}>
-                            {productModels
-                                .filter(model => model.category === cat)
-                                .map((model, index) => (
-                                    <button
-                                        key={model.id}
-                                        className={`variant-chip ${index === currentIndex ? 'active' : ''}`}
-                                        onClick={() => handleVariantChange(index)}
-                                    >
-                                        {model.shortName}
-                                    </button>
-                                ))
-                            }
-                        </React.Fragment>
+                        <button
+                            key={model.id}
+                            className={`variant-chip ${model === currentProduct ? 'active' : ''}`}
+                            onClick={() => handleVariantChange(i, model)}
+                        >
+                            {model.shortName} ¥{model.minPrice.toLocaleString()}
+                        </button>
                     ))}
                 </div>
             </div>
