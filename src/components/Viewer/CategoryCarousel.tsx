@@ -100,7 +100,7 @@ export default function CategoryCarousel({setCurrentCategory}: CategoryProps) {
                         >
                             <div className="category-card">
                                 <div className="category-name">{category.name}</div>
-                                <div className="category-count">{category.count}品</div>
+                                {/* <div className="category-count">{category.count}品</div> */}
                             </div>
                         </div>
                     ))}

@@ -14,15 +14,15 @@ export const categories: Category[] = [
     },
     {
         id: 2,
-        name: '盛り合わせ',
-        count: 3,
-        description: '様々な部位を一度に楽しめるお得なセット'
-    },
-    {
-        id: 3,
         name: 'カルビ',
         count: 4,
         description: '特上から切り落としまで多彩な品揃え'
+    },
+    {
+        id: 3,
+        name: '盛り合わせ',
+        count: 3,
+        description: '様々な部位を一度に楽しめるお得なセット'
     },
     {
         id: 4,
@@ -52,6 +52,7 @@ export type ProductModel = {
     shortName: string;
     category: string;
     price: string;
+    minPrice: string;
     description: string;
     image: string;
     model: string;
@@ -74,6 +75,7 @@ export const productModels : ProductModelsProps = [
         shortName: 'カルビ盛り',
         category: '盛り合わせ',
         price: '2,300 (税込 2,530)',
+        minPrice: '2,300',
         description: '特上カルビ・上カルビ・並みカルビ・切り落としカルビがワンプレートでまとめて食べられます！！',
         image: './images/カルビ盛り.jpg',
         model: './models/calbee_set_comp.glb',
@@ -89,7 +91,8 @@ export const productModels : ProductModelsProps = [
         name: '九種盛り（2,3人前）',
         shortName: '九種盛り',
         category: '盛り合わせ',
-        price: '1720 (税込 1,892)',
+        price: '1,720 (税込 1,892)',
+        minPrice: '1,720',
         description: '厳選した９種類のホルモンをお楽しみにしていただけます。セットの特製塩だれにつけて存分にお楽しみください。',
         image: './images/九種盛り.jpg',
         model: './models/9hormone_set_comp2.glb',
@@ -106,6 +109,7 @@ export const productModels : ProductModelsProps = [
         shortName: 'ファミリーセット',
         category: '盛り合わせ',
         price: '5,800 (税込 6,380)',
+        minPrice: '5,800',
         description: '人気なタン・ハラミを始め、並みカルビ・コプチャン・地鶏・ウインナーが特性の味噌ダレ味とセットで存分にお楽しみ頂けます',
         image: './images/ファミリーセット.jpg',
         model: './models/family_s_set_comp2.glb',
@@ -122,6 +126,7 @@ export const productModels : ProductModelsProps = [
         shortName: '上タン塩',
         category: 'タン',
         price: '980 (税込 1,078)',
+        minPrice: '980',
         description: 'タンの中でも上質な部分。レモンで食べると程よい油が口の中に広がります。',
         image: './images/上タン塩.jpg',
         model: './models/ton_tongue_comp3.glb',
@@ -137,6 +142,7 @@ export const productModels : ProductModelsProps = [
         shortName: '特上カルビ',
         category: 'カルビ',
         price: '1,500 (税込 1,650)',
+        minPrice: '1,500',
         description: 'カルビの最高級部位。口の中でとろけだす上質な油をご堪能ください',
         image: './images/特上カルビ.jpg',
         model: './models/calbee_toku_comp.glb',
@@ -153,6 +159,7 @@ export const productModels : ProductModelsProps = [
         shortName: '上カルビ',
         category: 'カルビ',
         price: '1,080 (税込 1,188)',
+        minPrice: '1,080',
         description: '上質な脂の旨味が楽しめる人気のカルビ。',
         image: './images/上カルビ.jpg',
         model: './models/calbee_jyou_comp.glb',
@@ -169,6 +176,7 @@ export const productModels : ProductModelsProps = [
         shortName: '並カルビ',
         category: 'カルビ',
         price: '880 (税込 968)',
+        minPrice: '880',
         description: '薄く大判にスライスされたカルビ。カルビ独特の旨味と甘みをバランスよく味わえます。',
         image: './images/並カルビ.jpg',
         model: './models/calbee_nami_raw_comp.glb',
@@ -185,6 +193,7 @@ export const productModels : ProductModelsProps = [
         shortName: '切落しカルビ',
         category: 'カルビ',
         price: '690（税込 759)',
+        minPrice: '690',
         description: 'リーズナブルにカルビのおいしさを味わえます。切り込みが入っているため軟らかくおいしく頂けます。',
         image: './images/切り落としカルビ.jpg',
         model: './models/calbee_kiri_raw_comp.glb',
@@ -201,6 +210,7 @@ export const productModels : ProductModelsProps = [
         shortName: '上ミノ',
         category: 'ホルモン',
         price: '790 (税込 869)',
+        minPrice: '790',
         description: '牛の第一胃袋の一部。コリコリとした小気味よい歯ごたえと弾力で脂肪が少なくさっぱりとお楽しみ頂けます。',
         image: './images/上ミノ.jpg',
         model: './models/hor_mino_raw_comp.glb',
@@ -216,6 +226,7 @@ export const productModels : ProductModelsProps = [
         shortName: 'テッチャン',
         category: 'ホルモン',
         price: '580 (税込 638)',
+        minPrice: '580',
         description: 'シマチョウとも呼ばれる牛の大腸。口の中で脂の甘みと旨味が広がります',
         image: './images/テッチャン.jpg',
         model: './models/hor_techan_comp.glb',
@@ -231,6 +242,7 @@ export const productModels : ProductModelsProps = [
         shortName: 'コプチャン',
         category: 'ホルモン',
         price: '490 (税込 539)',
+        minPrice: '490',
         description: 'ぷりぷり食感の牛の小腸。味噌味のコプチャンとお酒がよく合います',
         image: './images/コプチャン.jpg',
         model: './models/hor_copchan_comp.glb',
@@ -246,6 +258,7 @@ export const productModels : ProductModelsProps = [
         shortName: 'ギアラ',
         category: 'ホルモン',
         price: '490 (税込 539)',
+        minPrice: '490',
         description: '赤センマイとも呼ばれる牛の第４胃です。塩味で召し上がると旨味を強く感じられます',
         image: './images/ギアラ.jpg',
         model: './models/hor_giara_comp.glb',
@@ -261,6 +274,7 @@ export const productModels : ProductModelsProps = [
         shortName: '盛岡冷麺',
         category: '締めの一品',
         price: '900 (税込 990)',
+        minPrice: '900',
         description: 'シメにぴったり！つるつる食感の本格冷麺。さっぱりとおいしく頂けます！',
         image: './images/盛岡冷麺.jpg',
         model: './models/bowl_coldnoodle_comp.glb',
@@ -277,6 +291,7 @@ export const productModels : ProductModelsProps = [
         shortName: 'クッパ',
         category: '締めの一品',
         price: '530 (税込 583)',
+        minPrice: '530',
         description: 'タマゴスープにご飯が入った心温まる一品。お食事の締めに最適です。',
         image: './images/クッパ.jpg',
         model: './models/bowl_koopa_comp.glb',
@@ -293,6 +308,7 @@ export const productModels : ProductModelsProps = [
     //     shortName: 'ご飯大',
     //     category: 'ご飯',
     //     price: '300 (税込 330)',
+    //     minPrice: '300',
     //     description: '焼肉のお供に大盛りご飯！毎日想いを込めて丁寧に炊き上げております！',
     //     image: './images/ご飯大.jpg',
     //     model: './models/ご飯大.glb',

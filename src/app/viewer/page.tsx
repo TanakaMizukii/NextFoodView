@@ -48,8 +48,8 @@ export default function ViewerPage() {
                 </TopLayer>
 
                 <BottomLayer>
-                    <NavArrows />
-                    <SpecificPanels currentIndex={currentIndex} setCurrentIndex={setCurrentIndex}/>
+                    <NavArrows currentIndex={currentIndex} setCurrentIndex={setCurrentIndex}/>
+                    <SpecificPanels currentIndex={currentIndex} currentCategory={currentCategory} setCurrentIndex={setCurrentIndex}/>
                     <BottomSheet currentProduct={currentProduct}/>
                 </BottomLayer>
             </Root>

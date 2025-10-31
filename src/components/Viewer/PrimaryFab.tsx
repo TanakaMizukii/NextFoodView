@@ -1,11 +1,17 @@
 import styled from "styled-components";
 
+import { useRouter } from "next/navigation";
+
 export default function PrimaryFab() {
+    const router = useRouter();
+    const handleARStart = () => {
+        router.push('/arJS');
+    }
+
     return(
         <MyTopBar>
             {/* Primary FAB */}
-            <button className="primary-fab"
-            // onClick={handleARStart}
+            <button className="primary-fab" onClick={handleARStart}
             >
                 <span className="fab-label">ARを開始</span>
                 AR

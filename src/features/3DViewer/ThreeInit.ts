@@ -50,7 +50,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     scene.background = new THREE.Color(0xaaaaaa);
 
     const camera = new THREE.PerspectiveCamera(45, 1, 1, 1000);
-    camera.position.set(16, 22, 20);
+    camera.position.set(17, 42, 36);
 
     // 簡易ライト
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
@@ -113,7 +113,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     const pmrem = new PMREMGenerator(renderer);
     new RGBELoader()
     .setPath('/hdr/')
-    .load('11zon_forest.hdr', (hdr) => {
+    .load('kaisyu_73_small.hdr', (hdr) => {
         const envTex = pmrem.fromEquirectangular(hdr).texture;
         scene.environment = envTex;
         scene.background = envTex;
