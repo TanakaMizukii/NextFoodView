@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 export default function PrimaryFab() {
     const router = useRouter();
     const handleARStart = () => {
-        router.push('/arJS');
+        router.push('/arView');
     }
 
     return(
