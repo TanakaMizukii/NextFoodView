@@ -57,12 +57,12 @@ export default function BottomSheet({currentProduct}: BottomProps) {
 
                         <div className="sheet-specs">
                             <div className="spec-card">
-                                <div className="spec-label">重量</div>
-                                <div className="spec-value">{currentProduct.weight}</div>
+                                <div className="spec-label">分量</div>
+                                <div className="spec-value">{currentProduct.serving}</div>
                             </div>
                             <div className="spec-card">
-                                <div className="spec-label">カロリー</div>
-                                <div className="spec-value">{currentProduct.calories}</div>
+                                <div className="spec-label">部位</div>
+                                <div className="spec-value">{currentProduct.part}</div>
                             </div>
                             <div className="spec-card">
                                 <div className="spec-label">産地</div>
