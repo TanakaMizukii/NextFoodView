@@ -1,13 +1,20 @@
 import styled from "styled-components";
 
+import { useRouter } from "next/navigation";
+
 export default function TopAppBar() {
+    const router = useRouter();
+    const backPage = () => {
+        router.push('/');
+    }
+
     return(
         <MyTopBar>
         {/* Top App Bar */}
         <div className="top-app-bar">
-            <button >←</button>
+            <button onClick={() => backPage()}>←</button>
             <h1>ホルモン屋海州</h1>
-            <button>⋮</button>
+            {/* <button>⋮</button> */}
         </div>
         </MyTopBar>
     )
