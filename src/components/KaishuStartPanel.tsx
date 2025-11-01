@@ -14,12 +14,14 @@ export default function KaishuStartPanel({ onUpdate, loading }: StartPanelProps)
         // <!-- スタートパネル -->
         <MyStart>
             <div id="start-overlay" className={'startOverlay'}>
+                <img src="/thumb/ファミリーセット切り抜き.png" alt="商品イメージ" id="start-right-up" className={"startSideImg rightTopImg"} />
                 <img src="/thumb/海州ロゴ.png" alt="メインイメージ" id="start-image" className={"startImage"} />
                 <div id="status-text" className={'startText'}>商品を立体的に表示し<br></br>ミスマッチの解消を目指します</div>
                     <button id="start-button" className={'startButton'} onClick={handleClick} disabled={loading}>
                         {loading ? '判定中…' : '商品の立体表示を開始'}
                     </button>
                 <div id="loading-spinner" className={'loadingSpinner'} style={{ display: loading ? 'block' : 'none' }} />
+                <img src="/thumb/カルビ盛り切り抜き.png" alt="商品イメージ" id="start-left-bottom" className={"startSideImg leftBottomImg"} />
             </div>
         </MyStart>
     )
@@ -49,6 +51,31 @@ const MyStart = styled.div`
     object-fit: cover;
     -webkit-user-drag: none;
     user-select: none;
+}
+
+.startSideImg {
+    width: 100vw; /* Increased width */
+    height: auto;
+    animation: fadeIn 1.2s ease-out forwards;
+    opacity: 0;
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+.rightTopImg {
+    position: absolute;
+    top: -15vh; /* Adjusted for overflow */
+    right: -50vw; /* Adjusted for overflow */
+    transform: rotate(15deg); /* Added rotation */
+    animation-delay: 0.3s;
+}
+
+.leftBottomImg {
+    position: absolute;
+    bottom: -9vh; /* Adjusted for overflow */
+    left: -40vw; /* Adjusted for overflow */
+    transform: rotate(-15deg); /* Added rotation */
+    animation-delay: 0.6s;
 }
 
 .startText {
@@ -108,5 +135,16 @@ const MyStart = styled.div`
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 `

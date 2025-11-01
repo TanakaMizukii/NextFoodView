@@ -1,17 +1,12 @@
 import styled from "styled-components";
-import type { ProductModel } from "@/data/MenuInfo";
 
-type TopBarProps = {
-    currentProduct: ProductModel;
-}
-
-export default function TopAppBar({ currentProduct }: TopBarProps) {
+export default function TopAppBar() {
     return(
         <MyTopBar>
         {/* Top App Bar */}
         <div className="top-app-bar">
             <button >←</button>
-            <h1>{currentProduct.name}</h1>
+            <h1>ホルモン屋海州</h1>
             <button>⋮</button>
         </div>
         </MyTopBar>

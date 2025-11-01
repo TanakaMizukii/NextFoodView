@@ -10,6 +10,7 @@ type BottomProps = {
 
 export default function BottomSheet({currentProduct}: BottomProps) {
     const [sheetExpanded, setSheetExpanded] = useState(false);
+    const contentRef = React.useRef<HTMLDivElement | null>(null);
 
     // スワイプ用state
     // numberまたはnullのみを格納できるref
@@ -25,11 +26,13 @@ export default function BottomSheet({currentProduct}: BottomProps) {
         touchEndY.current = e.changedTouches[0].clientY;
         if (touchStartY.current !== null && touchEndY.current !== null) {
             const diff = touchStartY.current - touchEndY.current;
+            const isScrolled = contentRef.current ? contentRef.current.scrollTop > 0 : false;
+
             if (diff > 50 && !sheetExpanded) {
                 // 上スワイプで展開
                 setSheetExpanded(true);
-            } else if (diff < -50 && sheetExpanded) {
-                // 下スワイプで閉じる
+            } else if (diff < -50 && sheetExpanded && !isScrolled) {
+                // 下スワイプで閉じる (コンテンツがスクロールされていない場合のみ)
                 setSheetExpanded(false);
             }
         }
@@ -40,18 +43,16 @@ export default function BottomSheet({currentProduct}: BottomProps) {
     return(
         <MyTopBar>
             {/* Bottom Sheet */}
-            <div className={`bottom-sheet ${sheetExpanded ? 'expanded' : 'peek'}`}>
-                <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-                    <div className="sheet-handle-area" onClick={() => setSheetExpanded(!sheetExpanded)}>
-                        <div className="sheet-handle" />
-                    </div>
-                    <div className="sheet-content">
-                        <h2 className="sheet-title">{currentProduct.name}</h2>
-                        <div className="sheet-price">¥{currentProduct.price.toLocaleString()}</div>
-                    </div>
+            <div className={`bottom-sheet ${sheetExpanded ? 'expanded' : 'peek'}`} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+                <div className="sheet-handle-area" onClick={() => setSheetExpanded(!sheetExpanded)}>
+                    <div className="sheet-handle" />
+                </div>
+                <div className="sheet-content" onClick={() => setSheetExpanded(!sheetExpanded)}>
+                    <h2 className="sheet-title">{currentProduct.name}</h2>
+                    <div className="sheet-price">¥{currentProduct.price.toLocaleString()}</div>
                 </div>
                 {sheetExpanded && (
-                    <div className="sheet-content">
+                    <div className="sheet-expanded-content" ref={contentRef}>
                         <p className="sheet-description">{currentProduct.description}</p>
 
                         <div className="sheet-specs">
@@ -78,10 +79,14 @@ export default function BottomSheet({currentProduct}: BottomProps) {
                                 <span key={tag} className="tag">{tag}</span>
                             ))}
                         </div>
+
+                        {/* <div className="sheet-image-wrapper">
+                            <img src={currentProduct.image} alt={currentProduct.name} className="sheet-image" />
+                        </div> */}
                     </div>
                 )}
 
-                {sheetExpanded && (
+                {/* {sheetExpanded && (
                     <div className="sheet-footer">
                         <button className="add-to-cart-button"
                         // onClick={handleAddToCart}
@@ -89,7 +94,7 @@ export default function BottomSheet({currentProduct}: BottomProps) {
                             カートに追加   ¥{currentProduct.price.toLocaleString()}
                         </button>
                     </div>
-                )}
+                )} */}
             </div>
         </MyTopBar>
     )
@@ -135,9 +140,15 @@ const MyTopBar = styled.div`
     }
 
     .sheet-content {
-        padding: 0 24px 24px;
+        padding: 0 24px 8px;
+        flex-shrink: 0; /* Prevent this from shrinking */
+    }
+
+    .sheet-expanded-content {
+        padding: 0 24px;
         overflow-y: auto;
-        flex: 1;
+        flex: 1 1 auto;
+        -webkit-overflow-scrolling: touch; /* Momentum scrolling on iOS */
     }
 
     .sheet-title {
@@ -203,6 +214,19 @@ const MyTopBar = styled.div`
         border-radius: 12px;
         font-size: 12px;
         color: #666;
+    }
+
+    .sheet-image-wrapper {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .sheet-image {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        border-radius: 8px;
+        object-fit: cover;
     }
 
     .sheet-footer {

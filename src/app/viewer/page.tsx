@@ -42,7 +42,7 @@ export default function ViewerPage() {
                 </SceneLayer>
 
                 <TopLayer>
-                    <TopAppBar currentProduct={currentProduct}/>
+                    <TopAppBar />
                     <CategoryCarousel currentCategory={currentCategory} setCurrentCategory={setCurrentCategory}/>
                     <PrimaryFab />
                 </TopLayer>
