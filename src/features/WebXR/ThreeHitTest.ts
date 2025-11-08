@@ -79,7 +79,7 @@ export async function handleFirstHit(
             reticleShowTimeRef.current = timestamp;
         }
 
-        if (reticleShowTimeRef.current !== null && timestamp - reticleShowTimeRef.current > 2000) {
+        if (reticleShowTimeRef.current !== null && timestamp - reticleShowTimeRef.current > 1500) {
             viewNumRef.current = 1;
             reticleShowTimeRef.current = null;
             await loadModel({}, ctx, null);

@@ -130,7 +130,7 @@ export default function MenuContainer({ className } : MenuContainerProps) {
 // 今回はStyled Componentsを使用
 export const MyContainer = styled.div<MyContainerProps>`
     /* Default: mobile portrait bottom sheet */
-    display: flex;
+    display: none;
     flex-direction: column;
     position: fixed;
     bottom: 0;
