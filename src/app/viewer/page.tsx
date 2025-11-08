@@ -97,7 +97,7 @@ const BottomLayer = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 9;
+    z-index: 10;
     /* 下の3Dを操作可能に保ちたい時は必要に応じて */
     pointer-events: auto;
     & > * { pointer-events: auto; } /* ボタン等は操作可能 */
