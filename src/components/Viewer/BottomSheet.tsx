@@ -126,7 +126,7 @@ const MyTopBar = styled.div`
     }
 
     .sheet-handle-area {
-        padding: 12px 0 4px;
+        padding: 12px 0 6px;
         cursor: pointer;
         display: flex;
         justify-content: center;

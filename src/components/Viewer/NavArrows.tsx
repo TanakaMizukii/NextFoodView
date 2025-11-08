@@ -56,7 +56,7 @@ const MyNavArrows = styled.div`
         /* Navigation Arrows */
         .nav-arrows {
             position: absolute;
-            bottom: calc(env(safe-area-inset-bottom) + 150px);
+            bottom: calc(env(safe-area-inset-bottom) + 170px);
             left: 0;
             right: 0;
             display: flex;

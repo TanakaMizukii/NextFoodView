@@ -78,6 +78,22 @@ const MyStart = styled.div`
     animation-delay: 0.6s;
 }
 
+@media (min-width: 768px) {
+    .startSideImg {
+        max-width: 500px; /* Set a max-width for larger screens */
+    }
+
+    .rightTopImg {
+        top: -5vh;
+        right: -20vw; /* Adjust position for desktop */
+    }
+
+    .leftBottomImg {
+        bottom: -5vh;
+        left: -20vw; /* Adjust position for desktop */
+    }
+}
+
 .startText {
     color: #f5f5f5; /* オフホワイト */
     font-size: 20px;

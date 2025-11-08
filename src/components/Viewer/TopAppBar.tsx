@@ -4,17 +4,14 @@ import { useRouter } from "next/navigation";
 
 export default function TopAppBar() {
     const router = useRouter();
-    const backPage = () => {
-        router.push('/');
-    }
 
     return(
         <MyTopBar>
         {/* Top App Bar */}
         <div className="top-app-bar">
-            <button onClick={() => backPage()}>←</button>
+            <button onClick={() => router.back()}>←</button>
             <h1>ホルモン屋海州</h1>
-            {/* <button>⋮</button> */}
+            <button>⋮</button>
         </div>
         </MyTopBar>
     )
@@ -43,7 +40,7 @@ const MyTopBar = styled.div`
         min-width: 44px;
         min-height: 44px;
         border-radius: 12px;
-        font-size: 18px;
+        font-size: 20px;
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -56,7 +53,7 @@ const MyTopBar = styled.div`
     }
 
     .top-app-bar h1 {
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 600;
         color: rgba(255,255,255,0.92);
         flex: 1;

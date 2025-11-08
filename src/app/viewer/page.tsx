@@ -11,6 +11,7 @@ import NavArrows from '@/components/Viewer/NavArrows';
 import SpecificPanels from '@/components/Viewer/SpecificPanels';
 import BottomSheet from '@/components/Viewer/BottomSheet';
 import PrimaryFab from '@/components/Viewer/PrimaryFab';
+import LoadingPanel from '@/components/LoadingPanel';
 
 import productModels from '@/data/MenuInfo';
 import type { ProductModel } from '@/data/MenuInfo';
@@ -26,6 +27,7 @@ const ThreeMain = dynamic(() => import('@/features/3DViewer/ThreeMain'), {
 export default function ViewerPage() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentCategory, setCurrentCategory] = useState(1); // カルビが初期選択
+    const [loading, setLoading] = useState(true);
 
     const currentProduct: ProductModel = productModels[currentIndex]
 
@@ -35,10 +37,11 @@ export default function ViewerPage() {
 
     return (
         <>
+        <LoadingPanel isVisible={loading} />
         <ModelChangeContext.Provider value={{ changeModel }}>
             <Root>
                 <SceneLayer>
-                    <ThreeMain setChangeModel={setChangeModel} />
+                    <ThreeMain setChangeModel={setChangeModel} onLoadingChange={setLoading} />
                 </SceneLayer>
 
                 <TopLayer>
