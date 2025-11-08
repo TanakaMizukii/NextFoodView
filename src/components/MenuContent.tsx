@@ -42,6 +42,6 @@ export const MyContent = styled(MenuContent)`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    height: 85vh;
+    height: 82vh;
     overflow-y: auto; /* コンテンツ部分のスクロールを可能に */
 `

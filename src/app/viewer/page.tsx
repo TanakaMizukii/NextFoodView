@@ -28,6 +28,7 @@ export default function ViewerPage() {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentCategory, setCurrentCategory] = useState(1); // カルビが初期選択
     const [loading, setLoading] = useState(true);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const currentProduct: ProductModel = productModels[currentIndex]
 
@@ -35,17 +36,23 @@ export default function ViewerPage() {
         console.warn("changeModel is not yet initialized", info);
     });
 
+    // changeModelをラップして、メニューを閉じる機能を追加
+    const wrappedChangeModel: ChangeModelFn = async (info) => {
+        setMenuOpen(false);
+        await changeModel(info);
+    };
+
     return (
         <>
         <LoadingPanel isVisible={loading} />
-        <ModelChangeContext.Provider value={{ changeModel }}>
+        <ModelChangeContext.Provider value={{ changeModel: wrappedChangeModel }}>
             <Root>
                 <SceneLayer>
                     <ThreeMain setChangeModel={setChangeModel} onLoadingChange={setLoading} />
                 </SceneLayer>
 
                 <TopLayer>
-                    <TopAppBar />
+                    <TopAppBar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
                     <CategoryCarousel currentCategory={currentCategory} setCurrentCategory={setCurrentCategory}/>
                     <PrimaryFab />
                 </TopLayer>
@@ -90,7 +97,7 @@ const BottomLayer = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 10;
+    z-index: 9;
     /* 下の3Dを操作可能に保ちたい時は必要に応じて */
     pointer-events: auto;
     & > * { pointer-events: auto; } /* ボタン等は操作可能 */

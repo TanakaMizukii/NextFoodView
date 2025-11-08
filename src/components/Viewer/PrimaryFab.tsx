@@ -35,7 +35,7 @@ const MyTopBar = styled.div`
         font-weight: 600;
         cursor: pointer;
         box-shadow: 0 8px 24px rgba(102, 126, 234, 0.5);
-        z-index: 120;
+        z-index: 10;
         display: flex;
         align-items: center;
         justify-content: center;
