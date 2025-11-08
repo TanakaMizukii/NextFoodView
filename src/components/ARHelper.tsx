@@ -4,6 +4,7 @@ import { disposeModel } from "@/features/WebXR/ThreeLoad";
 
 export default function ARHelper({ ctx }: { ctx: ThreeCtx | null }) {
     const handleClick = () => {
+        console.log('ボタンをクリックしました')
         if (ctx && ctx.currentSession) {
             ctx.currentSession.end();
         }
@@ -49,7 +50,7 @@ export default function ARHelper({ ctx }: { ctx: ThreeCtx | null }) {
 const MyHelper = styled.div`
 .ar-ui {
     position: absolute;
-    top: 20px;
+    top: 40px;
     left: 20px;
     width: auto;
     color: white;
@@ -57,13 +58,12 @@ const MyHelper = styled.div`
     padding: 15px;
     border-radius: 10px;
     font-size: 14px;
-    display: none;
     z-index: 100;
 }
 
 .exit-button {
     position: absolute;
-    top: 35px;
+    top: 40px;
     right: 25px;
     background: rgba(244, 67, 54, 0.8);
     color: white;
@@ -71,7 +71,6 @@ const MyHelper = styled.div`
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    display: none;
     z-index: 100;
 }
 
@@ -80,7 +79,7 @@ const MyHelper = styled.div`
     top: 100px;
     right: 22px;
 
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;

@@ -26,6 +26,7 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const nowModelRef = useRef<THREE.Group | null>(null);
     const [ctx, setCtx] = useState<ThreeContext | null>(null);
+    const [arUiVisible, setArUiVisible] = useState(false);
     const reticleShowTimeRef = useRef<DOMHighResTimeStamp | null>(null);
     const viewNumRef = useRef<number>(0);
     const inFlightRef = useRef(false);
@@ -63,9 +64,12 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
                 ctx.renderer.xr.setReferenceSpaceType('local');
                 await ctx.renderer.xr.setSession(session);
 
+                // セッション情報をコンテキストに保存
+                setCtx(prevCtx => prevCtx? { ...prevCtx, currentSession: session } : prevCtx);
+
                 // セッション終了時の処理
                 session.addEventListener('end', () => {
-                    handleSessionEndCleanup(ctx, nowModelRef, reticleShowTimeRef, viewNumRef);
+                    handleSessionEndCleanup(ctx, nowModelRef, reticleShowTimeRef, viewNumRef, setArUiVisible);
                     setCtx(prevCtx => prevCtx? { ...prevCtx, currentSession: undefined } : prevCtx);
                     onSessionEnd();
                 });
@@ -99,8 +103,14 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
         async function animate(timestamp: DOMHighResTimeStamp, frame: XRFrame) {
             // ヒットテスト実行関数
             updateHitTest(threeContext, frame);
+
             // 初回ヒット時の処理関数
-            await handleFirstHit(threeContext, timestamp, reticleShowTimeRef, viewNumRef);
+            if (!arUiVisible) {
+                const shouldShowUI = await handleFirstHit(threeContext, timestamp, reticleShowTimeRef, viewNumRef);
+                if (shouldShowUI) {
+                    setArUiVisible(true);
+                }
+            }
 
             // レンダリング
             threeContext.renderer.render(threeContext.scene, threeContext.camera);
@@ -113,13 +123,13 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
             detach();
             threeContext.dispose();
         };
-    }, []);
+    }, [arUiVisible]);
 
     return (
         <>
             <GuideScanPlane />
             <LoadingPanel />
-            <ARHelper ctx={ctx} />
+            {arUiVisible && ctx && ctx.currentSession && <ARHelper ctx={ctx} />}
             <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />
             </div>
