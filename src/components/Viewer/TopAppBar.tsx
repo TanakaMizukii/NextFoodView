@@ -25,7 +25,7 @@ export default function TopAppBar({ menuOpen, setMenuOpen }: TopAppBarProps) {
 
             {/* Side Slide Bar */}
             <div className={`side-menu ${menuOpen ? 'open' : ''}`}>
-                <MyContent nowCategory="メインメニュー" models={productModels} />
+                <MyContent nowCategory="メインメニュー" models={productModels} viewer={true} />
             </div>
         </MyTopBar>
     )

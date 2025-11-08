@@ -50,8 +50,6 @@ export default function ThreeMain({ setChangeModel, onLoadingChange }: ThreeMain
         };
         const threeContext = initThree(canvasElement, rendererOptions);
         setCtx(threeContext);
-        const menuContainer = document.getElementById('menu-container');
-        if (menuContainer) {menuContainer.style.display = 'block'}
         const openPanel = document.getElementById('menu-openGuide')
         if (openPanel) {openPanel.style.display = 'flex'};
         const clickHandler = handleClick(threeContext);

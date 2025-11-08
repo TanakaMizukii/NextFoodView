@@ -1,13 +1,26 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { getMobileOS } from "@/lib/detectOS";
+import { checkImmersiveARSupport } from "@/lib/checkWebXR";
 
 export default function PrimaryFab() {
     const router = useRouter();
     const [isExpanded, setIsExpanded] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleARStart = () => {
-        router.push('/arJS');
+    const handleARStart = async () => {
+        setIsLoading(true);
+        const os = getMobileOS();
+        const xr = await checkImmersiveARSupport();
+
+        if (os === 'android' || os === 'ios') {
+            router.push(xr === 'supported' ? '/arView' : '/arJS');
+        } else {
+            router.push('/viewer');
+            alert('デスクトップではAR表示はできません。スマートフォンにて起動をお願いします。');
+        }
+        setIsLoading(false);
     }
 
     const toggleExpand = () => {
@@ -20,7 +33,9 @@ export default function PrimaryFab() {
             <div className={`expanded-content ${isExpanded ? 'visible' : ''}`}>
                 <h6 className="explanation-title">AR（拡張現実）</h6>
                 <p className="explanation-text">カメラを起動することで、商品を実際の大きさで確認できます</p>
-                <button className="ar-start-button" onClick={handleARStart}>ARを開始</button>
+                <button className="ar-start-button" onClick={handleARStart} disabled={isLoading}>
+                    {isLoading ? '確認中...' : 'ARを開始'}
+                </button>
             </div>
 
             {/* Primary FAB */}
@@ -35,7 +50,7 @@ const MyFabContainer = styled.div`
     position: absolute;
     top: 160px;
     right: 20px;
-    z-index: 10;
+    z-index: 800..;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -88,10 +103,16 @@ const MyFabContainer = styled.div`
         font-weight: 600;
         cursor: pointer;
         transition: background-color 0.2s;
+        width: 100%;
     }
 
-    .ar-start-button:hover {
+    .ar-start-button:hover:not(:disabled) {
         background: #5a6ed0;
+    }
+
+    .ar-start-button:disabled {
+        background: #555;
+        cursor: not-allowed;
     }
 
     /* Primary FAB */

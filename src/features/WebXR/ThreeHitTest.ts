@@ -66,7 +66,7 @@ export async function handleFirstHit(
         const exitButton = document.getElementById('exit-button');
         const clearObjects = document.getElementById('clear-objects');
         if (scanningOverlay && menuContainer && openPanel && arUI && exitButton && clearObjects) {
-            
+
             scanningOverlay.style.display = 'none';
             menuContainer.style.display = 'block';
             openPanel.style.display = 'flex';
