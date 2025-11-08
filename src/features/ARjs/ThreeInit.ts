@@ -116,6 +116,14 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}, onC
     renderer.setPixelRatio(dpr);
 
     const dispose = () => {
+        // Stop the camera stream
+        if (arToolkitSource && arToolkitSource.domElement) {
+            const stream = arToolkitSource.domElement.srcObject;
+            if (stream instanceof MediaStream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+        }
+
         renderer.dispose();
         smoothedRoot.traverse((obj) => {
             const mesh = obj as THREE.Mesh;
@@ -126,7 +134,11 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}, onC
                 else mat.dispose?.();
             }
         });
-        document.body.removeChild(labelRenderer.domElement);
+
+        // Remove the label renderer's dom element if it exists
+        if (labelRenderer.domElement.parentNode) {
+            document.body.removeChild(labelRenderer.domElement);
+        }
     };
 
     const pmrem = new PMREMGenerator(renderer);
