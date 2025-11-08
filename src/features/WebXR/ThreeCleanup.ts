@@ -7,8 +7,12 @@ export function handleSessionEndCleanup(
     ctx: ThreeCtx | null,
     nowModelRef: RefObject<THREE.Group | null>,
     reticleShowTimeRef: RefObject<DOMHighResTimeStamp | null>,
-    viewNumRef: RefObject<number>
+    viewNumRef: RefObject<number>,
+    setArUiVisible: (visible: boolean) => void
 ) {
+    // Hide React-controlled UI
+    setArUiVisible(false);
+
     if (ctx) {
         // 1. Reticleをシーンから削除
         ctx.scene.remove(ctx.reticle);
@@ -28,9 +32,6 @@ export function handleSessionEndCleanup(
 
     // 3. UIを復元
     const label = document.getElementById('label');
-    const arUI = document.getElementById('ar-ui');
-    const exitButton = document.getElementById('exit-button');
-    const clearObjects = document.getElementById('clear-objects');
     const menuContainer = document.getElementById('menu-container');
     const openPanel = document.getElementById('menu-openGuide')
     const startOverlay = document.getElementById('start-overlay');
@@ -48,9 +49,6 @@ export function handleSessionEndCleanup(
         }
     });
 
-    if (arUI) arUI.style.display = 'none';
-    if (exitButton) exitButton.style.display = 'none';
-    if (clearObjects) clearObjects.style.display = 'none';
     if (menuContainer) menuContainer.style.display = 'none';
     if (openPanel) {openPanel.style.display = 'flex'};
     if (startOverlay) startOverlay.style.display = 'flex'; // StartPanelを再表示

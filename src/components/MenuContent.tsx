@@ -11,7 +11,7 @@ type MenuContentProps = {
     viewer?: boolean;
 }
 
-export default function MenuContent({className, nowCategory, models, viewer}: MenuContentProps) {
+export default function MenuContent({className, nowCategory, models}: MenuContentProps) {
     const selectCategory: {[index: string] : string[]}  = {
         'メインメニュー': ['盛り合わせ', 'カルビ', 'タン', 'ホルモン', '締めの一品',],
         '盛り合わせ': ['盛り合わせ'],
@@ -43,6 +43,6 @@ export const MyContent = styled(MenuContent)`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    height: ${({viewer}) => (viewer ? '82vh' : '62vh')};
+    height: ${({viewer}) => (viewer ? '100dvh' : '70dvh')};
     overflow-y: auto;
 `

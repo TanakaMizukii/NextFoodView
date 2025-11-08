@@ -26,8 +26,10 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const nowModelRef = useRef<THREE.Group | null>(null);
     const [ctx, setCtx] = useState<ThreeContext | null>(null);
+    const [arUiVisible, setArUiVisible] = useState(false);
     const reticleShowTimeRef = useRef<DOMHighResTimeStamp | null>(null);
     const viewNumRef = useRef<number>(0);
+    const inFlightRef = useRef(false);
 
     const changeModel = useCallback(async (modelInfo: { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; }) => {
         if (!ctx) return;
@@ -43,10 +45,20 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
 
     useEffect(() => {
         if (!startAR || !ctx || ctx.currentSession) return;
+        if (inFlightRef.current) return;
+        inFlightRef.current = true;
 
         (async () => {
             try {
-                const session = await startARSession(ctx.renderer);
+                // 既にRenderer側にセッションがあれば再利用 or 何もしない
+                const existing = ctx.renderer?.xr?.getSession?.();
+                if (existing) {
+                    // 必要ならctx.currentSession に同期だけ取る
+                    setCtx(prev => prev ? { ...prev, currentSession: existing } : prev);
+                    return;
+                }
+
+                const session = await startARSession();
                 if (!session) return;
 
                 ctx.renderer.xr.setReferenceSpaceType('local');
@@ -57,13 +69,15 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
 
                 // セッション終了時の処理
                 session.addEventListener('end', () => {
-                    handleSessionEndCleanup(ctx, nowModelRef, reticleShowTimeRef, viewNumRef);
+                    handleSessionEndCleanup(ctx, nowModelRef, reticleShowTimeRef, viewNumRef, setArUiVisible);
                     setCtx(prevCtx => prevCtx? { ...prevCtx, currentSession: undefined } : prevCtx);
                     onSessionEnd();
                 });
             } catch (error) {
                 console.error("Failed to start AR session:", error);
                 alert(error);
+            } finally {
+                inFlightRef.current = false;
             }
         })();
     }, [startAR, ctx, onSessionEnd]);
@@ -89,8 +103,14 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
         async function animate(timestamp: DOMHighResTimeStamp, frame: XRFrame) {
             // ヒットテスト実行関数
             updateHitTest(threeContext, frame);
+
             // 初回ヒット時の処理関数
-            await handleFirstHit(threeContext, timestamp, reticleShowTimeRef, viewNumRef);
+            if (!arUiVisible) {
+                const shouldShowUI = await handleFirstHit(threeContext, timestamp, reticleShowTimeRef, viewNumRef);
+                if (shouldShowUI) {
+                    setArUiVisible(true);
+                }
+            }
 
             // レンダリング
             threeContext.renderer.render(threeContext.scene, threeContext.camera);
@@ -103,13 +123,13 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
             detach();
             threeContext.dispose();
         };
-    }, []);
+    }, [arUiVisible]);
 
     return (
         <>
             <GuideScanPlane />
             <LoadingPanel />
-            <ARHelper ctx={ctx} />
+            {arUiVisible && ctx && ctx.currentSession && <ARHelper ctx={ctx} />}
             <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />
             </div>

@@ -111,7 +111,7 @@ const MyTopBar = styled.div`
         backdrop-filter: blur(20px);
         border-radius: 24px 24px 0 0;
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 110;..........
+        z-index: 99;
         max-height: 70vh;
         display: flex;
         flex-direction: column;

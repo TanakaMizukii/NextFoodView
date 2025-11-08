@@ -51,29 +51,23 @@ export async function handleFirstHit(
     timestamp: DOMHighResTimeStamp,
     reticleShowTimeRef: RefObject<DOMHighResTimeStamp | null>,
     viewNumRef: RefObject<number>
-) {
+): Promise<boolean> {
     if (viewNumRef.current !== 0) {
-        return;
+        return false;
     }
 
     const isVisible = ctx.reticle.visible;
+    let shouldShowUI = false;
 
     if (isVisible) {
         const scanningOverlay = document.getElementById('scanning-overlay');
         const menuContainer = document.getElementById('menu-container');
-        const openPanel = document.getElementById('menu-openGuide')
-        const arUI = document.getElementById('ar-ui');
-        const exitButton = document.getElementById('exit-button');
-        const clearObjects = document.getElementById('clear-objects');
-        if (scanningOverlay && menuContainer && openPanel && arUI && exitButton && clearObjects) {
-
+        if (scanningOverlay && menuContainer) {
             scanningOverlay.style.display = 'none';
             menuContainer.style.display = 'block';
-            openPanel.style.display = 'flex';
-            arUI.style.display = 'block';
-            exitButton.style.display = 'block';
-            clearObjects.style.display = 'flex';
         }
+
+        shouldShowUI = true;
 
         if (reticleShowTimeRef.current === null) {
             reticleShowTimeRef.current = timestamp;
@@ -87,4 +81,6 @@ export async function handleFirstHit(
     } else {
         reticleShowTimeRef.current = null;
     }
+
+    return shouldShowUI;
 }
