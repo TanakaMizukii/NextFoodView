@@ -15,6 +15,7 @@ import LoadingPanel from '@/components/LoadingPanel';
 
 import productModels from '@/data/MenuInfo';
 import type { ProductModel } from '@/data/MenuInfo';
+import SideSlidePanel from '@/components/Viewer/SideSlidePanel';
 
 type ModelInfo = { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
@@ -52,12 +53,13 @@ export default function ViewerPage() {
                 </SceneLayer>
 
                 <TopLayer>
-                    <TopAppBar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+                    <TopAppBar menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
                     <CategoryCarousel currentCategory={currentCategory} setCurrentCategory={setCurrentCategory}/>
                     <PrimaryFab />
                 </TopLayer>
 
                 <BottomLayer>
+                    <SideSlidePanel menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
                     <NavArrows currentIndex={currentIndex} setCurrentIndex={setCurrentIndex}/>
                     <SpecificPanels currentIndex={currentIndex} currentCategory={currentCategory} setCurrentIndex={setCurrentIndex}/>
                     <BottomSheet currentProduct={currentProduct}/>

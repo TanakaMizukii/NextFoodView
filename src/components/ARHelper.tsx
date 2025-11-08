@@ -58,6 +58,7 @@ const MyHelper = styled.div`
     border-radius: 10px;
     font-size: 14px;
     display: none;
+    z-index: 100;
 }
 
 .exit-button {
@@ -102,7 +103,7 @@ const MyHelper = styled.div`
     box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     cursor: pointer;
     transition: transform 0.15s ease, box-shadow 0.15s ease;
-    z-index: 2000;
+    z-index: 100;
 }
 .clear-button:hover {
     transform: translateY(-2px) rotate(-15deg);
@@ -121,5 +122,6 @@ const MyHelper = styled.div`
     color: white;
     font-size: 14px;
     text-align: center;
+    z-index: 100;
 }
 `
