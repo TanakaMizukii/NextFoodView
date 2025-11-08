@@ -70,7 +70,7 @@ export default function CategoryCarousel({setCurrentCategory}: CategoryProps) {
             };
         }
     }, [setCurrentCategory]);
-
+0
     const scrollToCategory = (index: number) => {
         if (!categoryScrollRef.current) return;
         const container = categoryScrollRef.current;
@@ -148,7 +148,7 @@ const MyCategory = styled.div`
         scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
-        gap: 16px;
+        gap: 8px;
         padding: 0 calc(50vw - 100px);
     }
 
@@ -164,8 +164,8 @@ const MyCategory = styled.div`
     }
 
     .category-card {
-        background: rgba(255,255,255,0.08);
-        border: 1px solid rgba(255,255,255,0.15);
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.5);
         border-radius: 25px;
         padding: 10px;
         text-align: center;
@@ -177,7 +177,7 @@ const MyCategory = styled.div`
     }
 
     .category-item.center .category-card {
-        background: rgba(255,255,255,0.92);
+        background: rgba(255,255,255,1);
         border-color: transparent;
         box-shadow: 0 8px 24px rgba(255,255,255,0.3);
         transform: scale(1);

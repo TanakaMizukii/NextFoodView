@@ -133,7 +133,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     const pmrem = new PMREMGenerator(renderer);
     new RGBELoader()
     .setPath('/hdr/')
-    .load('11zon_forest.hdr', (hdr) => {
+    .load('kaisyu_73_small.hdr', (hdr) => {
         const envTex = pmrem.fromEquirectangular(hdr).texture;
         scene.environment = envTex;
         hdr.dispose();
@@ -162,17 +162,15 @@ export async function startARSession(renderer: THREE.WebGLRenderer): Promise<XRS
         // セッション開始時の処理
         const session = await navigator.xr?.requestSession('immersive-ar', sessionInit);
         if (session) {
-            renderer.xr.setReferenceSpaceType('local');
-            await renderer.xr.setSession(session);
+            // UIの更新
+            const startOverlay = document.getElementById('start-overlay') as HTMLElement | null;
+            if (startOverlay) { startOverlay.style.display = "none" };
+            const scanningOverlay = document.getElementById('scanning-overlay');
+            if (scanningOverlay) { scanningOverlay.style.display = 'flex' };
+            console.log('ARセッション開始成功')
+            return session;
         }
-
-        // UIの更新
-        const startOverlay = document.getElementById('start-overlay') as HTMLElement | null;
-        if (startOverlay) { startOverlay.style.display = "none" };
-        const scanningOverlay = document.getElementById('scanning-overlay');
-        if (scanningOverlay) { scanningOverlay.style.display = 'flex' };
-        console.log('ARセッション開始成功')
-        return session;
+        return undefined;
     } catch (error) {
         console.error('ARセッション開始エラー:', error);
         return undefined

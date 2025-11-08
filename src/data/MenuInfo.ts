@@ -57,8 +57,8 @@ export type ProductModel = {
     image: string;
     model: string;
     minDetail?: string;  // オプショナル（一部のアイテムのみ）
-    weight: string;
-    calories: string;
+    serving: string;
+    part: string;
     origin: string;
     recommended: string;
     tags: string[];
@@ -80,10 +80,10 @@ export const productModels : ProductModelsProps = [
         image: './images/カルビ盛り.jpg',
         model: './models/calbee_set_comp.glb',
         minDetail: 'カルビ好きにはたまらない！4種類のカルビ盛り合わせ!',
-        weight: '約540g',
-        calories: '1720kcal',
-        origin: '国産牛',
-        recommended: 'タレ・塩両方',
+        serving: '2,3人前',
+        part: '牛カルビ（4種類）',
+        origin: '信州牛',
+        recommended: 'タレ',
         tags: ['カルビ尽くし', '食べ比べ', '4種類', 'おすすめ']
     },
     {
@@ -97,8 +97,8 @@ export const productModels : ProductModelsProps = [
         image: './images/九種盛り.jpg',
         model: './models/9hormone_set_comp2.glb',
         minDetail: '様々な部位をお楽しみいただけます。',
-        weight: '約450g',
-        calories: '900kcal',
+        serving: '2,3人前',
+        part: 'ホルモン（9種類）',
         origin: '国産',
         recommended: '特製塩ダレ',
         tags: ['ホルモン', 'バラエティ', '厳選', '9種類']
@@ -114,10 +114,10 @@ export const productModels : ProductModelsProps = [
         image: './images/ファミリーセット.jpg',
         model: './models/family_s_set_comp2.glb',
         minDetail: '様々なお肉がセットになったお得な一皿！',
-        weight: '約800g',
-        calories: '2400kcal',
+        serving: '4,5人前',
+        part: 'タン・ハラミ・カルビ・ホルモン・地鶏・ウインナー',
         origin: '国産',
-        recommended: '味噌ダレ',
+        recommended: '特性ポン酢ダレ',
         tags: ['ファミリー向け', 'バラエティ', 'お得', 'セット']
     },
     {
@@ -130,8 +130,8 @@ export const productModels : ProductModelsProps = [
         description: 'タンの中でも上質な部分。レモンで食べると程よい油が口の中に広がります。',
         image: './images/上タン塩.jpg',
         model: './models/ton_tongue_comp3.glb',
-        weight: '100g',
-        calories: '270kcal',
+        serving: '1人前',
+        part: 'タン',
         origin: '国産牛',
         recommended: '塩・レモン',
         tags: ['上質', 'さっぱり', '人気']
@@ -147,10 +147,10 @@ export const productModels : ProductModelsProps = [
         image: './images/特上カルビ.jpg',
         model: './models/calbee_toku_comp.glb',
         minDetail: 'カルビの中の最高級部位',
-        weight: '150g',
-        calories: '520kcal',
+        serving: '1人前',
+        part: 'カルビ',
         origin: '国産黒毛和牛',
-        recommended: 'タレ・塩両方',
+        recommended: 'タレ',
         tags: ['高級', '霜降り', 'おすすめ', 'とろける']
     },
     {
@@ -164,8 +164,8 @@ export const productModels : ProductModelsProps = [
         image: './images/上カルビ.jpg',
         model: './models/calbee_jyou_comp.glb',
         minDetail: 'カルビの中の上級部位',
-        weight: '140g',
-        calories: '450kcal',
+        serving: '1人前',
+        part: 'カルビ',
         origin: '国産牛',
         recommended: 'タレ',
         tags: ['上質', '人気', '脂の旨味']
@@ -181,8 +181,8 @@ export const productModels : ProductModelsProps = [
         image: './images/並カルビ.jpg',
         model: './models/calbee_nami_raw_comp.glb',
         minDetail: '大判による貴重な一品',
-        weight: '130g',
-        calories: '390kcal',
+        serving: '1人前',
+        part: 'カルビ',
         origin: '国産牛',
         recommended: 'タレ',
         tags: ['大判', 'バランス良好', 'コスパ']
@@ -198,8 +198,8 @@ export const productModels : ProductModelsProps = [
         image: './images/切り落としカルビ.jpg',
         model: './models/calbee_kiri_raw_comp.glb',
         minDetail: 'カルビの旨味を贅沢に',
-        weight: '120g',
-        calories: '360kcal',
+        serving: '1人前',
+        part: 'カルビ',
         origin: '国産牛',
         recommended: 'タレ',
         tags: ['リーズナブル', '柔らか', 'お得']
@@ -214,8 +214,8 @@ export const productModels : ProductModelsProps = [
         description: '牛の第一胃袋の一部。コリコリとした小気味よい歯ごたえと弾力で脂肪が少なくさっぱりとお楽しみ頂けます。',
         image: './images/上ミノ.jpg',
         model: './models/hor_mino_raw_comp.glb',
-        weight: '100g',
-        calories: '180kcal',
+        serving: '1人前',
+        part: '第一胃',
         origin: '国産牛',
         recommended: '塩',
         tags: ['コリコリ', 'さっぱり', 'ヘルシー', '食感']
@@ -230,10 +230,10 @@ export const productModels : ProductModelsProps = [
         description: 'シマチョウとも呼ばれる牛の大腸。口の中で脂の甘みと旨味が広がります',
         image: './images/テッチャン.jpg',
         model: './models/hor_techan_comp.glb',
-        weight: '100g',
-        calories: '290kcal',
+        serving: '1人前',
+        part: '大腸',
         origin: '国産牛',
-        recommended: 'タレ・味噌',
+        recommended: '味噌・塩両方',
         tags: ['シマチョウ', '甘み', '旨味', '人気']
     },
     {
@@ -246,8 +246,8 @@ export const productModels : ProductModelsProps = [
         description: 'ぷりぷり食感の牛の小腸。味噌味のコプチャンとお酒がよく合います',
         image: './images/コプチャン.jpg',
         model: './models/hor_copchan_comp.glb',
-        weight: '100g',
-        calories: '280kcal',
+        serving: '1人前',
+        part: '小腸',
         origin: '国産牛',
         recommended: '味噌ダレ',
         tags: ['ぷりぷり', '味噌味', 'お酒に合う']
@@ -262,8 +262,8 @@ export const productModels : ProductModelsProps = [
         description: '赤センマイとも呼ばれる牛の第４胃です。塩味で召し上がると旨味を強く感じられます',
         image: './images/ギアラ.jpg',
         model: './models/hor_giara_comp.glb',
-        weight: '100g',
-        calories: '200kcal',
+        serving: '1人前',
+        part: '第四胃',
         origin: '国産牛',
         recommended: '塩',
         tags: ['赤センマイ', '旨味', 'さっぱり']
@@ -279,8 +279,8 @@ export const productModels : ProductModelsProps = [
         image: './images/盛岡冷麺.jpg',
         model: './models/bowl_coldnoodle_comp.glb',
         minDetail: '商品の大きさにご注意ください！！',
-        weight: '約400g',
-        calories: '420kcal',
+        serving: '1人前',
+        part: '麺',
         origin: '盛岡直送',
         recommended: 'そのまま',
         tags: ['シメ', 'さっぱり', 'つるつる', '本格派']
@@ -296,27 +296,11 @@ export const productModels : ProductModelsProps = [
         image: './images/クッパ.jpg',
         model: './models/bowl_koopa_comp.glb',
         minDetail: '商品の大きさにご注意ください！！',
-        weight: '約350g',
-        calories: '380kcal',
+        serving: '1人前',
+        part: 'ご飯・スープ',
         origin: '国産米使用',
         recommended: 'そのまま',
         tags: ['シメ', '温まる', '優しい味', '卵スープ']
     },
-    // {
-    //     id: 15,
-    //     name: 'ご飯大',
-    //     shortName: 'ご飯大',
-    //     category: 'ご飯',
-    //     price: '300 (税込 330)',
-    //     minPrice: '300',
-    //     description: '焼肉のお供に大盛りご飯！毎日想いを込めて丁寧に炊き上げております！',
-    //     image: './images/ご飯大.jpg',
-    //     model: './models/ご飯大.glb',
-    //     weight: '300g',
-    //     calories: '504kcal',
-    //     origin: '国産米',
-    //     recommended: 'そのまま',
-    //     tags: ['大盛り', '丁寧炊き', 'お供に']
-    // },
 ];
 export default productModels;

@@ -39,6 +39,15 @@ export function handleSessionEndCleanup(
         const parent = label.parentNode;
         parent?.removeChild(label);
     }
+
+    const details = document.querySelectorAll('.detail');
+    details.forEach((detail) => {
+        if (detail) {
+            const parent = detail.parentNode;
+            parent?.removeChild(detail);
+        }
+    });
+
     if (arUI) arUI.style.display = 'none';
     if (exitButton) exitButton.style.display = 'none';
     if (clearObjects) clearObjects.style.display = 'none';

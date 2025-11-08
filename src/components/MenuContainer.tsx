@@ -104,13 +104,17 @@ export default function MenuContainer({ className } : MenuContainerProps) {
                 タップまたは上スワイプ<br/>でメニューを開けます
             </GuideHint>
             <MyContainer id='menu-container' className={className} $expanded={toggle}>
-                <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-                    <MenuToggle onUpdate={t_update} toggle={toggle}/>
+                <div className="menu-header">
+                    <div onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+                        <MenuToggle onUpdate={t_update} toggle={toggle}/>
+                    </div>
+                    <TabNavigation pdtLists={productCategory} onUpdate={c_update} toggleCheck={toggleCheck}/>
                 </div>
-                <TabNavigation pdtLists={productCategory} onUpdate={c_update} toggleCheck={toggleCheck}/>
-                <ToggleChangeContext.Provider value={toggleConfig}>
-                    <MyContent nowCategory={category} models={productModels} />
-                </ToggleChangeContext.Provider>
+                <div className="menu-body">
+                    <ToggleChangeContext.Provider value={toggleConfig}>
+                        <MyContent nowCategory={category} models={productModels} />
+                    </ToggleChangeContext.Provider>
+                </div>
             </MyContainer>
             <OpenMenuButton
                 aria-label="Open menu"
@@ -127,6 +131,7 @@ export default function MenuContainer({ className } : MenuContainerProps) {
 export const MyContainer = styled.div<MyContainerProps>`
     /* Default: mobile portrait bottom sheet */
     display: none;
+    flex-direction: column;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -139,7 +144,16 @@ export const MyContainer = styled.div<MyContainerProps>`
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 
     height: ${({ $expanded }) => ($expanded ? '75vh' : '110px')};
-    overflow-y: ${({ $expanded }) => ($expanded ? 'auto' : '')};
+
+    .menu-header {
+        flex-shrink: 0;
+    }
+
+    .menu-body {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+    }
 
     /* Desktop size or phone landscape: right side panel */
     @media (min-width: 1024px), (orientation: landscape) {
@@ -157,6 +171,12 @@ export const MyContainer = styled.div<MyContainerProps>`
         overflow-y: auto;
         transform: translateX(${({ $expanded }) => ($expanded ? '0' : '100%')});
         transition: transform 0.3s ease-out;
+
+        /* Undo mobile flex layout for desktop */
+        display: block;
+        .menu-body {
+            overflow-y: visible; /* Let the container scroll on desktop */
+        }
     }
 `;
 

@@ -47,7 +47,10 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
         (async () => {
             try {
                 const session = await startARSession(ctx.renderer);
-                if (! session) return;
+                if (!session) return;
+
+                ctx.renderer.xr.setReferenceSpaceType('local');
+                await ctx.renderer.xr.setSession(session);
 
                 // セッション情報をコンテキストに保存
                 setCtx(prevCtx => prevCtx? { ...prevCtx, currentSession: session } : prevCtx);

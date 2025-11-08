@@ -35,8 +35,12 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
 
         // ローディングインジケーターの表示
         const loadingOverlay = document.getElementById('loading');
-        if (loadingOverlay) {
-            loadingOverlay.classList.add('visible');
+        const guideMarker = document.getElementById('guideMarker');
+        const guideVisible = guideMarker?.classList.contains('visible');
+        if (!guideVisible) {
+            if (loadingOverlay) {
+                loadingOverlay?.classList.add('visible');
+            }
         }
 
         // 今回表すモデルの表示

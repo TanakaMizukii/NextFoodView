@@ -5,7 +5,7 @@ type StartPanelProps = {
     loading: boolean;
 }
 
-export default function KaishuStartPanel({ onUpdate, loading }: StartPanelProps) {
+export default function ARStartPanel({ onUpdate, loading }: StartPanelProps) {
     const handleClick = () => {
         onUpdate();
     };
@@ -14,14 +14,12 @@ export default function KaishuStartPanel({ onUpdate, loading }: StartPanelProps)
         // <!-- スタートパネル -->
         <MyStart>
             <div id="start-overlay" className={'startOverlay'}>
-                <img src="/thumb/ファミリーセット切り抜き.png" alt="商品イメージ" id="start-right-up" className={"startSideImg rightTopImg"} />
                 <img src="/thumb/海州ロゴ.png" alt="メインイメージ" id="start-image" className={"startImage"} />
-                <div id="status-text" className={'startText'}>商品を立体的に表示し<br></br>ミスマッチの解消を目指します</div>
+                <div id="status-text" className={'startText'}>ARエクスペリエンスを開始</div>
                     <button id="start-button" className={'startButton'} onClick={handleClick} disabled={loading}>
-                        {loading ? '判定中…' : '商品の立体表示を開始'}
+                        {loading ? '判定中…' : 'AR体験を始める'}
                     </button>
                 <div id="loading-spinner" className={'loadingSpinner'} style={{ display: loading ? 'block' : 'none' }} />
-                <img src="/thumb/カルビ盛り切り抜き.png" alt="商品イメージ" id="start-left-bottom" className={"startSideImg leftBottomImg"} />
             </div>
         </MyStart>
     )
@@ -76,22 +74,6 @@ const MyStart = styled.div`
     left: -40vw; /* Adjusted for overflow */
     transform: rotate(-15deg); /* Added rotation */
     animation-delay: 0.6s;
-}
-
-@media (min-width: 768px) {
-    .startSideImg {
-        max-width: 500px; /* Set a max-width for larger screens */
-    }
-
-    .rightTopImg {
-        top: -5vh;
-        right: -20vw; /* Adjust position for desktop */
-    }
-
-    .leftBottomImg {
-        bottom: -5vh;
-        left: -20vw; /* Adjust position for desktop */
-    }
 }
 
 .startText {

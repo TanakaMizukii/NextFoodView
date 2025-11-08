@@ -66,7 +66,7 @@ export async function handleFirstHit(
         const exitButton = document.getElementById('exit-button');
         const clearObjects = document.getElementById('clear-objects');
         if (scanningOverlay && menuContainer && openPanel && arUI && exitButton && clearObjects) {
-            
+
             scanningOverlay.style.display = 'none';
             menuContainer.style.display = 'block';
             openPanel.style.display = 'flex';
@@ -79,7 +79,7 @@ export async function handleFirstHit(
             reticleShowTimeRef.current = timestamp;
         }
 
-        if (reticleShowTimeRef.current !== null && timestamp - reticleShowTimeRef.current > 2000) {
+        if (reticleShowTimeRef.current !== null && timestamp - reticleShowTimeRef.current > 1500) {
             viewNumRef.current = 1;
             reticleShowTimeRef.current = null;
             await loadModel({}, ctx, null);
