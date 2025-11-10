@@ -60,16 +60,32 @@ export default function BottomSheet({currentProduct}: BottomProps) {
                                 <div className="spec-label">分量</div>
                                 <div className="spec-value">{currentProduct.serving}</div>
                             </div>
+                            {currentProduct.part ?(
+                                    <div className="spec-card">
+                                        <div className="spec-label">部位</div>
+                                        <div className="spec-value">{currentProduct.part}</div>
+                                    </div>
+                                ): (
+                                    <div className="spec-card">
+                                        <div className="spec-label">カテゴリー</div>
+                                        <div className="spec-value">{currentProduct.category}</div>
+                                    </div>
+                                )
+                            }
+                            {currentProduct.origin ?(
+                                    <div className="spec-card">
+                                        <div className="spec-label">産地</div>
+                                        <div className="spec-value">{currentProduct.origin}</div>
+                                    </div>
+                                ): (
+                                    <div className="spec-card">
+                                        <div className="spec-label">おすすめの方</div>
+                                        <div className="spec-value">{currentProduct.recPeople}</div>
+                                    </div>
+                                )
+                            }
                             <div className="spec-card">
-                                <div className="spec-label">部位</div>
-                                <div className="spec-value">{currentProduct.part}</div>
-                            </div>
-                            <div className="spec-card">
-                                <div className="spec-label">産地</div>
-                                <div className="spec-value">{currentProduct.origin}</div>
-                            </div>
-                            <div className="spec-card">
-                                <div className="spec-label">おすすめ</div>
+                                <div className="spec-label">おすすめの食べ方</div>
                                 <div className="spec-value">{currentProduct.recommended}</div>
                             </div>
                         </div>
@@ -115,6 +131,7 @@ const MyTopBar = styled.div`
         max-height: 70vh;
         display: flex;
         flex-direction: column;
+        white-space: pre-wrap;
     }
 
     .bottom-sheet.peek {
