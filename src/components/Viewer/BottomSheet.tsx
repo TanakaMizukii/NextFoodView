@@ -60,14 +60,30 @@ export default function BottomSheet({currentProduct}: BottomProps) {
                                 <div className="spec-label">分量</div>
                                 <div className="spec-value">{currentProduct.serving}</div>
                             </div>
-                            <div className="spec-card">
-                                <div className="spec-label">部位</div>
-                                <div className="spec-value">{currentProduct.part}</div>
-                            </div>
-                            <div className="spec-card">
-                                <div className="spec-label">産地</div>
-                                <div className="spec-value">{currentProduct.origin}</div>
-                            </div>
+                            {currentProduct.part ?(
+                                    <div className="spec-card">
+                                        <div className="spec-label">部位</div>
+                                        <div className="spec-value">{currentProduct.part}</div>
+                                    </div>
+                                ): (
+                                    <div className="spec-card">
+                                        <div className="spec-label">カテゴリー</div>
+                                        <div className="spec-value">{currentProduct.category}</div>
+                                    </div>
+                                )
+                            }
+                            {currentProduct.origin ?(
+                                    <div className="spec-card">
+                                        <div className="spec-label">産地</div>
+                                        <div className="spec-value">{currentProduct.origin}</div>
+                                    </div>
+                                ): (
+                                    <div className="spec-card">
+                                        <div className="spec-label">おすすめの方</div>
+                                        <div className="spec-value">{currentProduct.recPeople}</div>
+                                    </div>
+                                )
+                            }
                             <div className="spec-card">
                                 <div className="spec-label">おすすめ</div>
                                 <div className="spec-value">{currentProduct.recommended}</div>
