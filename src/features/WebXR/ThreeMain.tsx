@@ -28,6 +28,7 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
     const [ctx, setCtx] = useState<ThreeContext | null>(null);
     const reticleShowTimeRef = useRef<DOMHighResTimeStamp | null>(null);
     const viewNumRef = useRef<number>(0);
+    const inFlightRef = useRef(false);
 
     const changeModel = useCallback(async (modelInfo: { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; }) => {
         if (!ctx) return;
@@ -43,16 +44,25 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
 
     useEffect(() => {
         if (!startAR || !ctx || ctx.currentSession) return;
+        if (inFlightRef.current) return;
+        inFlightRef.current = true;
 
         (async () => {
             try {
-                const session = await startARSession(ctx.renderer);
+                // 既にRenderer側にセッションがあれば再利用 or 何もしない
+                const existing = ctx.renderer?.xr?.getSession?.();
+                if (existing) {
+                    // 必要ならctx.currentSession に同期だけ取る
+                    setCtx(prev => prev ? { ...prev, currentSession: existing } : prev);
+                    return;
+                }
+
+                const session = await startARSession();
                 if (!session) return;
 
                 ctx.renderer.xr.setReferenceSpaceType('local');
                 await ctx.renderer.xr.setSession(session);
 
-                // セッション情報をコンテキストに保存
                 setCtx(prevCtx => prevCtx? { ...prevCtx, currentSession: session } : prevCtx);
 
                 // セッション終了時の処理
@@ -64,6 +74,8 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
             } catch (error) {
                 console.error("Failed to start AR session:", error);
                 alert(error);
+            } finally {
+                inFlightRef.current = false;
             }
         })();
     }, [startAR, ctx, onSessionEnd]);

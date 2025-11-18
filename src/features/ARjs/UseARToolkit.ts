@@ -49,13 +49,6 @@ export const UseARToolkit = ({ domElement, camera, cameraParaDatURL, markerPatte
     function arResize() {
         arToolkitSource.onResizeElement();
         arToolkitSource.copyElementSizeTo(domElement);
-        if (window.arToolkitContext.arController !== null) {
-            arToolkitSource.copyElementSizeTo(
-                window.arToolkitContext.arController.canvas
-            );
-        }
-        // 保険：投影は常にAR由来
-        camera.projectionMatrix.copy(arToolkitContext.getProjectionMatrix());
     }
     window.addEventListener("resize", arResize);
 

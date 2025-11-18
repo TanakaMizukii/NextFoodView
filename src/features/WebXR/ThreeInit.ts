@@ -146,7 +146,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
 }
 
 // ARButtonの代わりを作成
-export async function startARSession(renderer: THREE.WebGLRenderer): Promise<XRSession | undefined> {
+export async function startARSession(): Promise<XRSession | undefined> {
     try {
         const statusText = document.getElementById('status-text');
         if (statusText) {
