@@ -49,7 +49,7 @@ export default function ARHelper({ ctx }: { ctx: ThreeCtx | null }) {
 const MyHelper = styled.div`
 .ar-ui {
     position: absolute;
-    top: 20px;
+    top: 40px;
     left: 20px;
     width: auto;
     color: white;
@@ -63,7 +63,7 @@ const MyHelper = styled.div`
 
 .exit-button {
     position: absolute;
-    top: 35px;
+    top: 40px;
     right: 25px;
     background: rgba(244, 67, 54, 0.8);
     color: white;
@@ -79,7 +79,6 @@ const MyHelper = styled.div`
     position: absolute;
     top: 100px;
     right: 22px;
-
     display: none;
     flex-direction: column;
     align-items: center;

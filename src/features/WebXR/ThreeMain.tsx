@@ -63,6 +63,8 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
                 ctx.renderer.xr.setReferenceSpaceType('local');
                 await ctx.renderer.xr.setSession(session);
 
+                setCtx(prevCtx => prevCtx? { ...prevCtx, currentSession: session } : prevCtx);
+
                 // セッション終了時の処理
                 session.addEventListener('end', () => {
                     handleSessionEndCleanup(ctx, nowModelRef, reticleShowTimeRef, viewNumRef);
