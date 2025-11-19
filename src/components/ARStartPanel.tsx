@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useRouter } from "next/navigation";
 
 type StartPanelProps = {
     onUpdate: () => void;
@@ -6,9 +7,13 @@ type StartPanelProps = {
 }
 
 export default function ARStartPanel({ onUpdate, loading }: StartPanelProps) {
+    const router = useRouter();
     const handleClick = () => {
         onUpdate();
     };
+    const backClick = () => {
+        router.push('/viewer');
+    }
 
     return(
         // <!-- スタートパネル -->
@@ -19,6 +24,7 @@ export default function ARStartPanel({ onUpdate, loading }: StartPanelProps) {
                     <button id="start-button" className={'startButton'} onClick={handleClick} disabled={loading}>
                         {loading ? '判定中…' : 'AR体験を始める'}
                     </button>
+                    <button id="back-button" className={'backButton'} onClick={backClick}>3Dビュワーに戻る</button>
                 <div id="loading-spinner" className={'loadingSpinner'} style={{ display: loading ? 'block' : 'none' }} />
             </div>
         </MyStart>
@@ -144,5 +150,23 @@ const MyStart = styled.div`
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.backButton {
+    background: linear-gradient(145deg, #317e3aff, #22762fff);
+    color: white;
+    margin: 20px;
+    padding: 14px 35px;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5), inset 0 -3px 6px rgba(0,0,0,0.5);
+    border: 1px solid #428742ff;
+    cursor: pointer;
+    min-width: 150px;
+    text-align: center;
+    transition: all 0.2s ease-out;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
 `

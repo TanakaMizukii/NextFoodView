@@ -144,7 +144,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}, onC
     const pmrem = new PMREMGenerator(renderer);
     new RGBELoader()
     .setPath('/hdr/')
-    .load('11zon_forest.hdr', (hdr) => {
+    .load('kaisyu_73_small.hdr', (hdr) => {
         const envTex = pmrem.fromEquirectangular(hdr).texture;
         scene.environment = envTex;
         hdr.dispose();

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from 'three';
 import { initThree, attachResizeHandlers, startARSession } from "@/features/WebXR/ThreeInit";
-import { loadModel } from "@/features/WebXR/ThreeLoad";
+import { loadModel, disposeModel } from "@/features/WebXR/ThreeLoad";
 import { handleClick } from "@/features/WebXR/ThreeClick";
 import LoadingPanel from "@/components/LoadingPanel";
 import GuideScanPlane from "@/components/GuideScanPlane";
@@ -117,11 +117,39 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
         };
     }, []);
 
+    const handleExit = () => {
+        if (ctx && ctx.currentSession) {
+            ctx.currentSession.end();
+        }
+    };
+
+    const handleClear = () => {
+        if (!ctx) return;
+        // 表示されているモデルだけ削除・メモリ解放
+        if (ctx.objectList) {
+            ctx.objectList.forEach((obj) => {
+                ctx.scene.remove(obj);
+                disposeModel(obj);
+            });
+            // objectListを空にする
+            ctx.objectList.length = 0;
+            const details = document.querySelectorAll('.detail');
+            details.forEach((detail) => {
+            if (detail) {
+                const parent = detail.parentNode;
+                parent?.removeChild(detail);
+            };
+            // TransformControlsも削除
+            ctx.transControls.detach();
+        })
+        };
+    };
+
     return (
         <>
             <GuideScanPlane />
             <LoadingPanel />
-            <ARHelper ctx={ctx} />
+            <ARHelper onExit={handleExit} onClear={handleClear} showClearObjects={true} />
             <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />
             </div>

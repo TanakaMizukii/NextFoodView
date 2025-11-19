@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import * as THREE from 'three';
 import { initThree, attachResizeHandlers } from "@/features/ARjs/ThreeInit";
-import { loadModel } from "@/features/ARjs/ThreeLoad";
+import { loadModel, disposeModel } from "@/features/ARjs/ThreeLoad";
 import { handleClick } from "@/features/ARjs/ThreeClick";
 import LoadingPanel from "@/components/LoadingPanel";
+import ARHelper from "@/components/ARHelper";
+import { useRouter } from "next/navigation";
 
 
 /** AR.js Main */
@@ -19,6 +21,7 @@ type ThreeMainProps = {
 };
 
 export default function ThreeMain({ setChangeModel, onCameraReady, onGuideDismiss }: ThreeMainProps) {
+    const router = useRouter();
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const nowModelRef = useRef<THREE.Group | null>(null);
@@ -83,9 +86,14 @@ export default function ThreeMain({ setChangeModel, onCameraReady, onGuideDismis
         };
     }, [onCameraReady, onGuideDismiss]);
 
+    const handleExit = () => {
+        router.push('/viewer');
+    };
+
     return (
         <>
             <LoadingPanel />
+            <ARHelper onExit={handleExit} showClearObjects={false} />
             <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />
             </div>

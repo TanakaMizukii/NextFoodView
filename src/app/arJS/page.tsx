@@ -33,7 +33,13 @@ export default function ARjsPage() {
         setIsGuideVisible(false);
         setGuideText("モデルを読み込み中です...\n少々お待ちください");
         const openPanel = document.getElementById('menu-openGuide')
-        if (openPanel) {openPanel.style.display = 'flex'};
+        const arUI = document.getElementById('ar-ui');
+        const exitButton = document.getElementById('exit-button');
+        if (openPanel && arUI && exitButton) {
+            openPanel.style.display = 'flex';
+            arUI.style.display = 'block';
+            exitButton.style.display = 'block';
+        };
     }, []);
 
     return (
