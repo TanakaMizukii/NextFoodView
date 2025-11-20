@@ -7,17 +7,15 @@ export function handleSessionEndCleanup(
     viewNumRef: RefObject<number>
 ) {
     if (ctx) {
-        // 1. Reticleをシーンから削除
+        // Reticleをシーンから削除
         ctx.scene.remove(ctx.reticle);
-        ctx.transControls.detach();
-
         // objectListもクリア
         ctx.objectList.length = 0;
         // TransformControlsも削除
         ctx.transControls.detach();
     }
 
-    // 3. UIを復元
+    // UIを復元
     const label = document.getElementById('label');
     const arUI = document.getElementById('ar-ui');
     const exitButton = document.getElementById('exit-button');
@@ -31,14 +29,6 @@ export function handleSessionEndCleanup(
         parent?.removeChild(label);
     }
 
-    const details = document.querySelectorAll('.detail');
-    details.forEach((detail) => {
-        if (detail) {
-            const parent = detail.parentNode;
-            parent?.removeChild(detail);
-        }
-    });
-
     if (arUI) arUI.style.display = 'none';
     if (exitButton) exitButton.style.display = 'none';
     if (clearObjects) clearObjects.style.display = 'none';
@@ -46,7 +36,7 @@ export function handleSessionEndCleanup(
     if (openPanel) {openPanel.style.display = 'flex'};
     if (startOverlay) startOverlay.style.display = 'flex'; // StartPanelを再表示
 
-    // 4. 初回表示ロジックの変数をリセット
+    // 初回表示ロジックの変数をリセット
     reticleShowTimeRef.current = null;
     viewNumRef.current = 0;
 

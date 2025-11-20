@@ -1,4 +1,5 @@
 import type { ThreeCtx } from './ThreeInit';
+
 // マウスをクリックしたときのイベント
 export function handleClick(ctx: ThreeCtx) {
     return(event: MouseEvent) => {

@@ -167,12 +167,12 @@ export async function startARSession(): Promise<XRSession | undefined> {
             if (startOverlay) { startOverlay.style.display = "none" };
             const scanningOverlay = document.getElementById('scanning-overlay');
             if (scanningOverlay) { scanningOverlay.style.display = 'flex' };
-            console.log('ARセッション開始成功')
+            console.log('Session start complete.')
             return session;
         }
         return undefined;
     } catch (error) {
-        console.error('ARセッション開始エラー:', error);
+        console.error('Session start error..:', error);
         return undefined
     }
 }
