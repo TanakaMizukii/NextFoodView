@@ -40,7 +40,7 @@ export default function GuideScanPlane({ visible = true }: Props) {
 
             <div className="scanning-instruction">
                 スマートフォンをゆっくりと<br />
-                左右に動かして平面を<br />
+                上下左右に動かして平面を<br />
                 スキャンしてください
             </div>
         </div>
@@ -131,7 +131,7 @@ const MyGuidePlane = styled.div`
         border: 2px solid #fff;
         border-radius: 8px;
         background: rgba(0, 0, 0, 0.8);
-        animation: phoneSweep 8.0s ease-in-out infinite;
+        animation: phoneSweep 10.0s ease-in-out infinite;
         transform-origin: 50% 70%;
         box-shadow: 0 0 8px rgba(255, 255, 255, 0.25);
     }
@@ -156,17 +156,28 @@ const MyGuidePlane = styled.div`
         transform: translateX(-50%);
     }
 
-    /* 左右へ往復（机の前縁に合わせて、わずかにYも揺らす） */
+    /* 上下左右へ往復 */
     @keyframes phoneSweep {
+        /* 左右の動き */
         0% {
-        transform: translate(0px, -6px) rotateY(0deg);
+            transform: translate(100px, 0px) rotateY(0deg);
         }
-        50% {
-        /* 280-40=240px 移動 → 見た目を整えるため 200px 程度に */
-        transform: translate(200px, -2px) rotateY(15deg);
+        15% {
+            transform: translate(200px, -2px) rotateY(15deg);
+        }
+        45% {
+            transform: translate(0px, -6px) rotateY(15deg);
+        }
+        60% {
+            transform: translate(100px, 0px) rotateY(0deg);
+        }
+        /* 上下の動き */
+        80% {
+            /* Y方向に動かす。少し中央に寄せる */
+            transform: translate(100px, -75px) rotateY(5deg);
         }
         100% {
-        transform: translate(0px, -6px) rotateY(0deg);
+            transform: translate(100px, 0px) rotateY(0deg);
         }
     }
 

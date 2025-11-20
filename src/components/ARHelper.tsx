@@ -1,34 +1,12 @@
 import styled from "styled-components"
-import type { ThreeCtx } from "@/features/WebXR/ThreeInit";
-import { disposeModel } from "@/features/WebXR/ThreeLoad";
 
-export default function ARHelper({ ctx }: { ctx: ThreeCtx | null }) {
-    const handleClick = () => {
-        if (ctx && ctx.currentSession) {
-            ctx.currentSession.end();
-        }
-    };
-    const startClear = () => {
-        // 表示されているモデルだけ削除・メモリ解放
-        if (ctx?.objectList) {
-            ctx.objectList.forEach((obj) => {
-                ctx.scene.remove(obj);
-                disposeModel(obj);
-            });
-            // objectListを空にする
-            ctx.objectList.length = 0;
-            const details = document.querySelectorAll('.detail');
-            details.forEach((detail) => {
-            if (detail) {
-                const parent = detail.parentNode;
-                parent?.removeChild(detail);
-            };
-            // TransformControlsも削除
-            ctx.transControls.detach();
-        })
-        };
-    };
+interface ARHelperProps {
+    onExit: () => void;
+    onClear?: () => void;
+    showClearObjects: boolean;
+}
 
+export default function ARHelper({ onExit, onClear, showClearObjects }: ARHelperProps) {
     return(
         // <!-- AR中のUI -->
         <MyHelper>
@@ -37,11 +15,13 @@ export default function ARHelper({ ctx }: { ctx: ThreeCtx | null }) {
                 <div>商品の選択可能</div>
             </div>
 
-            <button id="exit-button" className="exit-button" onClick={handleClick}>AR終了</button>
-            <div id="clear-objects" className="clear-objects">
-                <button id="clear-button" className="clear-button" onClick={startClear}>♻️</button>
-                <div id="clear-text" className="clear-text">モデルクリア</div>
-            </div>
+            <button id="exit-button" className="exit-button" onClick={onExit}>AR終了</button>
+            {showClearObjects && (
+                <div id="clear-objects" className="clear-objects">
+                    <button id="clear-button" className="clear-button" onClick={onClear}>♻️</button>
+                    <div id="clear-text" className="clear-text">モデルクリア</div>
+                </div>
+            )}
         </MyHelper>
     );
 }
