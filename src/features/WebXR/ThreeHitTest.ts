@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import { ThreeCtx } from "./ThreeInit";
 import { loadModel } from "./ThreeLoad";
 import type { RefObject } from 'react';
@@ -43,6 +44,21 @@ export async function updateHitTest(ctx: ThreeCtx, frame: XRFrame | undefined) {
         } else {
             ctx.reticle.visible = false;
         }
+    }
+
+    // Raycaster for reticle transparency
+    const cameraDirection = new THREE.Vector3();
+    ctx.camera.getWorldDirection(cameraDirection);
+    ctx.raycaster.set(ctx.camera.position, cameraDirection);
+
+    const intersects = ctx.raycaster.intersectObjects(ctx.objectList, true);
+
+    if (intersects.length > 0) {
+        // Make reticle semi-transparent if it's behind an object
+        (ctx.reticle.material as THREE.Material).opacity = 0.1;
+    } else {
+        // Otherwise, make it fully opaque
+        (ctx.reticle.material as THREE.Material).opacity = 1.0;
     }
 }
 

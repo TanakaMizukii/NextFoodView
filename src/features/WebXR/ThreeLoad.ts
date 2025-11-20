@@ -61,8 +61,37 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx): Promise<THREE
         clone.userData.isDetail = true;
         ctx.reticle.matrix.decompose(clone.position, clone.quaternion, clone.scale);
         clone.scale.set(0.0085, 0.0085, 0.0085); // 改変されてしまうためdecomposeの後に記述
-        setupHitSphere(clone);
         clone.add(detail);
+
+        // 新しいモデルのバウンディングボックスを作成
+        const newModelBox = new THREE.Box3().setFromObject(clone);
+        // 新しいモデルのバウンディングボックスを縮小
+        const scaleFactor = 0.8; // 必要に応じてこの値を調整（0.9で90%、0.7で70%）
+        shrinkBoundingBox(newModelBox, scaleFactor);
+        // 既存モデルとの衝突をチェック
+        for (let i = ctx.objectList.length - 1; i >= 0; i--) {
+            const existingModel = ctx.objectList[i];
+            const existingModelBox = new THREE.Box3().setFromObject(existingModel);
+            // 既存モデルのバウンディングボックスを縮小
+            shrinkBoundingBox(existingModelBox, scaleFactor);
+
+            if (newModelBox.intersectsBox(existingModelBox)) {
+                // 衝突が検出された場合、古いモデルを削除
+                existingModel.traverse((child) => {
+                    if (child instanceof CSS2DObject) {
+                        child.element.remove();
+                    }
+                });
+                ctx.scene.remove(existingModel);
+                disposeModel(existingModel);
+                ctx.objectList.splice(i, 1);
+            }
+        }
+
+        // // バウンディングボックス確認用BoxHelper
+        // const helper = new THREE.Box3Helper(newModelBox, 0xffffff);
+        // ctx.scene.add(helper);
+
         ctx.scene.add(clone);
         // 配列に保存
         ctx.objectList.push(clone);
@@ -94,23 +123,7 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx): Promise<THREE
     }
 }
 
-function setupHitSphere(mesh:  THREE.Group<THREE.Object3DEventMap>) {
-    // 1回だけメッシュの外側を囲むBoxを作る
-    const box = new THREE.Box3().setFromObject(mesh);
-    const size = new THREE.Vector3();
-    box.getSize(size); // x, y, z方向の長さ
-
-    // 対角線の長さの半分≒そのモデルを全部含む半径
-    const radius = size.length() / 2;
-
-    // 使用するデータをuserData.hitとして格納
-    mesh.userData.hit = {
-        center: new THREE.Vector3(), // 後で毎フレーム位置を入れる用
-        radius: radius,
-    }
-}
-
-// GLB・GLTFモデルの各要素事分解してメモリの解放を行う関数。
+// GLBモデルの各要素事分解してメモリの解放を行う関数。
 export function disposeModel(targetModel: THREE.Object3D) {
     targetModel.traverse(function (obj) {
         // objにはtargetModelが入る
@@ -134,3 +147,14 @@ export function disposeModel(targetModel: THREE.Object3D) {
         }
     });
 };
+
+// バウンディングボックスを縮小用関数
+function shrinkBoundingBox(box: THREE.Box3, scaleFactor: number) {
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+    const size = new THREE.Vector3();
+    box.getSize(size);
+    size.multiplyScalar(scaleFactor);
+    box.min.copy(center).sub(size.clone().divideScalar(2));
+    box.max.copy(center).add(size.clone().divideScalar(2));
+}
