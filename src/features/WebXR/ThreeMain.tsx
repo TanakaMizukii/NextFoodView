@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import * as THREE from 'three';
 import { initThree, attachResizeHandlers, startARSession } from "@/features/WebXR/ThreeInit";
 import { loadModel, disposeModel } from "@/features/WebXR/ThreeLoad";
 import { handleClick } from "@/features/WebXR/ThreeClick";
@@ -24,7 +23,6 @@ type ThreeMainProps = {
 export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: ThreeMainProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const nowModelRef = useRef<THREE.Group | null>(null);
     const [ctx, setCtx] = useState<ThreeContext | null>(null);
     const reticleShowTimeRef = useRef<DOMHighResTimeStamp | null>(null);
     const viewNumRef = useRef<number>(0);
@@ -33,8 +31,7 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
     const changeModel = useCallback(async (modelInfo: { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; }) => {
         if (!ctx) return;
         // 新しいモデルをロード
-        const nowModel = await loadModel(modelInfo, ctx, nowModelRef.current);
-        nowModelRef.current = nowModel;
+        await loadModel(modelInfo, ctx);
     }, [ctx]);
 
     useEffect(() => {
@@ -67,7 +64,7 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
 
                 // セッション終了時の処理
                 session.addEventListener('end', () => {
-                    handleSessionEndCleanup(ctx, nowModelRef, reticleShowTimeRef, viewNumRef);
+                    handleSessionEndCleanup(ctx, reticleShowTimeRef, viewNumRef);
                     setCtx(prevCtx => prevCtx? { ...prevCtx, currentSession: undefined } : prevCtx);
                     onSessionEnd();
                 });
@@ -97,6 +94,7 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
 
         const detach = attachResizeHandlers(threeContext, containerRef.current);
 
+        // 毎フレーム実行部分
         threeContext.renderer.setAnimationLoop(animate);
         async function animate(timestamp: DOMHighResTimeStamp, frame: XRFrame) {
             // ヒットテスト実行関数

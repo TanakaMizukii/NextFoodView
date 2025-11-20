@@ -1,11 +1,8 @@
 import type { ThreeCtx } from './ThreeInit';
 import type { RefObject } from 'react';
-import * as THREE from 'three';
-import { disposeModel } from './ThreeLoad';
 
 export function handleSessionEndCleanup(
     ctx: ThreeCtx | null,
-    nowModelRef: RefObject<THREE.Group | null>,
     reticleShowTimeRef: RefObject<DOMHighResTimeStamp | null>,
     viewNumRef: RefObject<number>
 ) {
@@ -14,12 +11,6 @@ export function handleSessionEndCleanup(
         ctx.scene.remove(ctx.reticle);
         ctx.transControls.detach();
 
-        // 2. 表示されているモデルを削除・メモリ解放
-        if (nowModelRef.current) {
-            disposeModel(nowModelRef.current); // Dispose geometry/materials
-            ctx.scene.remove(nowModelRef.current); // Remove from scene
-            nowModelRef.current = null;
-        }
         // objectListもクリア
         ctx.objectList.length = 0;
         // TransformControlsも削除

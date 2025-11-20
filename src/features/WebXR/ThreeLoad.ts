@@ -15,7 +15,7 @@ export type ModelProps = {
     modelPrice?: string;
 }
 
-export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THREE.Group<THREE.Object3DEventMap> | null): Promise<THREE.Group<THREE.Object3DEventMap> | null> {
+export async function loadModel(Model: ModelProps, ctx: ThreeCtx): Promise<THREE.Group<THREE.Object3DEventMap> | null> {
     const {
         modelName = 'カルビ盛り',
         modelPath = 'models/calbee_set_comp.glb',
@@ -61,6 +61,7 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
         clone.userData.isDetail = true;
         ctx.reticle.matrix.decompose(clone.position, clone.quaternion, clone.scale);
         clone.scale.set(0.0085, 0.0085, 0.0085); // 改変されてしまうためdecomposeの後に記述
+        setupHitSphere(clone);
         clone.add(detail);
         ctx.scene.add(clone);
         // 配列に保存
@@ -90,6 +91,22 @@ export async function loadModel(Model: ModelProps, ctx: ThreeCtx, prevModel: THR
         alert(error +'モデルの読み込みに失敗しました。');
         console.log(error);
         return null;
+    }
+}
+
+function setupHitSphere(mesh:  THREE.Group<THREE.Object3DEventMap>) {
+    // 1回だけメッシュの外側を囲むBoxを作る
+    const box = new THREE.Box3().setFromObject(mesh);
+    const size = new THREE.Vector3();
+    box.getSize(size); // x, y, z方向の長さ
+
+    // 対角線の長さの半分≒そのモデルを全部含む半径
+    const radius = size.length() / 2;
+
+    // 使用するデータをuserData.hitとして格納
+    mesh.userData.hit = {
+        center: new THREE.Vector3(), // 後で毎フレーム位置を入れる用
+        radius: radius,
     }
 }
 
