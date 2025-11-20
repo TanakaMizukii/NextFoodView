@@ -7,7 +7,7 @@ export default function GuideScanPlane({ visible = true }: Props) {
         <MyGuidePlane data-show={visible ? "1" : "0"}>
         <div id="scanning-overlay" className="scanning-overlay">
             <div className="scanning-icon"></div>
-            <div className="scanning-text">平面を検出します</div>
+            <div className="scanning-text">平面を検出中...</div>
 
             {/* ▼ 机＋スマホの簡易イラスト */}
             <div className="scan-visual">
@@ -39,7 +39,7 @@ export default function GuideScanPlane({ visible = true }: Props) {
             </div>
 
             <div className="scanning-instruction">
-                スマートフォンをゆっくりと<br />
+                スマホを目の高さで持ち<br />
                 上下左右に動かして平面を<br />
                 スキャンしてください
             </div>

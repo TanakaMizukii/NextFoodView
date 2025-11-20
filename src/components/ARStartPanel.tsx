@@ -153,20 +153,28 @@ const MyStart = styled.div`
 }
 
 .backButton {
-    background: linear-gradient(145deg, #317e3aff, #22762fff);
-    color: white;
+    background: linear-gradient(145deg, rgba(60, 180, 90, 0.25), rgba(40, 160, 70, 0.25));
+    color: #eaffea;
     margin: 20px;
-    padding: 14px 35px;
-    border-radius: 50px;
-    font-size: 18px;
+    padding: 12px 32px;
+    border-radius: 40px;
+    font-size: 17px;
     font-weight: 600;
-    letter-spacing: 1px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.5), inset 0 -3px 6px rgba(0,0,0,0.5);
-    border: 1px solid #428742ff;
+    letter-spacing: 0.8px;
+    border: 1px solid rgba(80, 200, 120, 0.4);
+    backdrop-filter: blur(6px); /* ← 未来感UP（過飾ではない） */
     cursor: pointer;
     min-width: 150px;
     text-align: center;
-    transition: all 0.2s ease-out;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    transition: all 0.25s ease;
+    text-shadow: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ホバーで少しだけ存在感UP（光が入る感じ） */
+.backButton:hover {
+    background: linear-gradient(145deg, rgba(60, 200, 100, 0.32), rgba(40, 180, 80, 0.32));
+    border-color: rgba(100, 255, 150, 0.5);
+    box-shadow: 0 6px 16px rgba(0, 255, 120, 0.15);
 }
 `
