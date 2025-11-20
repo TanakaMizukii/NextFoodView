@@ -84,7 +84,7 @@ export function initThree(canvas: HTMLCanvasElement, opts: InitOptions = {}): Th
     // レティクルの作成
     const reticle = new THREE.Mesh(
         new THREE.RingGeometry(0.05, 0.065, 32).rotateX( -Math.PI / 2),
-        new THREE.MeshBasicMaterial(),
+        new THREE.MeshBasicMaterial({ transparent: true }),
     );
     // レティクルの交差情報の自動更新をオフに
     reticle.matrixAutoUpdate = false;
