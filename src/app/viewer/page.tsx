@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import '../App.css';
 import { ModelChangeContext } from '@/contexts/ModelChangeContext';
@@ -16,6 +16,7 @@ import LoadingPanel from '@/components/LoadingPanel';
 import productModels from '@/data/MenuInfo';
 import type { ProductModel } from '@/data/MenuInfo';
 import SideSlidePanel from '@/components/Viewer/SideSlidePanel';
+import TutorialOverlay from '@/components/TutorialOverlay';
 
 type ModelInfo = { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
@@ -30,6 +31,7 @@ export default function ViewerPage() {
     const [currentCategory, setCurrentCategory] = useState(1); // カルビが初期選択
     const [loading, setLoading] = useState(true);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [showTutorial, setShowTutorial] = useState(true);
 
     const currentProduct: ProductModel = productModels[currentIndex]
 
@@ -43,8 +45,14 @@ export default function ViewerPage() {
         await changeModel(info);
     };
 
+    useEffect(() => {
+        const timer = setTimeout(() => setShowTutorial(false), 5000);
+        return () => clearTimeout(timer);
+    }, []);
+
     return (
         <>
+        <TutorialOverlay isVisible={showTutorial} onClose={() => setShowTutorial(false)}/>
         <LoadingPanel isVisible={loading} />
         <ModelChangeContext.Provider value={{ changeModel: wrappedChangeModel }}>
             <Root>
