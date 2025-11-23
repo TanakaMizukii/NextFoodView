@@ -103,10 +103,10 @@ const MySpecific = styled.div`
     }
 
     .variant-chip.active {
-        background: #667eea;
+        background: #ff4d4d;
         border-color: transparent;
         color: white;
         font-weight: 600;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 4px 12px rgba(255, 80, 80, 0.45);
     }
 `

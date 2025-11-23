@@ -11,19 +11,23 @@ export default function TutorialOverlay({ isVisible, onClose }: TutorialOverlayP
             {/* Tutorial Overlay */}
             <div className={`tutorial-overlay ${isVisible ? 'show' : ''}`}>
                 <div className="tutorial-content">
-                    <h3>操作方法</h3>
+                    <h3>ビューアー操作ガイド</h3>
                     <div className="tutorial-gestures">
                         <div className="gesture-item">
                             <div className="gesture-icon">👆</div>
-                            <div className="gesture-text">1本指ドラッグ = 回転</div>
+                            <div className="gesture-text"><strong>モデル操作:</strong> ドラッグで回転、ピンチでズームが可能です。</div>
                         </div>
                         <div className="gesture-item">
-                            <div className="gesture-icon">✌️</div>
-                            <div className="gesture-text">2本指 = パン移動</div>
+                            <div className="gesture-icon">👁️‍🗨️</div>
+                            <div className="gesture-text"><strong>ARモード:<span className="col-red">ARボタンから商品を現実空間に表示可能です！</span></strong></div>
                         </div>
                         <div className="gesture-item">
-                            <div className="gesture-icon">🤏</div>
-                            <div className="gesture-text">ピンチ = ズーム</div>
+                            <div className="gesture-icon">☰</div>
+                            <div className="gesture-text">メニュー:右上のアイコンで開閉し、商品を選択可能です</div>
+                        </div>
+                        <div className="gesture-item">
+                            <div className="gesture-icon">🔽</div>
+                            <div className="gesture-text">詳細情報: 下部のシートをドラッグで開いて商品詳細を確認。</div>
                         </div>
                     </div>
                     <button className="tutorial-button" onClick={onClose}>
@@ -43,7 +47,7 @@ const MyTutorialOverlay = styled.div`
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0,0,0,0.55);
+        background: rgba(0,0,0,0.8);
         align-items: center;
         justify-content: center;
         z-index: 0;
@@ -99,6 +103,9 @@ const MyTutorialOverlay = styled.div`
                         flex: 1;
                         font-size: 14px;
                         opacity: 0.9;
+                    }
+                    .col-red {
+                        color: #ff2222;;
                     }
                 }
             }

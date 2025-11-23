@@ -46,7 +46,7 @@ export default function ViewerPage() {
     };
 
     useEffect(() => {
-        const timer = setTimeout(() => setShowTutorial(false), 5000);
+        const timer = setTimeout(() => setShowTutorial(false),100000);
         return () => clearTimeout(timer);
     }, []);
 
