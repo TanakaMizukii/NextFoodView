@@ -154,7 +154,6 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd, onSes
 
     const handleReset = () => {
         if (ctx && ctx.currentSession) {
-            console.log('ここを通っています')
             reset.current = true;
             ctx.currentSession.end();
         }
