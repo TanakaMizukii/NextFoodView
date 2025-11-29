@@ -81,13 +81,15 @@ export async function handleFirstHit(
         const arUI = document.getElementById('ar-ui');
         const exitButton = document.getElementById('exit-button');
         const clearObjects = document.getElementById('clear-objects');
-        if (scanningOverlay && menuContainer && openPanel && arUI && exitButton && clearObjects) {
+        const resetHit = document.getElementById('reset-hit');
+        if (scanningOverlay && menuContainer && openPanel && arUI && exitButton && clearObjects && resetHit) {
             scanningOverlay.style.display = 'none';
             menuContainer.style.display = 'block';
             openPanel.style.display = 'flex';
             arUI.style.display = 'block';
             exitButton.style.display = 'block';
             clearObjects.style.display = 'flex';
+            resetHit.style.display = 'flex';
         }
 
         if (reticleShowTimeRef.current === null) {

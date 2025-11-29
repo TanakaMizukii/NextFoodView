@@ -93,7 +93,7 @@ export default function ThreeMain({ setChangeModel, onCameraReady, onGuideDismis
     return (
         <>
             <LoadingPanel />
-            <ARHelper onExit={handleExit} showClearObjects={false} />
+            <ARHelper onExit={handleExit} showClearObjects={false} showResetHit={false}/>
             <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />
             </div>

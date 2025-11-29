@@ -143,11 +143,17 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
         };
     };
 
+    const handleReset = () => {
+        if (ctx && ctx.currentSession) {
+            ctx.currentSession.end();
+        }
+    }
+
     return (
         <>
             <GuideScanPlane />
             <LoadingPanel />
-            <ARHelper onExit={handleExit} onClear={handleClear} showClearObjects={true} />
+            <ARHelper onExit={handleExit} onClear={handleClear} onReset={handleReset} showClearObjects={true} showResetHit={true}/>
             <div id="wrapper" ref={containerRef} >
                 <canvas id="myCanvas" ref={canvasRef} />
             </div>
