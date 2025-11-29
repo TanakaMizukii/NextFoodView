@@ -6,7 +6,7 @@ import LoadingPanel from "@/components/LoadingPanel";
 import GuideScanPlane from "@/components/GuideScanPlane";
 import ARHelper from "@/components/ARHelper";
 import { updateHitTest, handleFirstHit } from "./ThreeHitTest";
-import { handleSessionEndCleanup } from './ThreeCleanup';
+import { handleSessionEndCleanup, handleSessionResetCleanup } from './ThreeCleanup';
 
 type ThreeContext = ReturnType<typeof initThree>;
 
@@ -18,15 +18,17 @@ type ThreeMainProps = {
     setChangeModel: React.Dispatch<React.SetStateAction<ChangeModelFn>>;
     startAR: boolean;
     onSessionEnd: () => void;
+    onSessionReset: () => void;
 };
 
-export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: ThreeMainProps) {
+export default function ThreeMain({ setChangeModel, startAR, onSessionEnd, onSessionReset }: ThreeMainProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [ctx, setCtx] = useState<ThreeContext | null>(null);
     const reticleShowTimeRef = useRef<DOMHighResTimeStamp | null>(null);
     const viewNumRef = useRef<number>(0);
     const inFlightRef = useRef(false);
+    const reset = useRef(false);
 
     const changeModel = useCallback(async (modelInfo: { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; }) => {
         if (!ctx) return;
@@ -64,9 +66,15 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
 
                 // セッション終了時の処理
                 session.addEventListener('end', () => {
-                    handleSessionEndCleanup(ctx, reticleShowTimeRef, viewNumRef);
-                    setCtx(prevCtx => prevCtx? { ...prevCtx, currentSession: undefined } : prevCtx);
-                    onSessionEnd();
+                    if (reset.current) {
+                        handleSessionResetCleanup(ctx, reticleShowTimeRef, viewNumRef);
+                        setCtx(prevCtx => prevCtx? { ...prevCtx, currentSession: undefined } : prevCtx);
+                        onSessionReset();
+                    } else {
+                        handleSessionEndCleanup(ctx, reticleShowTimeRef, viewNumRef);
+                        setCtx(prevCtx => prevCtx? { ...prevCtx, currentSession: undefined } : prevCtx);
+                        onSessionEnd();
+                    }
                 });
             } catch (error) {
                 console.error("Failed to start AR session:", error);
@@ -117,6 +125,7 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
 
     const handleExit = () => {
         if (ctx && ctx.currentSession) {
+            reset.current = false;
             ctx.currentSession.end();
         }
     };
@@ -145,6 +154,8 @@ export default function ThreeMain({ setChangeModel, startAR, onSessionEnd }: Thr
 
     const handleReset = () => {
         if (ctx && ctx.currentSession) {
+            console.log('ここを通っています')
+            reset.current = true;
             ctx.currentSession.end();
         }
     }

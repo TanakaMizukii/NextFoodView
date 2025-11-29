@@ -9,6 +9,7 @@ import { ModelChangeContext } from '@/contexts/ModelChangeContext';
 import dynamic from 'next/dynamic';
 import '../App.css';
 import ARStartPanel from "@/components/ARStartPanel";
+import ARResetPanel from "@/components/ARResetPanel";
 
 type ModelInfo = { modelName?: string; modelPath?: string; modelDetail?: string; modelPrice?: string; };
 type ChangeModelFn = (info: ModelInfo) => Promise<void>;
@@ -22,6 +23,7 @@ export default function LandingPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [start, setStart] = useState(false);
+    const [showARResetPanel, setShowARResetPanel] = useState(false);
     const [changeModel, setChangeModel] = useState<ChangeModelFn>(() => async (info: ModelInfo) => {
         console.warn("changeModel is not yet initialized", info);
     });
@@ -42,15 +44,24 @@ export default function LandingPage() {
 
     const handleSessionEnd = () => {
         setStart(false);
+        setShowARResetPanel(false);
         setLoading(false);
     };
 
+    const handleSessionReset = () => {
+        setStart(false);
+        setShowARResetPanel(true);
+        setLoading(false);
+    }
+
     return (
         <>
-        <ARStartPanel onUpdate={handleStart} loading={loading} />
+        {showARResetPanel 
+        ?(<ARResetPanel onRestart={handleStart}/>)
+        :(<ARStartPanel onUpdate={handleStart} loading={loading} />)}
         {start &&
             <ModelChangeContext.Provider value={{ changeModel }}>
-                <ThreeMain setChangeModel={setChangeModel} startAR={start} onSessionEnd={handleSessionEnd}/>
+                <ThreeMain setChangeModel={setChangeModel} startAR={start} onSessionEnd={handleSessionEnd} onSessionReset={handleSessionReset}/>
                 <MenuContainer />
             </ModelChangeContext.Provider>
         }
