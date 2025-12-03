@@ -164,7 +164,9 @@ export async function startARSession(): Promise<XRSession | undefined> {
         if (session) {
             // UIの更新
             const startOverlay = document.getElementById('start-overlay') as HTMLElement | null;
+            const resetOverlay = document.getElementById('reset-overlay') as HTMLElement | null;
             if (startOverlay) { startOverlay.style.display = "none" };
+            if (resetOverlay) { resetOverlay.style.display = "none" };
             const scanningOverlay = document.getElementById('scanning-overlay');
             if (scanningOverlay) { scanningOverlay.style.display = 'flex' };
             console.log('Session start complete.')

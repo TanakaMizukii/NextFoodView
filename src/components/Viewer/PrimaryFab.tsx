@@ -93,50 +93,76 @@ const MyFabContainer = styled.div`
         margin-bottom: 12px;
     }
 
-    .ar-start-button {
-        background: #667eea;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 10px 16px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.2s;
-        width: 100%;
-    }
+.ar-start-button {
+    background: linear-gradient(135deg, #4ade80, #22c55e); /* 明るいライム系 */
+    color: #ffffff;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.20s ease;
+    width: 100%;
+    box-shadow: 0 6px 18px rgba(34, 197, 94, 0.35);
+}
 
-    .ar-start-button:hover:not(:disabled) {
-        background: #5a6ed0;
-    }
+/* ホバー時：軽く光る → 押したくなる */
+.ar-start-button:hover:not(:disabled) {
+    background: linear-gradient(135deg, #5ef08e, #31d971);
+    box-shadow: 0 8px 22px rgba(34, 197, 94, 0.45);
+    transform: translateY(-1px);
+}
 
-    .ar-start-button:disabled {
-        background: #555;
-        cursor: not-allowed;
-    }
+/* disabled も視認性UP */
+.ar-start-button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
 
-    /* Primary FAB */
-    .primary-fab {
-        width: 64px;
-        height: 64px;
-        background: #667eea;
-        border: none;
-        border-radius: 50%;
-        color: white;
-        font-size: 24px;
-        font-weight: 600;
-        cursor: pointer;
-        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-        /* Ensure FAB is on top of its own content initially */
-        position: relative;
-        flex-shrink: 0; /* Prevent FAB from shrinking */
-    }
 
-    .primary-fab:active {
-        transform: scale(0.95);
-    }
+/* Primary FAB - 単色レッド版 */
+.primary-fab {
+    width: 64px;
+    height: 64px;
+    background: #ff4d4d;  /* 単色で一番押される赤 */
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 26px;
+    font-weight: 700;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* 押されやすいよう影は赤寄りに */
+    box-shadow: 0 8px 24px rgba(255, 80, 80, 0.45);
+
+    transition: all 0.22s ease-out;
+
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* ホバー時 - 微妙に明るくして誘導 */
+.primary-fab:hover:not(:disabled) {
+    background: #ff5f5f;
+    box-shadow: 0 10px 28px rgba(255, 80, 80, 0.55);
+    transform: translateY(-2px);
+}
+
+/* クリック時 */
+.primary-fab:active {
+    transform: scale(0.92);
+    box-shadow: 0 6px 20px rgba(255, 80, 80, 0.35);
+}
+
+/* 無効化 */
+.primary-fab:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
 `
